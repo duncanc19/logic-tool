@@ -5,3 +5,7 @@ h1 {
 p {
   padding: 10px;
 }
+
+#equivalent {
+  display: inline;
+}

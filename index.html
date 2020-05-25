@@ -25,9 +25,21 @@
     <p>This is a tool created for students taking the Logic and Logic Programming module at the University of Kent.
        The tool can be used to work through solutions to semantic equivalence problems. The rules can be seen in the
       Rules section. There is a forum you can use to ask for help with problems you are struggling with or to ask general questions.</p>
+    <form>
+      <label for="formula">Please enter your formula:</label>
+      <input type="text" name="formula" placeholder="Your formula" id="formula">
+      <p id="equivalent">≡</p>
+      <input type="text" name="transformedFormula" placeholder="Formula to prove">
+      <button type="button" id="andButton">∧</button>
+      <button type="button" id="orButton">∨</button>
+      <button type="button" id="ifButton">⇒</button>
+      <button type="button" id="onlyIfButton">⇔</button>
+      <button type="button" id="notButton">¬</button>
+    </form>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="script.js"></script>
   </body>
 </html>
