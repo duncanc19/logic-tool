@@ -3,9 +3,12 @@ const orButton = document.getElementById("orButton");
 const ifButton = document.getElementById("ifButton");
 const onlyIfButton = document.getElementById("onlyIfButton");
 const notButton = document.getElementById("notButton");
+const startProof = document.getElementById("startProof");
 
-const formulaInput = document.getElementById('formula');
-const transformedFormula = document.getElementById('transformedFormula');
+const formulaInput = document.getElementById("formula");
+const transformedFormula = document.getElementById("transformedFormula");
+
+const mainBody = document.getElementById("mainBody");
 
 let currentTextBox;
 
@@ -15,6 +18,7 @@ orButton.addEventListener("click", function() { addSymbol(1) });
 ifButton.addEventListener("click", function() { addSymbol(2) });
 onlyIfButton.addEventListener("click", function() { addSymbol(3) });
 notButton.addEventListener("click", function() { addSymbol(4) });
+startProof.addEventListener("click", setupProof);
 
 function addSymbol(whichButton)
 {
@@ -44,4 +48,9 @@ function addSymbol(whichButton)
 
 function selectTextBox(textBox) {
     currentTextBox = document.getElementById(textBox);
+}
+
+function setupProof() {
+  mainBody.innerHTML = "<h1>" + formulaInput.value + " ≡ " + transformedFormula.value +
+  "</h1><br><p>" + formulaInput.value + "</p>";
 }
