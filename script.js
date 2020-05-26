@@ -5,6 +5,9 @@ const onlyIfButton = document.getElementById("onlyIfButton");
 const notButton = document.getElementById("notButton");
 
 const formulaInput = document.getElementById('formula');
+const transformedFormula = document.getElementById('transformedFormula');
+
+let currentTextBox;
 
 
 andButton.addEventListener("click", function() { addSymbol(0) });
@@ -15,21 +18,29 @@ notButton.addEventListener("click", function() { addSymbol(4) });
 
 function addSymbol(whichButton)
 {
-  switch(whichButton) {
-    case 0:
-      formulaInput.value += "∧";
-      break;
-    case 1:
-      formulaInput.value += "∨";
-      break;
-    case 2:
-      formulaInput.value += "⇒";
-      break;
-    case 3:
-      formulaInput.value += "⇔";
-      break;
-    case 4:
-      formulaInput.value += "¬";
-      break;
-    }
+  if (currentTextBox) {
+    switch(whichButton) {
+      case 0:
+        currentTextBox.value += "∧";
+        break;
+      case 1:
+        currentTextBox.value += "∨";
+        break;
+      case 2:
+        currentTextBox.value += "⇒";
+        break;
+      case 3:
+        currentTextBox.value += "⇔";
+        break;
+      case 4:
+        currentTextBox.value += "¬";
+        break;
+      }
+  } else {
+    alert("Please select a text box!");
+  }
+}
+
+function selectTextBox(textBox) {
+    currentTextBox = document.getElementById(textBox);
 }
