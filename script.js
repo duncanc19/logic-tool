@@ -36,6 +36,7 @@ function addSymbol(whichButton)
         currentTextBox.value += "¬";
         break;
       }
+      currentTextBox.focus();
   } else {
     alert("Please select a text box!");
   }
