@@ -8,7 +8,7 @@
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">Semantic Equivalence</a>
+      <a class="navbar-brand" href="index.html">Semantic Equivalence</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -16,33 +16,43 @@
         <div class="navbar-nav">
           <a class="nav-item nav-link active" href="#">Tool<span class="sr-only">(current)</span></a>
           <a class="nav-item nav-link" href="#">Exercises</a>
-          <a class="nav-item nav-link" href="rules.html">Rules</a>
+          <a class="nav-item nav-link" href="#">Rules</a>
           <a class="nav-item nav-link" href="#">Forum</a>
         </div>
       </div>
     </nav>
-    <div id="mainBody">
-      <h1>Semantic Equivalence Logic Tool</h1>
-      <p>This is a tool created for students taking the Logic and Logic Programming module at the University of Kent.
-         The tool can be used to work through solutions to semantic equivalence problems. The rules can be seen in the
-        Rules section. There is a forum you can use to ask for help with problems you are struggling with or to ask general questions.</p>
-      <form>
-        <label for="formula">Please enter your formula:</label>
-        <input type="text" name="formula" placeholder="Your formula" id="formula" onblur="selectTextBox(this.id)">
-        <p id="equivalent">≡</p>
-        <input type="text" name="transformedFormula" placeholder="Formula to prove" id="transformedFormula" onblur="selectTextBox(this.id)">
-        <button type="button" id="andButton">∧</button>
-        <button type="button" id="orButton">∨</button>
-        <button type="button" id="ifButton">⇒</button>
-        <button type="button" id="onlyIfButton">⇔</button>
-        <button type="button" id="notButton">¬</button>
-        <input type="button" id="startProof" value="Start Proof">
-      </form>
-    </div>
+    <h3>The Semantic Equivalence Rules</h3>
+    <h5>Idempotence</h5>
+    <p>A ∧ A ≡ A</p>
+    <p>A ∨ A ≡ A</p>
+    <h5>Commutativity</h5>
+    <p>A ∧ B ≡ B ∧ A</p>
+    <p>A ∨ B ≡ B ∨ A</p>
+    <h5>Associativity</h5>
+    <p>A ∧ (B ∧ C) ≡ (A ∧ B) ∧ C</p>
+    <p>A ∨ (B ∨ C) ≡ (A ∨ B) ∨ C</p>
+    <h5>Absorption</h5>
+    <p>A ∧ (A ∨ B) ≡ A</p>
+    <p> A ∨ (A ∧ B) ≡ A</p>
+    <h5>Distributivity</h5>
+    <p>A ∧ (B ∨ C) ≡ (A ∧ B) ∨ (A ∧ C)</p>
+    <p>A ∨ (B ∧ C) ≡ (A ∨ B) ∧ (A ∨ C)</p>
+    <h5>Negation</h5>
+    <p>A ∧ (¬A) ≡ false</p>
+    <p>A ∨ (¬A) ≡ true</p>
+    <h5>Double Negation</h5>
+    <p>¬(¬A) ≡ A</p>
+    <h5>de Morgan</h5>
+    <p>¬(A ∧ B) ≡ (¬A) ∨ (¬B)</p>
+    <p>¬(A ∨ B) ≡ (¬A) ∧ (¬B)</p>
+    <h5>Implication</h5>
+    <p>A ⇒ B ≡ (¬A) ∨ B</p>
+    <h5>Bi-Implication</h5>
+    <p>A ⇔ B ≡ (A ⇒ B) ∧ (B ⇒ A)</p>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-    <script src="script.js"></script>
+
   </body>
 </html>
