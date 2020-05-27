@@ -21,20 +21,22 @@ notButton.addEventListener("click", function() { addSymbol(4) });
 startProof.addEventListener("click", setupProof);
 
 formulaInput.onkeypress = function(e) {
-  if (e.which>=49 && e.which<=53) {
+  let key = e.which || e.keyCode;
+  if (key>=49 && key<=53) {
     e.preventDefault();
     currentTextBox = this;
     // converting key codes of numbers 1-5 to switch numbers in addSymbol
-    addSymbol(e.keyCode-49);
+    addSymbol(key-49);
   }
 }
 
 transformedFormula.onkeypress = function(e) {
-  if (e.which>=49 && e.which<=53) {
+  let key = e.which || e.keyCode;
+  if (key>=49 && key<=53) {
     e.preventDefault();
     currentTextBox = this;
     // converting key codes of numbers 1-5 to switch numbers in addSymbol
-    addSymbol(e.keyCode-49);
+    addSymbol(key-49);
   }
 }
 
