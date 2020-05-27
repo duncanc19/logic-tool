@@ -20,6 +20,25 @@ onlyIfButton.addEventListener("click", function() { addSymbol(3) });
 notButton.addEventListener("click", function() { addSymbol(4) });
 startProof.addEventListener("click", setupProof);
 
+formulaInput.onkeypress = function(e) {
+  if (e.which>=49 && e.which<=53) {
+    e.preventDefault();
+    currentTextBox = this;
+    // converting key codes of numbers 1-5 to switch numbers in addSymbol
+    addSymbol(e.keyCode-49);
+  }
+}
+
+transformedFormula.onkeypress = function(e) {
+  if (e.which>=49 && e.which<=53) {
+    e.preventDefault();
+    currentTextBox = this;
+    // converting key codes of numbers 1-5 to switch numbers in addSymbol
+    addSymbol(e.keyCode-49);
+  }
+}
+
+
 function addSymbol(whichButton)
 {
   if (currentTextBox) {
