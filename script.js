@@ -118,16 +118,30 @@ function buildTree(node) {
       setNodeAndChildren(node, '∧');
   } else if (findSymbol(node.value, '¬')) {
     setNodeAndChildren(node, '¬');
+  } else {
+    removeBrackets(node.value);
+    buildTree(node);
   }
   node.children.forEach(child => buildTree(child));
 }
 
-
+function removeBrackets(node) {
+  if (node[0] == '(' && node[node.length-1] == ')') {
+    node.shift(); //removes opening bracket
+    node.pop(); //removes closing bracket
+  }
+}
 
 
 function findSymbol(nodeValue, symbol) {
+  let inBrackets = false;
   for (i=0; i<nodeValue.length; i++) {
-    if (nodeValue[i] == symbol) {
+    if (nodeValue[i] == '(') {
+      inBrackets = true;
+    } else if (nodeValue[i] == ')') {
+      inBrackets = false;
+    }
+    if (nodeValue[i] == symbol && !(inBrackets)) {
       return true;
     }
   }
@@ -137,9 +151,15 @@ function findSymbol(nodeValue, symbol) {
 function setNodeAndChildren(node,symbol) {
   let leftChild = { value: [], children: [] };
   let rightChild = { value: [], children: [] };
+  let inBrackets = false;
   // finds symbol, puts left of symbol in leftChild, right of symbol in rightChild
   for (i=0; i<node.value.length; i++) {
-    if (node.value[i] == symbol) {
+    if (node.value[i] == '(') {
+      inBrackets = true;
+    } else if (node.value[i] == ')') {
+      inBrackets = false;
+    }
+    if (node.value[i] == symbol  && !(inBrackets)) {
       for (j=0; j<i; j++) {
         leftChild.value.push(node.value[j]);
       }
