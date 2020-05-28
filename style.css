@@ -10,3 +10,9 @@ p {
 #equivalent {
   display: inline;
 }
+
+
+/* tool.html */
+#mainBody {
+  padding: 15px;  
+}

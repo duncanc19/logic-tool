@@ -20,6 +20,10 @@ onlyIfButton.addEventListener("click", function() { addSymbol(3) });
 notButton.addEventListener("click", function() { addSymbol(4) });
 startProof.addEventListener("click", setupProof);
 
+
+/* FORMULA INPUT */
+
+/* Keyboard shortcuts */
 formulaInput.onkeypress = function(e) {
   let key = e.which || e.keyCode;
   if (key>=49 && key<=53) {
@@ -40,7 +44,7 @@ transformedFormula.onkeypress = function(e) {
   }
 }
 
-
+/* Symbol buttons */
 function addSymbol(whichButton)
 {
   if (currentTextBox) {
@@ -71,7 +75,26 @@ function selectTextBox(textBox) {
     currentTextBox = document.getElementById(textBox);
 }
 
+
+/* PARSING FORMULAE INTO TREES */
+
 function setupProof() {
+  let originalTree = buildTree(formulaInput.value);
+  let finalTree = buildTree(transformedFormula.value);
   mainBody.innerHTML = "<h1>" + formulaInput.value + " ≡ " + transformedFormula.value +
   "</h1><br><p>" + formulaInput.value + "</p>";
+  console.log(originalTree);
+  console.log(finalTree);
+}
+
+function buildTree(formula) {
+  let tree = [];
+
+  for (i=0; i<formula.length; i++) {
+    if (formula[i] == " ") { // do nothing
+    } else {
+      tree.push(formula[i]);
+    }
+  }
+  return tree;
 }
