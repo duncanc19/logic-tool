@@ -119,7 +119,6 @@ function buildTree(node) {
   } else if (findSymbol(node.value, '¬')) {
     setNodeAndChildren(node, '¬');
   }
-  console.log(node);
   node.children.forEach(child => buildTree(child));
 }
 
@@ -147,7 +146,7 @@ function setNodeAndChildren(node,symbol) {
       for (k=i+1; k<node.value.length; k++) {
         rightChild.value.push(node.value[k]);
       }
-      if (leftChild.value != []) {
+      if (leftChild.value.length != 0) {
         node.children.push(leftChild);
       }
       node.children.push(rightChild);
