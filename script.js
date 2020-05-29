@@ -78,6 +78,20 @@ function selectTextBox(textBox) {
 
 /* PARSING FORMULAE INTO TREES */
 
+let ruleSelect = '<form>Select rule:' + '<select id="mySelect">' +
+    '<option value="idempotence">Idempotence</option>' +
+    '<option value="commutativity">Commutativity</option>' +
+    '<option value="associativity">Associativity</option>'+
+    '<option value="absorption">Absorption</option>' +
+    '<option value="distributivity">Distributivity</option>' +
+    '<option value="negation">Negation</option>' +
+    '<option value="doubleNegation">Double Negation</option>' +
+    '<option value="deMorgan">de Morgan</option>' +
+    '<option value="implication">Implication</option>' +
+    '<option value="biImplication">Bi-Implication</option>' +
+    '</select>' + '<input type="button" id="applyRule" value="Apply Rule">' +
+    '</form>';
+
 function setupProof() {
   let originalArray = buildArray(formulaInput.value);
   let finalArray = buildArray(transformedFormula.value);
@@ -85,9 +99,8 @@ function setupProof() {
   let finalTree = { value: finalArray, children: []};
   buildTree(originalTree);
   buildTree(finalTree);
-
-  mainBody.innerHTML = "<h1>" + formulaInput.value + " ≡ " + transformedFormula.value +
-  "</h1><br><p>" + formulaInput.value + "</p>";
+  mainBody.innerHTML = "<h3>Prove that " + formulaInput.value + " ≡ " + transformedFormula.value +
+  "</h3><br><p>" + formulaInput.value + "</p>" + ruleSelect;
   console.log(originalTree);
   console.log(finalTree);
 }
