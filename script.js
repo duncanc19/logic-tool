@@ -134,14 +134,14 @@ function removeBrackets(node) {
 
 
 function findSymbol(nodeValue, symbol) {
-  let inBrackets = false;
+  let inBrackets = 0;
   for (i=0; i<nodeValue.length; i++) {
     if (nodeValue[i] == '(') {
-      inBrackets = true;
+      inBrackets += 1;
     } else if (nodeValue[i] == ')') {
-      inBrackets = false;
+      inBrackets -= 1;
     }
-    if (nodeValue[i] == symbol && !(inBrackets)) {
+    if ((nodeValue[i] == symbol) && (inBrackets == 0)) {
       return true;
     }
   }
@@ -151,15 +151,15 @@ function findSymbol(nodeValue, symbol) {
 function setNodeAndChildren(node,symbol) {
   let leftChild = { value: [], children: [] };
   let rightChild = { value: [], children: [] };
-  let inBrackets = false;
+  let inBrackets = 0;
   // finds symbol, puts left of symbol in leftChild, right of symbol in rightChild
   for (i=0; i<node.value.length; i++) {
     if (node.value[i] == '(') {
-      inBrackets = true;
+      inBrackets += 1;
     } else if (node.value[i] == ')') {
-      inBrackets = false;
+      inBrackets -= 1;
     }
-    if (node.value[i] == symbol  && !(inBrackets)) {
+    if ((node.value[i] == symbol) && (inBrackets == 0)) {
       for (j=0; j<i; j++) {
         leftChild.value.push(node.value[j]);
       }
