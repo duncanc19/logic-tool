@@ -36,11 +36,11 @@ function keyboardSymbols(textbox, e) {
 }
 
 formulaInput.onkeypress = function(e) {
-  keyboardSymbols(formulaInput, e);
+  keyboardSymbols(this, e);
 }
 
 transformedFormula.onkeypress = function(e) {
-  keyboardSymbols(transformedFormula, e);
+  keyboardSymbols(this, e);
 }
 
 /* Symbol buttons */
