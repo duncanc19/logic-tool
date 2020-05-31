@@ -24,24 +24,23 @@ startProof.addEventListener("click", setupProof);
 /* FORMULA INPUT */
 
 /* Keyboard shortcuts */
-formulaInput.onkeypress = function(e) {
+
+function keyboardSymbols(textbox, e) {
   let key = e.which || e.keyCode;
   if (key>=49 && key<=53) {
     e.preventDefault();
-    currentTextBox = this;
+    currentTextBox = textbox;
     // converting key codes of numbers 1-5 to switch numbers in addSymbol
     addSymbol(key-49);
   }
 }
 
+formulaInput.onkeypress = function(e) {
+  keyboardSymbols(formulaInput, e);
+}
+
 transformedFormula.onkeypress = function(e) {
-  let key = e.which || e.keyCode;
-  if (key>=49 && key<=53) {
-    e.preventDefault();
-    currentTextBox = this;
-    // converting key codes of numbers 1-5 to switch numbers in addSymbol
-    addSymbol(key-49);
-  }
+  keyboardSymbols(transformedFormula, e);
 }
 
 /* Symbol buttons */
@@ -179,7 +178,7 @@ function setNodeAndChildren(node,symbol) {
       for (k=i+1; k<node.value.length; k++) {
         rightChild.value.push(node.value[k]);
       }
-      if (leftChild.value.length != 0) {
+      if (leftChild.value.length != 0) {  //for case when it's negation, only one child
         node.children.push(leftChild);
       }
       node.children.push(rightChild);
