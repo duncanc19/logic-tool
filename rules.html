@@ -22,33 +22,55 @@
       </div>
     </nav>
     <h3>The Semantic Equivalence Rules</h3>
-    <h5>Idempotence</h5>
-    <p>A ∧ A ≡ A</p>
-    <p>A ∨ A ≡ A</p>
-    <h5>Commutativity</h5>
-    <p>A ∧ B ≡ B ∧ A</p>
-    <p>A ∨ B ≡ B ∨ A</p>
-    <h5>Associativity</h5>
-    <p>A ∧ (B ∧ C) ≡ (A ∧ B) ∧ C</p>
-    <p>A ∨ (B ∨ C) ≡ (A ∨ B) ∨ C</p>
-    <h5>Absorption</h5>
-    <p>A ∧ (A ∨ B) ≡ A</p>
-    <p> A ∨ (A ∧ B) ≡ A</p>
-    <h5>Distributivity</h5>
-    <p>A ∧ (B ∨ C) ≡ (A ∧ B) ∨ (A ∧ C)</p>
-    <p>A ∨ (B ∧ C) ≡ (A ∨ B) ∧ (A ∨ C)</p>
-    <h5>Negation</h5>
-    <p>A ∧ (¬A) ≡ false</p>
-    <p>A ∨ (¬A) ≡ true</p>
-    <h5>Double Negation</h5>
-    <p>¬(¬A) ≡ A</p>
-    <h5>de Morgan</h5>
-    <p>¬(A ∧ B) ≡ (¬A) ∨ (¬B)</p>
-    <p>¬(A ∨ B) ≡ (¬A) ∧ (¬B)</p>
-    <h5>Implication</h5>
-    <p>A ⇒ B ≡ (¬A) ∨ B</p>
-    <h5>Bi-Implication</h5>
-    <p>A ⇔ B ≡ (A ⇒ B) ∧ (B ⇒ A)</p>
+    <div class="rulesGrid">
+      <div class="ruleGridItem">
+        <h5>Idempotence</h5>
+        <p>A ∧ A ≡ A</p>
+        <p>A ∨ A ≡ A</p>
+      </div>
+      <div class="ruleGridItem">
+        <h5>Commutativity</h5>
+        <p>A ∧ B ≡ B ∧ A</p>
+        <p>A ∨ B ≡ B ∨ A</p>
+      </div>
+      <div class="ruleGridItem">
+        <h5>Associativity</h5>
+        <p>A ∧ (B ∧ C) ≡ (A ∧ B) ∧ C</p>
+        <p>A ∨ (B ∨ C) ≡ (A ∨ B) ∨ C</p>
+      </div>
+      <div class="ruleGridItem">
+        <h5>Absorption</h5>
+        <p>A ∧ (A ∨ B) ≡ A</p>
+        <p> A ∨ (A ∧ B) ≡ A</p>
+      </div>
+      <div class="ruleGridItem">
+        <h5>Distributivity</h5>
+        <p>A ∧ (B ∨ C) ≡ (A ∧ B) ∨ (A ∧ C)</p>
+        <p>A ∨ (B ∧ C) ≡ (A ∨ B) ∧ (A ∨ C)</p>
+      </div>
+      <div class="ruleGridItem">
+        <h5>Negation</h5>
+        <p>A ∧ (¬A) ≡ false</p>
+        <p>A ∨ (¬A) ≡ true</p>
+      </div>
+      <div class="ruleGridItem">
+        <h5>Double Negation</h5>
+        <p>¬(¬A) ≡ A</p>
+      </div>
+      <div class="ruleGridItem">
+        <h5>de Morgan</h5>
+        <p>¬(A ∧ B) ≡ (¬A) ∨ (¬B)</p>
+        <p>¬(A ∨ B) ≡ (¬A) ∧ (¬B)</p>
+      </div>
+      <div class="ruleGridItem">
+        <h5>Implication</h5>
+        <p>A ⇒ B ≡ (¬A) ∨ B</p>
+      </div>
+      <div class="ruleGridItem">
+        <h5>Bi-Implication</h5>
+        <p>A ⇔ B ≡ (A ⇒ B) ∧ (B ⇒ A)</p>
+      </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
