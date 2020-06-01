@@ -77,34 +77,6 @@ function selectTextBox(textBox) {
 
 /* PARSING FORMULAE INTO TREES */
 
-let ruleSelect = '<form>Select rule:' + '<select id="mySelect">' +
-    '<option value="idempotence">Idempotence</option>' +
-    '<option value="commutativity">Commutativity</option>' +
-    '<option value="associativity">Associativity</option>'+
-    '<option value="absorption">Absorption</option>' +
-    '<option value="distributivity">Distributivity</option>' +
-    '<option value="negation">Negation</option>' +
-    '<option value="doubleNegation">Double Negation</option>' +
-    '<option value="deMorgan">de Morgan</option>' +
-    '<option value="implication">Implication</option>' +
-    '<option value="biImplication">Bi-Implication</option>' +
-    '</select>' + '<input type="button" id="applyRule" value="Apply Rule">' +
-    '</form>';
-
-function setupProof() {
-  let originalArray = buildArray(formulaInput.value);
-  let finalArray = buildArray(transformedFormula.value);
-  let originalTree = { value: originalArray, children: []};
-  let finalTree = { value: finalArray, children: []};
-  buildTree(originalTree);
-  buildTree(finalTree);
-  mainBody.innerHTML = "<h3>Prove that " + formulaInput.value + " ≡ " + transformedFormula.value +
-  "</h3><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p><p>" + formulaInput.value + "</p>" + ruleSelect;
-  console.log(originalTree);
-  console.log(finalTree);
-}
-
-
 function buildArray(formula) {
   let array = [];
 
@@ -143,7 +115,6 @@ function removeBrackets(node) {
     node.pop(); //removes closing bracket
   }
 }
-
 
 function findSymbol(nodeValue, symbol) {
   let inBrackets = 0;
@@ -185,4 +156,44 @@ function setNodeAndChildren(node,symbol) {
       node.value = symbol;
     }
   }
+}
+
+/* SETTING UP PROBLEM SOLUTION FEATURES */
+
+let ruleSelect = '<form>Select rule:' + '<select id="mySelect">' +
+    '<option value="idempotence">Idempotence</option>' +
+    '<option value="commutativity">Commutativity</option>' +
+    '<option value="associativity">Associativity</option>'+
+    '<option value="absorption">Absorption</option>' +
+    '<option value="distributivity">Distributivity</option>' +
+    '<option value="negation">Negation</option>' +
+    '<option value="doubleNegation">Double Negation</option>' +
+    '<option value="deMorgan">de Morgan</option>' +
+    '<option value="implication">Implication</option>' +
+    '<option value="biImplication">Bi-Implication</option>' +
+    '</select>' + '<input type="button" id="applyRule" value="Apply Rule">' +
+    '</form>';
+
+function setupProof() {
+  // take inputs and convert them into arrays and then trees
+  let originalArray = buildArray(formulaInput.value);
+  let finalArray = buildArray(transformedFormula.value);
+  let originalTree = { value: originalArray, children: []};
+  let finalTree = { value: finalArray, children: []};
+  buildTree(originalTree);
+  buildTree(finalTree);
+  // present the problem to solve with Apply Rule button
+  mainBody.innerHTML = "<h3>Prove that " + formulaInput.value + " ≡ " + transformedFormula.value +
+  "</h3><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p><p>" + formulaInput.value + "</p>" + ruleSelect;
+  console.log(originalTree);
+  console.log(finalTree);
+  // when Apply Rule button is clicked
+  const applyRuleButton = document.getElementById('applyRule');
+  applyRuleButton.addEventListener("click", function() {
+    let formulaSection = window.getSelection();
+    if (formulaSection.length != 0) {
+      prompt(`You selected ${mySelect.value} on ${formulaSection}, please enter what you want to change it to:`, `Your change`);
+    }
+
+  })
 }
