@@ -99,7 +99,7 @@ function setupProof() {
   buildTree(originalTree);
   buildTree(finalTree);
   mainBody.innerHTML = "<h3>Prove that " + formulaInput.value + " ≡ " + transformedFormula.value +
-  "</h3><br><p>" + formulaInput.value + "</p>" + ruleSelect;
+  "</h3><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p><p>" + formulaInput.value + "</p>" + ruleSelect;
   console.log(originalTree);
   console.log(finalTree);
 }
