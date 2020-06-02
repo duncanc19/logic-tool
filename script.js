@@ -76,7 +76,14 @@ function selectTextBox(textBox) {
 
 
 /* PARSING FORMULAE INTO TREES */
+function buildTreeFromString(formula) {
+  let array = buildArray(formula);
+  let tree = { value: array, children: []};
+  buildTree(tree);
+  return tree;
+}
 
+// convert input string into array
 function buildArray(formula) {
   let array = [];
 
@@ -89,6 +96,7 @@ function buildArray(formula) {
   return array;
 }
 
+// take node with long value and convert into single value and children
 function buildTree(node) {
   if (node.value.length == 1) {
     node.value = node.value[0];
@@ -175,13 +183,9 @@ let ruleSelect = '<form>Select rule:' + '<select id="mySelect">' +
     '</form>';
 
 function setupProof() {
-  // take inputs and convert them into arrays and then trees
-  let originalArray = buildArray(formulaInput.value);
-  let finalArray = buildArray(transformedFormula.value);
-  let originalTree = { value: originalArray, children: []};
-  let finalTree = { value: finalArray, children: []};
-  buildTree(originalTree);
-  buildTree(finalTree);
+  // take inputs and convert them into trees
+  let originalTree = buildTreeFromString(formulaInput.value);
+  let finalTree = buildTreeFromString(transformedFormula.value);
   // present the problem to solve with Apply Rule button
   mainBody.innerHTML = "<h3>Prove that " + formulaInput.value + " ≡ " + transformedFormula.value +
   "</h3><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p><p id='formulaToChange'>"
@@ -196,9 +200,7 @@ function setupProof() {
     if (formulaSection.toString().length !== 0) {
       let change = prompt(`You selected ${mySelect.value} on ${formulaSection}, please enter what you want to change it to:`, `Your change`);
       let changedFormula = formulaToChange.innerHTML.replace(formulaSection.toString(), change);
-      let changedFormulaArray = buildArray(changedFormula);
-      let newTree = { value: changedFormulaArray, children: []};
-      buildTree(newTree);
+      let newTree = buildTreeFromString(changedFormula);
       console.log(newTree);
     } else {
       alert(`Please select part of the formula`);
