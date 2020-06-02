@@ -205,5 +205,5 @@ function setupProof() {
     } else {
       alert(`Please select part of the formula`);
     }
-  })
+  });
 }
