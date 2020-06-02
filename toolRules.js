@@ -49,5 +49,11 @@ function negationRule(original) {
       node.children = [];
     }
     return node;
+  } else if (node.value === '∨' && node.children[1].value === '¬')  {
+    if (node.children[0].value === node.children[1].children[0].value) {
+      node.value = true;
+      node.children = [];
+    }
+    return node;
   }
 }
