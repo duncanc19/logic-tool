@@ -184,7 +184,8 @@ function setupProof() {
   buildTree(finalTree);
   // present the problem to solve with Apply Rule button
   mainBody.innerHTML = "<h3>Prove that " + formulaInput.value + " ≡ " + transformedFormula.value +
-  "</h3><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p><p id='formulaToChange'>" + formulaInput.value + "</p>" + ruleSelect;
+  "</h3><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p><p id='formulaToChange'>"
+  + formulaInput.value + "</p>" + ruleSelect;
   console.log(originalTree);
   console.log(finalTree);
   // when Apply Rule button is clicked
@@ -193,7 +194,12 @@ function setupProof() {
   applyRuleButton.addEventListener("click", function() {
     let formulaSection = window.getSelection();
     if (formulaSection.toString().length !== 0) {
-      prompt(`You selected ${mySelect.value} on ${formulaSection}, please enter what you want to change it to:`, `Your change`);
+      let change = prompt(`You selected ${mySelect.value} on ${formulaSection}, please enter what you want to change it to:`, `Your change`);
+      let changedFormula = formulaToChange.innerHTML.replace(formulaSection.toString(), change);
+      let changedFormulaArray = buildArray(changedFormula);
+      let newTree = { value: changedFormulaArray, children: []};
+      buildTree(newTree);
+      console.log(newTree);
     } else {
       alert(`Please select part of the formula`);
     }
