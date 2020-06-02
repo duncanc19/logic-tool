@@ -32,3 +32,11 @@ function commutativityRule(original) {
     alert('The commutativity rule cannot be applied to the section you selected.');
   }
 }
+
+function doubleNegationRule(original) {
+  let node = buildTreeFromString(original);
+  if (node.value === '¬' && node.children[0].value === '¬') {
+    node = node.children[0].children[0];
+    return node;
+  }
+}
