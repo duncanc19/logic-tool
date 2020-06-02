@@ -40,3 +40,14 @@ function doubleNegationRule(original) {
     return node;
   }
 }
+
+function negationRule(original) {
+  let node = buildTreeFromString(original);
+  if (node.value === '∧' && node.children[1].value === '¬') {
+    if (node.children[0].value === node.children[1].children[0].value) {
+      node.value = false;
+      node.children = [];
+    }
+    return node;
+  }
+}
