@@ -57,3 +57,18 @@ function negationRule(original) {
     return node;
   }
 }
+
+function implicationRule(original) {
+  let node = buildTreeFromString(original);
+  if (node.value === '⇒') {
+    let originalFirstChild = Object.assign({}, node.children[0]);
+    node.value = '∨';
+    node.children[0].value = '¬';
+    node.children[0].children = [originalFirstChild];
+    return node;
+  } else if (node.value === '∨' && node.children[0].value === '¬') {
+    node.children[0] = node.children[0].children[0]; // removes ¬ node
+    node.value = '⇒';
+    return node;
+  }
+}
