@@ -114,3 +114,20 @@ function absorptionRule(original) {
     return node;
   }
 }
+
+function associativityRule(original) {
+  let node = buildTreeFromString(original);
+  if (node.value === '∧' && node.children[1].value === '∧') {
+    let switchedChild = Object.assign({}, node.children[1].children[0]);
+    let addedToChild = Object.assign({}, node.children[0]);
+    node.children[0] = {value: '∧', children: [addedToChild, switchedChild] };
+    node.children[1] = node.children[1].children[1];
+    return node;
+  } else if (node.value === '∨' && node.children[1].value === '∨') {
+    let switchedChild = Object.assign({}, node.children[1].children[0]);
+    let addedToChild = Object.assign({}, node.children[0]);
+    node.children[0] = {value: '∨', children: [addedToChild, switchedChild] };
+    node.children[1] = node.children[1].children[1];
+    return node;
+  }
+}
