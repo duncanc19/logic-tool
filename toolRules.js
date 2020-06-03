@@ -103,3 +103,14 @@ function biImplicationRule(original) {
     return node;
   }
 }
+
+function absorptionRule(original) {
+  let node = buildTreeFromString(original);
+  if (node.value === '∧' && node.children[1].value === '∨' && node.children[0].value === node.children[1].children[0].value) {
+    node = node.children[0];
+    return node;
+  } else if (node.value === '∨' && node.children[1].value === '∧' && node.children[0].value === node.children[1].children[0].value) {
+    node = node.children[0];
+    return node;
+  }
+}
