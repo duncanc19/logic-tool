@@ -77,3 +77,18 @@ function implicationRule(original) {
     return node;
   }
 }
+
+function deMorganRule(original) {
+  let node = buildTreeFromString(original);
+  if (node.value === '¬') {
+    let firstChild = Object.assign({}, node.children[0].children[0]);
+    let secondChild = Object.assign({}, node.children[0].children[1]);
+    if (node.children[0].value === '∧') {
+      node.value = '∨';
+    } else if (node.children[0].value === '∨') {
+      node.value = '∧';
+    }
+      node.children = [{value: '¬',children: [firstChild]}, {value: '¬',children: [secondChild]}];
+      return node;
+  }
+}
