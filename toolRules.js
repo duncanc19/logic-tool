@@ -92,3 +92,14 @@ function deMorganRule(original) {
       return node;
   }
 }
+
+function biImplicationRule(original) {
+  let node = buildTreeFromString(original);
+  if (node.value === '⇔') {
+    let firstChild = Object.assign({}, node.children[0]);
+    let secondChild = Object.assign({}, node.children[1]);
+    node.value = '∧';
+    node.children = [{value: '⇒',children: [firstChild, secondChild]}, {value: '⇒',children: [secondChild, firstChild]}];
+    return node;
+  }
+}
