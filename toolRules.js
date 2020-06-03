@@ -38,6 +38,11 @@ function doubleNegationRule(original) {
   if (node.value === '¬' && node.children[0].value === '¬') {
     node = node.children[0].children[0];
     return node;
+  } else {
+    let originalNode = Object.assign({}, node);
+    node.value = '¬';
+    node.children = [{value: '¬',children: [originalNode]}];
+    return node;
   }
 }
 
