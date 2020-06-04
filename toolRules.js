@@ -2,11 +2,15 @@
 function idempotenceRule(original) {
   let node = buildTreeFromString(original);
   if (node.value === '∧' || node.value === '∨') {
-    if (node.children[0].value === node.children[1].value) {
+    if (nodesEqual(node.children[0], node.children[1])) {
       node = node.children[0];
       return node;
     }
   }
+}
+
+function nodesEqual(firstNode, secondNode) {
+  return (JSON.stringify(firstNode) === JSON.stringify(secondNode));
 }
 
 function commutativityRule(original) {
