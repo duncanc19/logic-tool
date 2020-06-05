@@ -168,6 +168,12 @@ function distributivityRule(original) {
   } else if (node.value === '∨' && node.children[1].value === '∧') {
     node = distributivityForwardRule(node, '∨', '∧');
     return node;
+  } else if (node.value === '∨' && node.children[0].value === '∧' && node.children[1].value === '∧') {
+    node = distributivityReverseRule(node, '∨', '∧');
+    return node;
+  } else if (node.value === '∧' && node.children[0].value === '∨' && node.children[1].value === '∨') {
+    node = distributivityReverseRule(node, '∧', '∨');
+    return node;
   }
 }
 
@@ -176,7 +182,16 @@ function distributivityForwardRule(node, symbol1, symbol2) {
   let addedToFirstChild = Object.assign({}, node.children[1].children[0]);
   let secondChildSecondPart = Object.assign({}, node.children[1].children[1]);
   node.value = symbol2;
-  node.children[0] = {value: symbol1, children: [firstPart, addedToFirstChild] };
-  node.children[1] = {value: symbol1, children: [firstPart, secondChildSecondPart] };
+  node.children[0] = { value: symbol1, children: [firstPart, addedToFirstChild] };
+  node.children[1] = { value: symbol1, children: [firstPart, secondChildSecondPart] };
   return node;
+}
+
+function distributivityReverseRule(node, symbol1, symbol2) {
+  if (node.children[0].children[0].value === node.children[1].children[0].value) {
+    newChildNode = { value: symbol1, children: [node.children[0].children[1], node.children[1].children[1]] };
+    node.value = symbol2;
+    node.children = [node.children[0].children[0], newChildNode];
+    return node;
+  }
 }
