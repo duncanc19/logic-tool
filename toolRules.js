@@ -163,20 +163,20 @@ function associativityRule(original) {
 function distributivityRule(original) {
   let node = buildTreeFromString(original);
   if (node.value === '∧' && node.children[1].value === '∨') {
-    let firstPart = Object.assign({}, node.children[0]);
-    let addedToFirstChild = Object.assign({}, node.children[1].children[0]);
-    let secondChildSecondPart = Object.assign({}, node.children[1].children[1]);
-    node.value = '∨';
-    node.children[0] = {value: '∧', children: [firstPart, addedToFirstChild] };
-    node.children[1] = {value: '∧', children: [firstPart, secondChildSecondPart] };
+    node = distributivityForwardRule(node, '∧', '∨');
     return node;
   } else if (node.value === '∨' && node.children[1].value === '∧') {
-    let firstPart = Object.assign({}, node.children[0]);
-    let addedToFirstChild = Object.assign({}, node.children[1].children[0]);
-    let secondChildSecondPart = Object.assign({}, node.children[1].children[1]);
-    node.value = '∧';
-    node.children[0] = {value: '∨', children: [firstPart, addedToFirstChild] };
-    node.children[1] = {value: '∨', children: [firstPart, secondChildSecondPart] };
+    node = distributivityForwardRule(node, '∨', '∧');
     return node;
   }
+}
+
+function distributivityForwardRule(node, symbol1, symbol2) {
+  let firstPart = Object.assign({}, node.children[0]);
+  let addedToFirstChild = Object.assign({}, node.children[1].children[0]);
+  let secondChildSecondPart = Object.assign({}, node.children[1].children[1]);
+  node.value = symbol2;
+  node.children[0] = {value: symbol1, children: [firstPart, addedToFirstChild] };
+  node.children[1] = {value: symbol1, children: [firstPart, secondChildSecondPart] };
+  return node;
 }
