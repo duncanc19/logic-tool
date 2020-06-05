@@ -85,20 +85,21 @@ function deMorganRule(original) {
       node.children = [{value: '¬',children: [firstChild]}, {value: '¬',children: [secondChild]}];
       return node;
   } else if (node.value === '∨' && node.children[0].value === '¬' && node.children[1].value === '¬') {
-    let firstChild = Object.assign({}, node.children[0].children[0]);
-    let secondChild = Object.assign({}, node.children[1].children[0]);
-    let newNode = {value: '∧',children: [firstChild, secondChild]};
-    node.value = '¬';
-    node.children = [newNode];
+    node = deMorganReverseRule(node, '∧');
     return node;
   } else if (node.value === '∧' && node.children[0].value === '¬' && node.children[1].value === '¬') {
-    let firstChild = Object.assign({}, node.children[0].children[0]);
-    let secondChild = Object.assign({}, node.children[1].children[0]);
-    let newNode = {value: '∨',children: [firstChild, secondChild]};
-    node.value = '¬';
-    node.children = [newNode];
+    node = deMorganReverseRule(node, '∨');
     return node;
   }
+}
+
+function deMorganReverseRule(node, symbol) {
+  let firstChild = Object.assign({}, node.children[0].children[0]);
+  let secondChild = Object.assign({}, node.children[1].children[0]);
+  let newNode = {value: symbol, children: [firstChild, secondChild]};
+  node.value = '¬';
+  node.children = [newNode];
+  return node;
 }
 
 function biImplicationRule(original) {
