@@ -109,6 +109,13 @@ function biImplicationRule(original) {
     node.value = '∧';
     node.children = [{value: '⇒',children: [firstChild, secondChild]}, {value: '⇒',children: [secondChild, firstChild]}];
     return node;
+  } else if (node.value === '∧' && node.children[0].value === '⇒' && node.children[1].value === '⇒') {
+    if (nodesEqual(node.children[0].children[0], node.children[1].children[1]) &&
+        nodesEqual(node.children[0].children[1], node.children[1].children[0])) {
+      node.value = '⇔';
+      node.children = [node.children[0].children[0], node.children[0].children[1]];
+      return node;
+    }
   }
 }
 
