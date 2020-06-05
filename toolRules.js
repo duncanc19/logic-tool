@@ -132,6 +132,7 @@ function absorptionRule(original) {
 
 function associativityRule(original) {
   let node = buildTreeFromString(original);
+  debugger;
   if (node.value === '∧' && node.children[1].value === '∧') {
     let switchedChild = Object.assign({}, node.children[1].children[0]);
     let addedToChild = Object.assign({}, node.children[0]);
@@ -143,6 +144,18 @@ function associativityRule(original) {
     let addedToChild = Object.assign({}, node.children[0]);
     node.children[0] = {value: '∨', children: [addedToChild, switchedChild] };
     node.children[1] = node.children[1].children[1];
+    return node;
+  } else if (node.value === '∧' && node.children[0].value === '∧') {
+    let switchedChild = Object.assign({}, node.children[0].children[1]);
+    let addedToChild = Object.assign({}, node.children[1]);
+    node.children[1] = {value: '∧', children: [switchedChild, addedToChild] };
+    node.children[0] = node.children[0].children[0];
+    return node;
+  } else if (node.value === '∨' && node.children[0].value === '∨') {
+    let switchedChild = Object.assign({}, node.children[0].children[1]);
+    let addedToChild = Object.assign({}, node.children[1]);
+    node.children[1] = {value: '∨', children: [switchedChild, addedToChild] };
+    node.children[0] = node.children[0].children[0];
     return node;
   }
 }
