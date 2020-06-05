@@ -132,32 +132,35 @@ function absorptionRule(original) {
 
 function associativityRule(original) {
   let node = buildTreeFromString(original);
-  debugger;
   if (node.value === '∧' && node.children[1].value === '∧') {
-    let switchedChild = Object.assign({}, node.children[1].children[0]);
-    let addedToChild = Object.assign({}, node.children[0]);
-    node.children[0] = {value: '∧', children: [addedToChild, switchedChild] };
-    node.children[1] = node.children[1].children[1];
+    node = associativityForwardRule(node, '∧');
     return node;
   } else if (node.value === '∨' && node.children[1].value === '∨') {
-    let switchedChild = Object.assign({}, node.children[1].children[0]);
-    let addedToChild = Object.assign({}, node.children[0]);
-    node.children[0] = {value: '∨', children: [addedToChild, switchedChild] };
-    node.children[1] = node.children[1].children[1];
+    node = associativityForwardRule(node, '∨');
     return node;
   } else if (node.value === '∧' && node.children[0].value === '∧') {
-    let switchedChild = Object.assign({}, node.children[0].children[1]);
-    let addedToChild = Object.assign({}, node.children[1]);
-    node.children[1] = {value: '∧', children: [switchedChild, addedToChild] };
-    node.children[0] = node.children[0].children[0];
+    node = associaticityReverseRule(node, '∧');
     return node;
   } else if (node.value === '∨' && node.children[0].value === '∨') {
-    let switchedChild = Object.assign({}, node.children[0].children[1]);
-    let addedToChild = Object.assign({}, node.children[1]);
-    node.children[1] = {value: '∨', children: [switchedChild, addedToChild] };
-    node.children[0] = node.children[0].children[0];
+    node = associaticityReverseRule(node, '∨');
     return node;
   }
+}
+
+function associativityForwardRule(node, symbol) {
+  let switchedChild = Object.assign({}, node.children[1].children[0]);
+  let addedToChild = Object.assign({}, node.children[0]);
+  node.children[0] = {value: symbol, children: [addedToChild, switchedChild] };
+  node.children[1] = node.children[1].children[1];
+  return node;
+}
+
+function associaticityReverseRule(node, symbol) {
+  let switchedChild = Object.assign({}, node.children[0].children[1]);
+  let addedToChild = Object.assign({}, node.children[1]);
+  node.children[1] = {value: symbol, children: [switchedChild, addedToChild] };
+  node.children[0] = node.children[0].children[0];
+  return node;
 }
 
 function distributivityRule(original) {
