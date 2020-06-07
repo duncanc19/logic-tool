@@ -188,8 +188,8 @@ function setupProof() {
   let finalTree = buildTreeFromString(transformedFormula.value);
   // present the problem to solve with Apply Rule button
   mainBody.innerHTML = "<h3>Prove that " + formulaInput.value + " ≡ " + transformedFormula.value +
-  "</h3><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p><p id='formulaToChange'>"
-  + formulaInput.value + "</p>" + ruleSelect;
+  "</h3><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p>" +
+  "<table id=workings><tr><td id='formulaToChange'>" + formulaInput.value + "</td><td>" + ruleSelect + "</td></tr></table>";
   console.log(originalTree);
   console.log(finalTree);
   // when Apply Rule button is clicked
