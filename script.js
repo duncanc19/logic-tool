@@ -93,19 +93,23 @@ function buildTree(node) {
     node.arrayIndex = node.arrayIndex[0];
   } else if (findSymbol(node.value, '⇔')) {
       setNodeAndChildren(node, '⇔');
+      node.children.forEach(child => buildTree(child));
   } else if (findSymbol(node.value, '⇒')) {
       setNodeAndChildren(node, '⇒');
+      node.children.forEach(child => buildTree(child));
   } else if (findSymbol(node.value, '∨')) {
       setNodeAndChildren(node, '∨');
+      node.children.forEach(child => buildTree(child));
   } else if (findSymbol(node.value, '∧')) {
       setNodeAndChildren(node, '∧');
+      node.children.forEach(child => buildTree(child));
   } else if (findSymbol(node.value, '¬')) {
     setNodeAndChildren(node, '¬');
+    node.children.forEach(child => buildTree(child));
   } else {
     removeBrackets(node);
     buildTree(node);
   }
-  node.children.forEach(child => buildTree(child));
 }
 
 function removeBrackets(node) {
