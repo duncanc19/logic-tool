@@ -10,7 +10,11 @@ function idempotenceRule(original) {
 }
 
 function nodesEqual(firstNode, secondNode) {
-  return (JSON.stringify(firstNode) === JSON.stringify(secondNode));
+  let firstNodeClone = Object.assign({}, firstNode);
+  let secondNodeClone = Object.assign({}, secondNode);
+  delete firstNodeClone.arrayIndex;
+  delete secondNodeClone.arrayIndex;
+  return (JSON.stringify(firstNodeClone) === JSON.stringify(secondNodeClone));
 }
 
 function commutativityRule(original) {
