@@ -44,27 +44,13 @@ transformedFormula.onkeypress = function(e) {
 }
 
 /* Symbol buttons */
+const symbolLookup = ["∧", "∨", "⇒", "⇔", "¬"]; //ordering important, don't change
+
 function addSymbol(whichButton)
 {
   if (currentTextBox) {
-    switch(whichButton) {
-      case 0:
-        currentTextBox.value += "∧";
-        break;
-      case 1:
-        currentTextBox.value += "∨";
-        break;
-      case 2:
-        currentTextBox.value += "⇒";
-        break;
-      case 3:
-        currentTextBox.value += "⇔";
-        break;
-      case 4:
-        currentTextBox.value += "¬";
-        break;
-      }
-      currentTextBox.focus();
+    currentTextBox.value += symbolLookup[whichButton];
+    currentTextBox.focus();
   } else {
     alert("Please select a text box!");
   }
