@@ -64,7 +64,11 @@ function selectTextBox(textBox) {
 /* PARSING FORMULAE INTO TREES */
 function buildTreeFromString(formula) {
   let array = buildArray(formula);
-  let tree = { value: array, children: []};
+  let index = [];
+  for (let i=0; i<array.length; i++) {
+    index.push(i);
+  }
+  let tree = { value: array, children: [], arrayIndex: index};
   buildTree(tree);
   return tree;
 }
@@ -86,6 +90,7 @@ function buildArray(formula) {
 function buildTree(node) {
   if (node.value.length == 1) {
     node.value = node.value[0];
+    node.arrayIndex = node.arrayIndex[0];
   } else if (findSymbol(node.value, '⇔')) {
       setNodeAndChildren(node, '⇔');
   } else if (findSymbol(node.value, '⇒')) {
@@ -97,16 +102,18 @@ function buildTree(node) {
   } else if (findSymbol(node.value, '¬')) {
     setNodeAndChildren(node, '¬');
   } else {
-    removeBrackets(node.value);
+    removeBrackets(node);
     buildTree(node);
   }
   node.children.forEach(child => buildTree(child));
 }
 
 function removeBrackets(node) {
-  if (node[0] == '(' && node[node.length-1] == ')') {
-    node.shift(); //removes opening bracket
-    node.pop(); //removes closing bracket
+  if (node.value[0] == '(' && node.value[node.value.length-1] == ')') {
+    node.value.shift(); //removes opening bracket
+    node.value.pop(); //removes closing bracket
+    node.arrayIndex.shift() // remove index of opening bracket
+    node.arrayIndex.pop() // remove index of closing bracket
   }
 }
 
@@ -118,7 +125,7 @@ function findSymbol(nodeValue, symbol) {
     } else if (nodeValue[i] == ')') {
       inBrackets -= 1;
     }
-    if ((nodeValue[i] == symbol) && (inBrackets == 0)) {
+    if ((nodeValue[i] === symbol) && (inBrackets === 0)) {
       return true;
     }
   }
@@ -126,8 +133,8 @@ function findSymbol(nodeValue, symbol) {
 }
 
 function setNodeAndChildren(node,symbol) {
-  let leftChild = { value: [], children: [] };
-  let rightChild = { value: [], children: [] };
+  let leftChild = { value: [], children: [], arrayIndex: [] };
+  let rightChild = { value: [], children: [], arrayIndex: [] };
   let inBrackets = 0;
   // finds symbol, puts left of symbol in leftChild, right of symbol in rightChild
   for (i=0; i<node.value.length; i++) {
@@ -139,15 +146,18 @@ function setNodeAndChildren(node,symbol) {
     if ((node.value[i] == symbol) && (inBrackets == 0)) {
       for (j=0; j<i; j++) {
         leftChild.value.push(node.value[j]);
+        leftChild.arrayIndex.push(node.arrayIndex[j]);
       }
       for (k=i+1; k<node.value.length; k++) {
         rightChild.value.push(node.value[k]);
+        rightChild.arrayIndex.push(node.arrayIndex[k]);
       }
       if (leftChild.value.length != 0) {  //for case when it's negation, only one child
         node.children.push(leftChild);
       }
       node.children.push(rightChild);
       node.value = symbol;
+      node.arrayIndex = node.arrayIndex[i];
     }
   }
 }
