@@ -44,12 +44,12 @@ transformedFormula.onkeypress = function(e) {
 }
 
 /* Symbol buttons */
-const symbolLookup = ["∧", "∨", "⇒", "⇔", "¬"]; //ordering important, don't change
+const symbolButtonLookup = ["∧", "∨", "⇒", "⇔", "¬"]; //ordering important, don't change
 
 function addSymbol(whichButton)
 {
   if (currentTextBox) {
-    currentTextBox.value += symbolLookup[whichButton];
+    currentTextBox.value += symbolButtonLookup[whichButton];
     currentTextBox.focus();
   } else {
     alert("Please select a text box!");
@@ -91,20 +91,9 @@ function buildTree(node) {
   if (node.value.length == 1) {
     node.value = node.value[0];
     node.arrayIndex = node.arrayIndex[0];
-  } else if (findSymbol(node.value, '⇔')) {
-      setNodeAndChildren(node, '⇔');
-      node.children.forEach(child => buildTree(child));
-  } else if (findSymbol(node.value, '⇒')) {
-      setNodeAndChildren(node, '⇒');
-      node.children.forEach(child => buildTree(child));
-  } else if (findSymbol(node.value, '∨')) {
-      setNodeAndChildren(node, '∨');
-      node.children.forEach(child => buildTree(child));
-  } else if (findSymbol(node.value, '∧')) {
-      setNodeAndChildren(node, '∧');
-      node.children.forEach(child => buildTree(child));
-  } else if (findSymbol(node.value, '¬')) {
-    setNodeAndChildren(node, '¬');
+  } else if (findHighestSymbol(node.value)) {
+    let topNodeSymbol = findHighestSymbol(node.value);
+    setNodeAndChildren(node, topNodeSymbol);
     node.children.forEach(child => buildTree(child));
   } else {
     removeBrackets(node);
@@ -131,6 +120,17 @@ function findSymbol(nodeValue, symbol) {
     }
     if ((nodeValue[i] === symbol) && (inBrackets === 0)) {
       return true;
+    }
+  }
+  return false;
+}
+
+const symbolPrecedenceLookup = ['⇔', '⇒', '∨', '∧', '¬']; //ordering important
+
+function findHighestSymbol(nodeValue) {
+  for (let i=0; i<symbolPrecedenceLookup.length; i++) {
+    if (findSymbol(nodeValue, symbolPrecedenceLookup[i])) {
+      return symbolPrecedenceLookup[i];
     }
   }
   return false;
