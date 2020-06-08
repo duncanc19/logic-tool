@@ -68,7 +68,7 @@ function buildTreeFromString(formula) {
   for (let i=0; i<array.length; i++) {
     index.push(i);
   }
-  let tree = { value: array, children: [], arrayIndex: index};
+  let tree = { value: array, children: [], arrayIndex: index };
   buildTree(tree);
   return tree;
 }
@@ -105,8 +105,8 @@ function removeBrackets(node) {
   if (node.value[0] == '(' && node.value[node.value.length-1] == ')') {
     node.value.shift(); //removes opening bracket
     node.value.pop(); //removes closing bracket
-    node.arrayIndex.shift() // remove index of opening bracket
-    node.arrayIndex.pop() // remove index of closing bracket
+    node.arrayIndex.shift() // removes index of opening bracket
+    node.arrayIndex.pop() // removes index of closing bracket
   }
 }
 

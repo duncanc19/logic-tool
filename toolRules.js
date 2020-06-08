@@ -144,10 +144,10 @@ function associativityRule(original) {
     node = associativityForwardRule(node, '∨');
     return node;
   } else if (node.value === '∧' && node.children[0].value === '∧') {
-    node = associaticityReverseRule(node, '∧');
+    node = associativityReverseRule(node, '∧');
     return node;
   } else if (node.value === '∨' && node.children[0].value === '∨') {
-    node = associaticityReverseRule(node, '∨');
+    node = associativityReverseRule(node, '∨');
     return node;
   }
 }
@@ -160,7 +160,7 @@ function associativityForwardRule(node, symbol) {
   return node;
 }
 
-function associaticityReverseRule(node, symbol) {
+function associativityReverseRule(node, symbol) {
   let switchedChild = Object.assign({}, node.children[0].children[1]);
   let addedToChild = Object.assign({}, node.children[1]);
   node.children[1] = {value: symbol, children: [switchedChild, addedToChild] };
