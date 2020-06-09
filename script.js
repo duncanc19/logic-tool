@@ -176,6 +176,18 @@ function findLeftLeaf(node) {
   }
 }
 
+function addFirstNodeToArray(node) {
+  let array = [];
+  array.push(node.value);
+  if (node.parent.children.length === 2) {
+    array.push(node.parent.value);
+    array.push(node.parent.children[1].value);
+  } else { //parent node must be not symbol
+    array.unshift(node.parent.value);
+  }
+  return array;
+}
+
 /* SETTING UP PROBLEM SOLUTION FEATURES */
 
 let ruleSelect = '<form>Select rule:' + '<select id="mySelect">' +
