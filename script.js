@@ -180,6 +180,7 @@ function convertTreeToString(rootNode) {
   pushNodeValueIntoArray(rootNode);
   let convertedArray = Array.from(treeChangedToArray);
   treeChangedToArray = [];
+  treeToArrayIndex = 0;
   return convertedArray;
 }
 
