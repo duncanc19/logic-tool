@@ -166,6 +166,16 @@ function setNodeAndChildren(node,symbol) {
   }
 }
 
+/* CONVERTING TREE BACK TO STRING */
+function findLeftLeaf(node) {
+  //debugger;
+  if (node.children.length === 0) {
+    return node;
+  } else {
+    return findLeftLeaf(node.children[0]);
+  }
+}
+
 /* SETTING UP PROBLEM SOLUTION FEATURES */
 
 let ruleSelect = '<form>Select rule:' + '<select id="mySelect">' +
