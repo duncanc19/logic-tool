@@ -68,7 +68,7 @@ function buildTreeFromString(formula) {
   for (let i=0; i<array.length; i++) {
     index.push(i);
   }
-  let tree = { value: array, children: [], arrayIndex: index };
+  let tree = { value: array, children: [], arrayIndex: index, parent: null };
   buildTree(tree);
   return tree;
 }
@@ -137,8 +137,8 @@ function findHighestSymbol(nodeValue) {
 }
 
 function setNodeAndChildren(node,symbol) {
-  let leftChild = { value: [], children: [], arrayIndex: [] };
-  let rightChild = { value: [], children: [], arrayIndex: [] };
+  let leftChild = { value: [], children: [], arrayIndex: [], parent: node };
+  let rightChild = { value: [], children: [], arrayIndex: [], parent: node };
   let inBrackets = 0;
   // finds symbol, puts left of symbol in leftChild, right of symbol in rightChild
   for (i=0; i<node.value.length; i++) {
