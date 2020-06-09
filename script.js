@@ -190,10 +190,10 @@ let treeToArrayIndex = 0;
 function pushNodeValueIntoArray(rootNode) {
   if (rootNode === undefined)
     return;
-  storeInOrder(rootNode.children[0]);
+  pushNodeValueIntoArray(rootNode.children[0]);
   treeChangedToArray[treeToArrayIndex] = rootNode.value;
   treeToArrayIndex++;
-  storeInOrder(rootNode.children[1]);
+  pushNodeValueIntoArray(rootNode.children[1]);
 }
 
 /* SETTING UP PROBLEM SOLUTION FEATURES */
