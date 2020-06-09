@@ -176,16 +176,23 @@ function findLeftLeaf(node) {
   }
 }
 
-function addFirstNodeToArray(node) {
-  let array = [];
-  array.push(node.value);
-  if (node.parent.children.length === 2) {
-    array.push(node.parent.value);
-    array.push(node.parent.children[1].value);
-  } else { //parent node must be not symbol
-    array.unshift(node.parent.value);
-  }
-  return array;
+function convertTreeToString(rootNode) {
+  pushNodeValueIntoArray(rootNode);
+  let convertedArray = Array.from(treeChangedToArray);
+  treeChangedToArray = [];
+  return convertedArray;
+}
+
+let treeChangedToArray = [];
+let treeToArrayIndex = 0;
+
+function pushNodeValueIntoArray(rootNode) {
+  if (rootNode === undefined)
+    return;
+  storeInOrder(rootNode.children[0]);
+  treeChangedToArray[treeToArrayIndex] = rootNode.value;
+  treeToArrayIndex++;
+  storeInOrder(rootNode.children[1]);
 }
 
 /* SETTING UP PROBLEM SOLUTION FEATURES */
