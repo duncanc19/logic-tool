@@ -185,15 +185,38 @@ function convertTreeToString(rootNode) {
 }
 
 let treeChangedToArray = [];
-let treeToArrayIndex = 0;
 
 function pushNodeValueIntoArray(rootNode) {
   if (rootNode === undefined)
     return;
   pushNodeValueIntoArray(rootNode.children[0]);
-  treeChangedToArray[treeToArrayIndex] = rootNode.value;
-  treeToArrayIndex++;
+  if (isSymbol(rootNode.value) && lowerPrecedence(rootNode.value)) {
+      treeChangedToArray.unshift('(');
+      treeChangedToArray.push(')');
+   }
+  treeChangedToArray.push(rootNode.value);
   pushNodeValueIntoArray(rootNode.children[1]);
+}
+
+function lowerPrecedence(nodeValue) {
+  let inBrackets = 0;
+  for (i=0; i<treeChangedToArray.length; i++) {
+    if (treeChangedToArray[i] == '(') {
+      inBrackets += 1;
+    } else if (nodeValue[i] == ')') {
+      inBrackets -= 1;
+    }
+    if ((inBrackets === 0) && isSymbol(treeChangedToArray[i])) {
+      if (symbolPrecedenceLookup.indexOf(treeChangedToArray[i])<symbolPrecedenceLookup.indexOf(nodeValue)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function isSymbol(value) {
+  return symbolPrecedenceLookup.includes(value);
 }
 
 /* SETTING UP PROBLEM SOLUTION FEATURES */
