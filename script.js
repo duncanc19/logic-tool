@@ -167,8 +167,21 @@ function setNodeAndChildren(node,symbol) {
 }
 
 /* CONVERTING TREE BACK TO STRING */
+function lowerPrecedence(nodeValue, parentNodeValue) {
+    if (isSymbol(nodeValue)) {
+      if (symbolPrecedenceLookup.indexOf(nodeValue)<symbolPrecedenceLookup.indexOf(parentNodeValue)) {
+        return true;
+      }
+    }
+  return false;
+}
+
+function isSymbol(value) {
+  return symbolPrecedenceLookup.includes(value);
+}
+
 function convertTreeToString(rootNode) {
-  pushNodeValueIntoString(rootNode);
+  addNodeToString(rootNode);
   let convertedString = treeChangedToString;
   treeChangedToString = '';
   return convertedString;
@@ -176,14 +189,15 @@ function convertTreeToString(rootNode) {
 
 let treeChangedToString = '';
 
-function addNodeToString(rootNode) {
+function addNodeToString(rootNode, parentNode) {
   if (rootNode === undefined)
     return;
-  addNodeToString(rootNode.children[0]);
-  if (symbolPrecedenceLookup.includes(rootNode.value)) {
-    let nodeString;
+  addNodeToString(rootNode.children[0], rootNode);
+  let nodeString;
+
+  if (isSymbol(rootNode.value)) {
     if (symbolPrecedenceLookup.includes(rootNode.children[1].value) && symbolPrecedenceLookup.includes(rootNode.children[0].value)) {
-        node = `${rootNode.value}`;
+        nodeString = `${rootNode.value}`;
     }
     else if (symbolPrecedenceLookup.includes(rootNode.children[1].value)) {
       nodeString = `${rootNode.children[0].value}${rootNode.value}`;
@@ -192,9 +206,14 @@ function addNodeToString(rootNode) {
     } else {
       nodeString = `${rootNode.children[0].value}${rootNode.value}${rootNode.children[1].value}`;
     }
+    if (parentNode !== undefined) {
+      if (lowerPrecedence(rootNode.value, parentNode.value)) {
+        nodeString = `(${nodeString})`;
+      }
+    }
     treeChangedToString = treeChangedToString.concat(nodeString);
   }
-  addNodeToString(rootNode.children[1]);
+  addNodeToString(rootNode.children[1], rootNode);
 }
 
 /* SETTING UP PROBLEM SOLUTION FEATURES */
