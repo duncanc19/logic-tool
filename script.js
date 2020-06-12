@@ -167,56 +167,34 @@ function setNodeAndChildren(node,symbol) {
 }
 
 /* CONVERTING TREE BACK TO STRING */
-function findLeftLeaf(node) {
-  //debugger;
-  if (node.children.length === 0) {
-    return node;
-  } else {
-    return findLeftLeaf(node.children[0]);
-  }
-}
-
 function convertTreeToString(rootNode) {
-  pushNodeValueIntoArray(rootNode);
-  let convertedArray = Array.from(treeChangedToArray);
-  treeChangedToArray = [];
-  treeToArrayIndex = 0;
-  return convertedArray;
+  pushNodeValueIntoString(rootNode);
+  let convertedString = treeChangedToString;
+  treeChangedToString = '';
+  return convertedString;
 }
 
-let treeChangedToArray = [];
+let treeChangedToString = '';
 
-function pushNodeValueIntoArray(rootNode) {
+function addNodeToString(rootNode) {
   if (rootNode === undefined)
     return;
-  pushNodeValueIntoArray(rootNode.children[0]);
-  if (isSymbol(rootNode.value) && lowerPrecedence(rootNode.value)) {
-      treeChangedToArray.unshift('(');
-      treeChangedToArray.push(')');
-   }
-  treeChangedToArray.push(rootNode.value);
-  pushNodeValueIntoArray(rootNode.children[1]);
-}
-
-function lowerPrecedence(nodeValue) {
-  let inBrackets = 0;
-  for (i=0; i<treeChangedToArray.length; i++) {
-    if (treeChangedToArray[i] == '(') {
-      inBrackets += 1;
-    } else if (nodeValue[i] == ')') {
-      inBrackets -= 1;
+  addNodeToString(rootNode.children[0]);
+  if (symbolPrecedenceLookup.includes(rootNode.value)) {
+    let nodeString;
+    if (symbolPrecedenceLookup.includes(rootNode.children[1].value) && symbolPrecedenceLookup.includes(rootNode.children[0].value)) {
+        node = `${rootNode.value}`;
     }
-    if ((inBrackets === 0) && isSymbol(treeChangedToArray[i])) {
-      if (symbolPrecedenceLookup.indexOf(treeChangedToArray[i])<symbolPrecedenceLookup.indexOf(nodeValue)) {
-        return true;
-      }
+    else if (symbolPrecedenceLookup.includes(rootNode.children[1].value)) {
+      nodeString = `${rootNode.children[0].value}${rootNode.value}`;
+    } else if (symbolPrecedenceLookup.includes(rootNode.children[0].value)) {
+      nodeString = `${rootNode.value}${rootNode.children[1].value}`;
+    } else {
+      nodeString = `${rootNode.children[0].value}${rootNode.value}${rootNode.children[1].value}`;
     }
+    treeChangedToString = treeChangedToString.concat(nodeString);
   }
-  return false;
-}
-
-function isSymbol(value) {
-  return symbolPrecedenceLookup.includes(value);
+  addNodeToString(rootNode.children[1]);
 }
 
 /* SETTING UP PROBLEM SOLUTION FEATURES */
