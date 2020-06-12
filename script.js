@@ -191,19 +191,22 @@ let treeChangedToString = '';
 
 function addNodeToString(rootNode, parentNode) {
   if (rootNode === undefined)
-    return;
+    return; //base case to stop recursion when you reach leaf node
   addNodeToString(rootNode.children[0], rootNode);
   let nodeString;
 
   if (isSymbol(rootNode.value)) {
-    if (symbolPrecedenceLookup.includes(rootNode.children[1].value) && symbolPrecedenceLookup.includes(rootNode.children[0].value)) {
-        nodeString = `${rootNode.value}`;
-    }
-    else if (symbolPrecedenceLookup.includes(rootNode.children[1].value)) {
+    if (isSymbol(rootNode.children[1].value) && isSymbol(rootNode.children[0].value)) {
+      //if children are both symbols
+      nodeString = `${rootNode.value}`;
+    } else if (isSymbol(rootNode.children[1].value)) {
+      //if right child is symbol
       nodeString = `${rootNode.children[0].value}${rootNode.value}`;
-    } else if (symbolPrecedenceLookup.includes(rootNode.children[0].value)) {
+    } else if (isSymbol(rootNode.children[0].value)) {
+      //if left child is symbol
       nodeString = `${rootNode.value}${rootNode.children[1].value}`;
     } else {
+      //case where both children are not symbols
       nodeString = `${rootNode.children[0].value}${rootNode.value}${rootNode.children[1].value}`;
     }
     if (parentNode !== undefined) {
