@@ -169,11 +169,26 @@ function setNodeAndChildren(node,symbol) {
 /* CONVERTING TREE BACK TO STRING */
 function lowerPrecedence(nodeValue, parentNodeValue) {
     if (isSymbol(nodeValue)) {
-      if (symbolPrecedenceLookup.indexOf(nodeValue)<symbolPrecedenceLookup.indexOf(parentNodeValue)) {
+      if (symbolPrecedenceLookup.indexOf(nodeValue)<=symbolPrecedenceLookup.indexOf(parentNodeValue)) {
         return true;
       }
     }
   return false;
+}
+
+function addNegation() {
+  let brackets = 0;
+  for (let i=treeChangedToString.length-1; i>=0; i--) {
+    if (treeChangedToString[i] === ')') {
+      brackets += 1;
+    } else
+     if (treeChangedToString[i] === '(' && brackets === 1) {
+      treeChangedToString = treeChangedToString.slice(0, i) + '¬' + treeChangedToString.slice(i);
+      break;
+    } else if (treeChangedToString[i] === '(') {
+      brackets -= 1;
+    }
+  }
 }
 
 function isSymbol(value) {
@@ -189,34 +204,46 @@ function convertTreeToString(rootNode) {
 
 let treeChangedToString = '';
 
-function addNodeToString(rootNode, parentNode) {
-  if (rootNode === undefined)
+function addNodeToString(node, parentNode) {
+  if (node === undefined)
     return; //base case to stop recursion when you reach leaf node
-  addNodeToString(rootNode.children[0], rootNode);
+  addNodeToString(node.children[0], node);
   let nodeString;
-
-  if (isSymbol(rootNode.value)) {
-    if (isSymbol(rootNode.children[1].value) && isSymbol(rootNode.children[0].value)) {
-      //if children are both symbols
-      nodeString = `${rootNode.value}`;
-    } else if (isSymbol(rootNode.children[1].value)) {
-      //if right child is symbol
-      nodeString = `${rootNode.children[0].value}${rootNode.value}`;
-    } else if (isSymbol(rootNode.children[0].value)) {
-      //if left child is symbol
-      nodeString = `${rootNode.value}${rootNode.children[1].value}`;
-    } else {
-      //case where both children are not symbols
-      nodeString = `${rootNode.children[0].value}${rootNode.value}${rootNode.children[1].value}`;
-    }
+  if (node.value === '¬') {
+   if (!isSymbol(node.children[0].value)) {
+    nodeString = `${node.value}${node.children[0].value}`;
     if (parentNode !== undefined) {
-      if (lowerPrecedence(rootNode.value, parentNode.value)) {
+      if (lowerPrecedence(node.value, parentNode.value)) {
         nodeString = `(${nodeString})`;
       }
     }
     treeChangedToString = treeChangedToString.concat(nodeString);
+   } else {
+     addNegation();
+    }
   }
-  addNodeToString(rootNode.children[1], rootNode);
+  else if (isSymbol(node.value)) {
+    if (isSymbol(node.children[1].value) && isSymbol(node.children[0].value)) {
+      //if children are both symbols
+      nodeString = `${node.value}`;
+    } else if (isSymbol(node.children[1].value)) {
+      //if right child is symbol
+      nodeString = `${node.children[0].value}${node.value}`;
+    } else if (isSymbol(node.children[0].value)) {
+      //if left child is symbol
+      nodeString = `${node.value}${node.children[1].value}`;
+    } else {
+      //case where both children are not symbols
+      nodeString = `${node.children[0].value}${node.value}${node.children[1].value}`;
+    }
+    if (parentNode !== undefined) {
+      if (lowerPrecedence(node.value, parentNode.value)) {
+        nodeString = `(${nodeString})`;
+      }
+    }
+    treeChangedToString = treeChangedToString.concat(nodeString);
+    addNodeToString(node.children[1], node);
+  }
 }
 
 /* SETTING UP PROBLEM SOLUTION FEATURES */
