@@ -1,0 +1,20 @@
+{
+  "name": "logic-tool",
+  "version": "1.0.0",
+  "description": "Semantic Equivalence Logic Tool</br> This is my final project for my Computer Science course. It is a tool created for students taking the Logic and Logic Programming module at the University of Kent. The tool can be used to work through solutions to semantic equivalence problems and there are explanations of the semantic equivalence rules in the Rules section.",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/duncanc19/logic-tool.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/duncanc19/logic-tool/issues"
+  },
+  "homepage": "https://github.com/duncanc19/logic-tool#readme"
+}
