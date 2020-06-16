@@ -354,9 +354,16 @@ function idempotenceRule(node) {
 function nodesEqual(firstNode, secondNode) {
   let firstNodeClone = Object.assign({}, firstNode);
   let secondNodeClone = Object.assign({}, secondNode);
-  delete firstNodeClone.arrayIndex;
-  delete secondNodeClone.arrayIndex;
+  removeArrayIndexes(firstNodeClone);
+  removeArrayIndexes(secondNodeClone);
   return (JSON.stringify(firstNodeClone) === JSON.stringify(secondNodeClone));
+}
+
+function removeArrayIndexes(node) {
+  delete node.arrayIndex;
+  node.children.forEach(child => {
+    removeArrayIndexes(child);
+  })
 }
 
 function commutativityRule(node) {
