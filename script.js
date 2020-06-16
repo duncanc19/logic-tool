@@ -296,6 +296,20 @@ function applyRule(node, rule) {
   }
 }
 
+function findNodeWithIndex(index, rootNode) {
+  debugger;
+  let foundNode;
+  function recursionThroughNodes(node) {
+    if (node.arrayIndex === index) {
+      foundNode = node;
+    } else node.children.forEach(child => {
+      recursionThroughNodes(child);
+    });
+  }
+  recursionThroughNodes(rootNode);
+  return foundNode;
+}
+
 function setupProof() {
   // take inputs and convert them into trees
   let originalTree = buildTreeFromString(formulaInput.value);
@@ -311,10 +325,12 @@ function setupProof() {
   const formulaToChange = document.getElementById('formulaToChange');
   applyRuleButton.addEventListener("click", function() {
     let formulaSection = window.getSelection();
+    let node = buildTreeFromString(formulaSection.toString());
+    let rootNodeIndex = formulaSection.anchorOffset + node.arrayIndex;
+    console.log(findNodeWithIndex(rootNodeIndex, originalTree));
     if (formulaSection.toString().length !== 0) {
-      debugger;
       // let nodeToChange = buildTreeFromString(formulaSection.toString());
-      console.log(applyRule(formulaSection.toString(), mySelect.value)); /*
+      console.log(applyRule(node, mySelect.value)); /*
       let change = prompt(`You selected ${mySelect.value} on ${formulaSection}, please enter what you want to change it to:`, `Your change`);
       let changedFormula = formulaToChange.innerHTML.replace(formulaSection.toString(), change);
       let newTree = buildTreeFromString(changedFormula);
@@ -326,8 +342,7 @@ function setupProof() {
 }
 
 /* RULES */
-function idempotenceRule(original) {
-  let node = buildTreeFromString(original);
+function idempotenceRule(node) {
   if (node.value === '∧' || node.value === '∨') {
     if (nodesEqual(node.children[0], node.children[1])) {
       node = node.children[0];
@@ -344,9 +359,8 @@ function nodesEqual(firstNode, secondNode) {
   return (JSON.stringify(firstNodeClone) === JSON.stringify(secondNodeClone));
 }
 
-function commutativityRule(original) {
+function commutativityRule(node) {
   try {
-    let node = buildTreeFromString(original);
     if (node.value === '∧' || node.value === '∨') {
       let newSecondChild = Object.assign({}, node.children[0]);
       node.children[0] = node.children[1];
@@ -358,8 +372,7 @@ function commutativityRule(original) {
   }
 }
 
-function doubleNegationRule(original) {
-  let node = buildTreeFromString(original);
+function doubleNegationRule(node) {
   if (node.value === '¬' && node.children[0].value === '¬') {
     node = node.children[0].children[0];
     return node;
@@ -371,8 +384,7 @@ function doubleNegationRule(original) {
   }
 }
 
-function negationRule(original) {
-  let node = buildTreeFromString(original);
+function negationRule(node) {
   if (node.value === '∧' && node.children[1].value === '¬') {
     if (node.children[0].value === node.children[1].children[0].value) {
       node.value = false;
@@ -388,8 +400,7 @@ function negationRule(original) {
   }
 }
 
-function implicationRule(original) {
-  let node = buildTreeFromString(original);
+function implicationRule(node) {
   if (node.value === '⇒') {
     let originalFirstChild = Object.assign({}, node.children[0]);
     node.value = '∨';
@@ -403,8 +414,7 @@ function implicationRule(original) {
   }
 }
 
-function deMorganRule(original) {
-  let node = buildTreeFromString(original);
+function deMorganRule(node) {
   if (node.value === '¬') {
     let firstChild = Object.assign({}, node.children[0].children[0]);
     let secondChild = Object.assign({}, node.children[0].children[1]);
@@ -433,8 +443,7 @@ function deMorganReverseRule(node, symbol) {
   return node;
 }
 
-function biImplicationRule(original) {
-  let node = buildTreeFromString(original);
+function biImplicationRule(node) {
   if (node.value === '⇔') {
     let firstChild = Object.assign({}, node.children[0]);
     let secondChild = Object.assign({}, node.children[1]);
@@ -451,8 +460,7 @@ function biImplicationRule(original) {
   }
 }
 
-function absorptionRule(original) {
-  let node = buildTreeFromString(original);
+function absorptionRule(node) {
   if (node.value === '∧' && node.children[1].value === '∨' && nodesEqual(node.children[0], node.children[1].children[0])) {
     node = node.children[0];
     return node;
@@ -462,8 +470,7 @@ function absorptionRule(original) {
   }
 }
 
-function associativityRule(original) {
-  let node = buildTreeFromString(original);
+function associativityRule(node) {
   if (node.value === '∧' && node.children[1].value === '∧') {
     node = associativityForwardRule(node, '∧');
     return node;
@@ -495,8 +502,7 @@ function associativityReverseRule(node, symbol) {
   return node;
 }
 
-function distributivityRule(original) {
-  let node = buildTreeFromString(original);
+function distributivityRule(node) {
   if (node.value === '∧' && node.children[1].value === '∨') {
     node = distributivityForwardRule(node, '∧', '∨');
     return node;
