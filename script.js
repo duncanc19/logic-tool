@@ -262,8 +262,39 @@ let ruleSelect = '<form>Select rule:' + '<select id="mySelect">' +
     '</select>' + '<input type="button" id="applyRule" value="Apply Rule">' +
     '</form>';
 
-
-
+function applyRule(node, rule) {
+  switch(rule) {
+    case 'idempotence':
+      return idempotenceRule(node);
+      break;
+    case 'commutativity':
+      return commutativityRule(node);
+      break;
+    case 'associativity':
+      return associativityRule(node);
+      break;
+    case 'absorption':
+      return absorptionRule(node);
+      break;
+    case 'distributivity':
+      return distributivityRule(node);
+      break;
+    case 'negation':
+      return negationRule(node);
+      break;
+    case 'doubleNegation':
+      return doubleNegationRule(node);
+      break;
+    case 'deMorgan':
+      return deMorganRule(node);
+      break;
+    case 'implication':
+      return implicationRule(node);
+    case 'biImplication':
+      return biImplicationRule(node);
+      break;
+  }
+}
 
 function setupProof() {
   // take inputs and convert them into trees
@@ -292,4 +323,210 @@ function setupProof() {
       alert(`Please select part of the formula`);
     }
   });
+}
+
+/* RULES */
+function idempotenceRule(original) {
+  let node = buildTreeFromString(original);
+  if (node.value === '∧' || node.value === '∨') {
+    if (nodesEqual(node.children[0], node.children[1])) {
+      node = node.children[0];
+      return node;
+    }
+  }
+}
+
+function nodesEqual(firstNode, secondNode) {
+  let firstNodeClone = Object.assign({}, firstNode);
+  let secondNodeClone = Object.assign({}, secondNode);
+  delete firstNodeClone.arrayIndex;
+  delete secondNodeClone.arrayIndex;
+  return (JSON.stringify(firstNodeClone) === JSON.stringify(secondNodeClone));
+}
+
+function commutativityRule(original) {
+  try {
+    let node = buildTreeFromString(original);
+    if (node.value === '∧' || node.value === '∨') {
+      let newSecondChild = Object.assign({}, node.children[0]);
+      node.children[0] = node.children[1];
+      node.children[1] = newSecondChild;
+      return node;
+    }
+  } catch {
+    alert('The commutativity rule cannot be applied to the section you selected.');
+  }
+}
+
+function doubleNegationRule(original) {
+  let node = buildTreeFromString(original);
+  if (node.value === '¬' && node.children[0].value === '¬') {
+    node = node.children[0].children[0];
+    return node;
+  } else {
+    let originalNode = Object.assign({}, node);
+    node.value = '¬';
+    node.children = [{value: '¬',children: [originalNode]}];
+    return node;
+  }
+}
+
+function negationRule(original) {
+  let node = buildTreeFromString(original);
+  if (node.value === '∧' && node.children[1].value === '¬') {
+    if (node.children[0].value === node.children[1].children[0].value) {
+      node.value = false;
+      node.children = [];
+    }
+    return node;
+  } else if (node.value === '∨' && node.children[1].value === '¬')  {
+    if (node.children[0].value === node.children[1].children[0].value) {
+      node.value = true;
+      node.children = [];
+    }
+    return node;
+  }
+}
+
+function implicationRule(original) {
+  let node = buildTreeFromString(original);
+  if (node.value === '⇒') {
+    let originalFirstChild = Object.assign({}, node.children[0]);
+    node.value = '∨';
+    node.children[0].value = '¬';
+    node.children[0].children = [originalFirstChild];
+    return node;
+  } else if (node.value === '∨' && node.children[0].value === '¬') {
+    node.children[0] = node.children[0].children[0]; // removes ¬ node
+    node.value = '⇒';
+    return node;
+  }
+}
+
+function deMorganRule(original) {
+  let node = buildTreeFromString(original);
+  if (node.value === '¬') {
+    let firstChild = Object.assign({}, node.children[0].children[0]);
+    let secondChild = Object.assign({}, node.children[0].children[1]);
+    if (node.children[0].value === '∧') {
+      node.value = '∨';
+    } else if (node.children[0].value === '∨') {
+      node.value = '∧';
+    }
+      node.children = [{value: '¬',children: [firstChild]}, {value: '¬',children: [secondChild]}];
+      return node;
+  } else if (node.value === '∨' && node.children[0].value === '¬' && node.children[1].value === '¬') {
+    node = deMorganReverseRule(node, '∧');
+    return node;
+  } else if (node.value === '∧' && node.children[0].value === '¬' && node.children[1].value === '¬') {
+    node = deMorganReverseRule(node, '∨');
+    return node;
+  }
+}
+
+function deMorganReverseRule(node, symbol) {
+  let firstChild = Object.assign({}, node.children[0].children[0]);
+  let secondChild = Object.assign({}, node.children[1].children[0]);
+  let newNode = {value: symbol, children: [firstChild, secondChild]};
+  node.value = '¬';
+  node.children = [newNode];
+  return node;
+}
+
+function biImplicationRule(original) {
+  let node = buildTreeFromString(original);
+  if (node.value === '⇔') {
+    let firstChild = Object.assign({}, node.children[0]);
+    let secondChild = Object.assign({}, node.children[1]);
+    node.value = '∧';
+    node.children = [{value: '⇒',children: [firstChild, secondChild]}, {value: '⇒',children: [secondChild, firstChild]}];
+    return node;
+  } else if (node.value === '∧' && node.children[0].value === '⇒' && node.children[1].value === '⇒') {
+    if (nodesEqual(node.children[0].children[0], node.children[1].children[1]) &&
+        nodesEqual(node.children[0].children[1], node.children[1].children[0])) {
+      node.value = '⇔';
+      node.children = [node.children[0].children[0], node.children[0].children[1]];
+      return node;
+    }
+  }
+}
+
+function absorptionRule(original) {
+  let node = buildTreeFromString(original);
+  if (node.value === '∧' && node.children[1].value === '∨' && nodesEqual(node.children[0], node.children[1].children[0])) {
+    node = node.children[0];
+    return node;
+  } else if (node.value === '∨' && node.children[1].value === '∧' && node.children[0].value === node.children[1].children[0].value) {
+    node = node.children[0];
+    return node;
+  }
+}
+
+function associativityRule(original) {
+  let node = buildTreeFromString(original);
+  if (node.value === '∧' && node.children[1].value === '∧') {
+    node = associativityForwardRule(node, '∧');
+    return node;
+  } else if (node.value === '∨' && node.children[1].value === '∨') {
+    node = associativityForwardRule(node, '∨');
+    return node;
+  } else if (node.value === '∧' && node.children[0].value === '∧') {
+    node = associativityReverseRule(node, '∧');
+    return node;
+  } else if (node.value === '∨' && node.children[0].value === '∨') {
+    node = associativityReverseRule(node, '∨');
+    return node;
+  }
+}
+
+function associativityForwardRule(node, symbol) {
+  let switchedChild = Object.assign({}, node.children[1].children[0]);
+  let addedToChild = Object.assign({}, node.children[0]);
+  node.children[0] = {value: symbol, children: [addedToChild, switchedChild] };
+  node.children[1] = node.children[1].children[1];
+  return node;
+}
+
+function associativityReverseRule(node, symbol) {
+  let switchedChild = Object.assign({}, node.children[0].children[1]);
+  let addedToChild = Object.assign({}, node.children[1]);
+  node.children[1] = {value: symbol, children: [switchedChild, addedToChild] };
+  node.children[0] = node.children[0].children[0];
+  return node;
+}
+
+function distributivityRule(original) {
+  let node = buildTreeFromString(original);
+  if (node.value === '∧' && node.children[1].value === '∨') {
+    node = distributivityForwardRule(node, '∧', '∨');
+    return node;
+  } else if (node.value === '∨' && node.children[1].value === '∧') {
+    node = distributivityForwardRule(node, '∨', '∧');
+    return node;
+  } else if (node.value === '∨' && node.children[0].value === '∧' && node.children[1].value === '∧') {
+    node = distributivityReverseRule(node, '∨', '∧');
+    return node;
+  } else if (node.value === '∧' && node.children[0].value === '∨' && node.children[1].value === '∨') {
+    node = distributivityReverseRule(node, '∧', '∨');
+    return node;
+  }
+}
+
+function distributivityForwardRule(node, symbol1, symbol2) {
+  let firstPart = Object.assign({}, node.children[0]);
+  let addedToFirstChild = Object.assign({}, node.children[1].children[0]);
+  let secondChildSecondPart = Object.assign({}, node.children[1].children[1]);
+  node.value = symbol2;
+  node.children[0] = { value: symbol1, children: [firstPart, addedToFirstChild] };
+  node.children[1] = { value: symbol1, children: [firstPart, secondChildSecondPart] };
+  return node;
+}
+
+function distributivityReverseRule(node, symbol1, symbol2) {
+  if (node.children[0].children[0].value === node.children[1].children[0].value) {
+    newChildNode = { value: symbol1, children: [node.children[0].children[1], node.children[1].children[1]] };
+    node.value = symbol2;
+    node.children = [node.children[0].children[0], newChildNode];
+    return node;
+  }
 }
