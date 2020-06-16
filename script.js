@@ -262,6 +262,9 @@ let ruleSelect = '<form>Select rule:' + '<select id="mySelect">' +
     '</select>' + '<input type="button" id="applyRule" value="Apply Rule">' +
     '</form>';
 
+
+
+
 function setupProof() {
   // take inputs and convert them into trees
   let originalTree = buildTreeFromString(formulaInput.value);
@@ -278,10 +281,13 @@ function setupProof() {
   applyRuleButton.addEventListener("click", function() {
     let formulaSection = window.getSelection();
     if (formulaSection.toString().length !== 0) {
+      debugger;
+      // let nodeToChange = buildTreeFromString(formulaSection.toString());
+      console.log(applyRule(formulaSection.toString(), mySelect.value)); /*
       let change = prompt(`You selected ${mySelect.value} on ${formulaSection}, please enter what you want to change it to:`, `Your change`);
       let changedFormula = formulaToChange.innerHTML.replace(formulaSection.toString(), change);
       let newTree = buildTreeFromString(changedFormula);
-      console.log(newTree);
+      console.log(newTree); */
     } else {
       alert(`Please select part of the formula`);
     }
