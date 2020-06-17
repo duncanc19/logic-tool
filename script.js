@@ -245,7 +245,7 @@ function convertTreeToString(rootNode) {
 
 /* SETTING UP PROBLEM SOLUTION FEATURES */
 
-let ruleSelect = '<form>Select rule:' + '<select id="mySelect">' +
+let ruleSelect = '<form id=ruleSelect>Select rule:' + '<select id="mySelect">' +
     '<option value="idempotence">Idempotence</option>' +
     '<option value="commutativity">Commutativity</option>' +
     '<option value="associativity">Associativity</option>'+
@@ -313,12 +313,16 @@ function setupProof() {
   // present the problem to solve with Apply Rule button
   mainBody.innerHTML = "<h3>Prove that " + formulaInput.value + " ≡ " + transformedFormula.value +
   "</h3><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p>" +
-  "<table id=workings><tr><td id='formulaToChange'>" + formulaInput.value + "</td><td>" + ruleSelect + "</td></tr></table>";
+  "<table id=workings><tr id='lastRow'><td id='formulaToChange'>" + formulaInput.value + "</td><td>" + ruleSelect + "</td></tr></table>";
   console.log(originalTree);
   console.log(finalTree);
-  // when Apply Rule button is clicked
+
   const applyRuleButton = document.getElementById('applyRule');
   const formulaToChange = document.getElementById('formulaToChange');
+  const workingsTable = document.getElementById('workings');
+  const ruleSelection = document.getElementById('ruleSelect');
+  const lastRow = document.getElementById('lastRow');
+  // when Apply Rule button is clicked
   applyRuleButton.addEventListener("click", function() {
     let formulaSection = window.getSelection();
     if (formulaSection.toString().length !== 0) {
@@ -326,11 +330,21 @@ function setupProof() {
       let rootNodeIndex = formulaSection.anchorOffset + node.arrayIndex;
       let nodeToSwap = findNodeWithIndex(rootNodeIndex, originalTree);
       if (nodesEqual(nodeToSwap, node)) {
+        let previousStep = formulaToChange.innerHTML;
         node = applyRule(node, mySelect.value);
         nodeToSwap.value = node.value;
         nodeToSwap.children = node.children;
         console.log(originalTree);
-        console.log(convertTreeToString(originalTree));
+        let previousRow = workingsTable.insertRow(workingsTable.rows.length - 1);
+        let formulaPart = previousRow.insertCell(0);
+        let rulePart = previousRow.insertCell(1);
+        let previousStepFormula = document.createTextNode(previousStep);
+        formulaPart.appendChild(previousStepFormula);
+        let previousStepRule = document.createTextNode(mySelect.value);
+        rulePart.appendChild(previousStepRule);
+
+        formulaToChange.innerHTML = convertTreeToString(originalTree);
+
       }
     }
       /*
@@ -364,9 +378,9 @@ function nodesEqual(firstNode, secondNode) {
 
 function removeArrayIndexes(node) {
   delete node.arrayIndex;
-  node.children.forEach(child => {
-    removeArrayIndexes(child);
-  })
+    node.children.forEach(child => {
+      removeArrayIndexes(child);
+    })
 }
 
 function commutativityRule(node) {
