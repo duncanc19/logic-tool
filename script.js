@@ -196,54 +196,51 @@ function isSymbol(value) {
 }
 
 function convertTreeToString(rootNode) {
+  let treeChangedToString = '';
+
+  function addNodeToString(node, parentNode) {
+    if (node === undefined)
+      return; //base case to stop recursion when you reach leaf node
+    addNodeToString(node.children[0], node);
+    let nodeString;
+    if (node.value === '¬') {
+     if (!isSymbol(node.children[0].value)) {
+      nodeString = `${node.value}${node.children[0].value}`;
+      if (parentNode !== undefined) {
+        if (lowerPrecedence(node.value, parentNode.value)) {
+          nodeString = `(${nodeString})`;
+        }
+      }
+      treeChangedToString = treeChangedToString.concat(nodeString);
+     } else {
+       addNegation();
+      }
+    }
+    else if (isSymbol(node.value)) {
+      if (isSymbol(node.children[1].value) && isSymbol(node.children[0].value)) {
+        //if children are both symbols
+        nodeString = `${node.value}`;
+      } else if (isSymbol(node.children[1].value)) {
+        //if right child is symbol
+        nodeString = `${node.children[0].value}${node.value}`;
+      } else if (isSymbol(node.children[0].value)) {
+        //if left child is symbol
+        nodeString = `${node.value}${node.children[1].value}`;
+      } else {
+        //case where both children are not symbols
+        nodeString = `${node.children[0].value}${node.value}${node.children[1].value}`;
+      }
+      if (parentNode !== undefined) {
+        if (lowerPrecedence(node.value, parentNode.value)) {
+          nodeString = `(${nodeString})`;
+        }
+      }
+      treeChangedToString = treeChangedToString.concat(nodeString);
+      addNodeToString(node.children[1], node);
+    }
+  }
   addNodeToString(rootNode);
-  let convertedString = treeChangedToString;
-  treeChangedToString = '';
-  return convertedString;
-}
-
-let treeChangedToString = '';
-
-function addNodeToString(node, parentNode) {
-  if (node === undefined)
-    return; //base case to stop recursion when you reach leaf node
-  addNodeToString(node.children[0], node);
-  let nodeString;
-  if (node.value === '¬') {
-   if (!isSymbol(node.children[0].value)) {
-    nodeString = `${node.value}${node.children[0].value}`;
-    if (parentNode !== undefined) {
-      if (lowerPrecedence(node.value, parentNode.value)) {
-        nodeString = `(${nodeString})`;
-      }
-    }
-    treeChangedToString = treeChangedToString.concat(nodeString);
-   } else {
-     addNegation();
-    }
-  }
-  else if (isSymbol(node.value)) {
-    if (isSymbol(node.children[1].value) && isSymbol(node.children[0].value)) {
-      //if children are both symbols
-      nodeString = `${node.value}`;
-    } else if (isSymbol(node.children[1].value)) {
-      //if right child is symbol
-      nodeString = `${node.children[0].value}${node.value}`;
-    } else if (isSymbol(node.children[0].value)) {
-      //if left child is symbol
-      nodeString = `${node.value}${node.children[1].value}`;
-    } else {
-      //case where both children are not symbols
-      nodeString = `${node.children[0].value}${node.value}${node.children[1].value}`;
-    }
-    if (parentNode !== undefined) {
-      if (lowerPrecedence(node.value, parentNode.value)) {
-        nodeString = `(${nodeString})`;
-      }
-    }
-    treeChangedToString = treeChangedToString.concat(nodeString);
-    addNodeToString(node.children[1], node);
-  }
+  return treeChangedToString;
 }
 
 /* SETTING UP PROBLEM SOLUTION FEATURES */
