@@ -30,6 +30,8 @@ td, th {
   padding: 10px;
 }
 
+tr:nth-child(even) {background-color: #f2f2f2;}
+
 /* rules.html */
 .rulesGrid {
   display: inline-grid;
