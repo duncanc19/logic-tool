@@ -297,7 +297,6 @@ function applyRule(node, rule) {
 }
 
 function findNodeWithIndex(index, rootNode) {
-  debugger;
   let foundNode;
   function recursionThroughNodes(node) {
     if (node.arrayIndex === index) {
@@ -325,19 +324,26 @@ function setupProof() {
   const formulaToChange = document.getElementById('formulaToChange');
   applyRuleButton.addEventListener("click", function() {
     let formulaSection = window.getSelection();
-    let node = buildTreeFromString(formulaSection.toString());
-    let rootNodeIndex = formulaSection.anchorOffset + node.arrayIndex;
-    console.log(findNodeWithIndex(rootNodeIndex, originalTree));
     if (formulaSection.toString().length !== 0) {
-      // let nodeToChange = buildTreeFromString(formulaSection.toString());
-      console.log(applyRule(node, mySelect.value)); /*
+      let node = buildTreeFromString(formulaSection.toString());
+      let rootNodeIndex = formulaSection.anchorOffset + node.arrayIndex;
+      let nodeToSwap = findNodeWithIndex(rootNodeIndex, originalTree);
+      if (nodesEqual(nodeToSwap, node)) {
+        node = applyRule(node, mySelect.value);
+        nodeToSwap.value = node.value;
+        nodeToSwap.children = node.children;
+        console.log(originalTree);
+        console.log(convertTreeToString(originalTree));
+      }
+    }
+      /*
       let change = prompt(`You selected ${mySelect.value} on ${formulaSection}, please enter what you want to change it to:`, `Your change`);
       let changedFormula = formulaToChange.innerHTML.replace(formulaSection.toString(), change);
       let newTree = buildTreeFromString(changedFormula);
-      console.log(newTree); */
+      console.log(newTree);
     } else {
       alert(`Please select part of the formula`);
-    }
+    }*/
   });
 }
 
