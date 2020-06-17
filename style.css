@@ -19,12 +19,14 @@ p {
 
 table {
   font-family: arial, sans-serif;
-  border-collapse: collapse;
-  width: 100%;
+  border: 2px solid;
+  padding: 8px;
+  width: 60%;
 }
 
 td, th {
   text-align: left;
+  border: 1px solid;
   padding: 10px;
 }
 
