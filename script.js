@@ -326,6 +326,7 @@ function setupProof() {
   applyRuleButton.addEventListener("click", function() {
     let formulaSection = window.getSelection();
     if (formulaSection.toString().length !== 0) {
+      originalTree = buildTreeFromString(formulaToChange.innerHTML);
       let node = buildTreeFromString(formulaSection.toString());
       let rootNodeIndex = formulaSection.anchorOffset + node.arrayIndex;
       let nodeToSwap = findNodeWithIndex(rootNodeIndex, originalTree);
@@ -344,17 +345,13 @@ function setupProof() {
         rulePart.appendChild(previousStepRule);
 
         formulaToChange.innerHTML = convertTreeToString(originalTree);
-
       }
-    }
+    } else {
+     alert(`Please select part of the formula`);
+   }
       /*
       let change = prompt(`You selected ${mySelect.value} on ${formulaSection}, please enter what you want to change it to:`, `Your change`);
-      let changedFormula = formulaToChange.innerHTML.replace(formulaSection.toString(), change);
-      let newTree = buildTreeFromString(changedFormula);
-      console.log(newTree);
-    } else {
-      alert(`Please select part of the formula`);
-    }*/
+     */
   });
 }
 
