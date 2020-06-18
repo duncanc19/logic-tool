@@ -176,21 +176,6 @@ function lowerPrecedence(nodeValue, parentNodeValue) {
   return false;
 }
 
-function addNegation() {
-  let brackets = 0;
-  for (let i=treeChangedToString.length-1; i>=0; i--) {
-    if (treeChangedToString[i] === ')') {
-      brackets += 1;
-    } else
-     if (treeChangedToString[i] === '(' && brackets === 1) {
-      treeChangedToString = treeChangedToString.slice(0, i) + '¬' + treeChangedToString.slice(i);
-      break;
-    } else if (treeChangedToString[i] === '(') {
-      brackets -= 1;
-    }
-  }
-}
-
 function isSymbol(value) {
   return symbolPrecedenceLookup.includes(value);
 }
@@ -239,6 +224,22 @@ function convertTreeToString(rootNode) {
       addNodeToString(node.children[1], node);
     }
   }
+
+  function addNegation() {
+    let brackets = 0;
+    for (let i=treeChangedToString.length-1; i>=0; i--) {
+      if (treeChangedToString[i] === ')') {
+        brackets += 1;
+      } else
+       if (treeChangedToString[i] === '(' && brackets === 1) {
+        treeChangedToString = treeChangedToString.slice(0, i) + '¬' + treeChangedToString.slice(i);
+        break;
+      } else if (treeChangedToString[i] === '(') {
+        brackets -= 1;
+      }
+    }
+  }
+  
   addNodeToString(rootNode);
   return treeChangedToString;
 }
