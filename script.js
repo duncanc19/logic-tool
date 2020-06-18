@@ -12,7 +12,6 @@ const mainBody = document.getElementById("mainBody");
 
 let currentTextBox;
 
-
 andButton.addEventListener("click", function() { addSymbol(0) });
 orButton.addEventListener("click", function() { addSymbol(1) });
 ifButton.addEventListener("click", function() { addSymbol(2) });
@@ -239,7 +238,7 @@ function convertTreeToString(rootNode) {
       }
     }
   }
-  
+
   addNodeToString(rootNode);
   return treeChangedToString;
 }
@@ -311,10 +310,13 @@ function setupProof() {
   // take inputs and convert them into trees
   let originalTree = buildTreeFromString(formulaInput.value);
   let finalTree = buildTreeFromString(transformedFormula.value);
+
+  let formInput = formulaInput.value.replace(/\s+/g, '');
+  let transFormula = transformedFormula.value.replace(/\s+/g, '');
   // present the problem to solve with Apply Rule button
-  mainBody.innerHTML = "<h3>Prove that " + formulaInput.value + " ≡ " + transformedFormula.value +
+  mainBody.innerHTML = "<h3>Prove that " + formInput + " ≡ " + transFormula +
   "</h3><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p>" +
-  "<table id=workings><tr id='lastRow'><td id='formulaToChange'>" + formulaInput.value + "</td><td>" + ruleSelect + "</td></tr></table>";
+  "<table id=workings><tr id='lastRow'><td id='formulaToChange'>" + formInput + "</td><td>" + ruleSelect + "</td></tr></table>";
   console.log(originalTree);
   console.log(finalTree);
 
