@@ -239,7 +239,11 @@ function convertTreeToString(rootNode) {
     }
   }
 
-  addNodeToString(rootNode);
+  if (rootNode.children === undefined || rootNode.children.length === 0) {
+    treeChangedToString = rootNode.value;
+  } else {
+    addNodeToString(rootNode);
+  }
   return treeChangedToString;
 }
 
