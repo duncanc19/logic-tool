@@ -1,6 +1,5 @@
 /* RULES */
-function idempotenceRule(original) {
-  let node = buildTreeFromString(original);
+function idempotenceRule(node) {
   if (node.value === '∧' || node.value === '∨') {
     if (nodesEqual(node.children[0], node.children[1])) {
       node = node.children[0];
@@ -12,27 +11,28 @@ function idempotenceRule(original) {
 function nodesEqual(firstNode, secondNode) {
   let firstNodeClone = Object.assign({}, firstNode);
   let secondNodeClone = Object.assign({}, secondNode);
-  delete firstNodeClone.arrayIndex;
-  delete secondNodeClone.arrayIndex;
+  removeArrayIndexes(firstNodeClone);
+  removeArrayIndexes(secondNodeClone);
   return (JSON.stringify(firstNodeClone) === JSON.stringify(secondNodeClone));
 }
 
-function commutativityRule(original) {
-  try {
-    let node = buildTreeFromString(original);
-    if (node.value === '∧' || node.value === '∨') {
-      let newSecondChild = Object.assign({}, node.children[0]);
-      node.children[0] = node.children[1];
-      node.children[1] = newSecondChild;
-      return node;
-    }
-  } catch {
-    alert('The commutativity rule cannot be applied to the section you selected.');
+function removeArrayIndexes(node) {
+  delete node.arrayIndex;
+    node.children.forEach(child => {
+      removeArrayIndexes(child);
+    })
+}
+
+function commutativityRule(node) {
+  if (node.value === '∧' || node.value === '∨') {
+    let newSecondChild = Object.assign({}, node.children[0]);
+    node.children[0] = node.children[1];
+    node.children[1] = newSecondChild;
+    return node;
   }
 }
 
-function doubleNegationRule(original) {
-  let node = buildTreeFromString(original);
+function doubleNegationRule(node) {
   if (node.value === '¬' && node.children[0].value === '¬') {
     node = node.children[0].children[0];
     return node;
@@ -44,8 +44,7 @@ function doubleNegationRule(original) {
   }
 }
 
-function negationRule(original) {
-  let node = buildTreeFromString(original);
+function negationRule(node) {
   if (node.value === '∧' && node.children[1].value === '¬') {
     if (node.children[0].value === node.children[1].children[0].value) {
       node.value = false;
@@ -61,8 +60,7 @@ function negationRule(original) {
   }
 }
 
-function implicationRule(original) {
-  let node = buildTreeFromString(original);
+function implicationRule(node) {
   if (node.value === '⇒') {
     let originalFirstChild = Object.assign({}, node.children[0]);
     node.value = '∨';
@@ -76,8 +74,7 @@ function implicationRule(original) {
   }
 }
 
-function deMorganRule(original) {
-  let node = buildTreeFromString(original);
+function deMorganRule(node) {
   if (node.value === '¬') {
     let firstChild = Object.assign({}, node.children[0].children[0]);
     let secondChild = Object.assign({}, node.children[0].children[1]);
@@ -106,8 +103,7 @@ function deMorganReverseRule(node, symbol) {
   return node;
 }
 
-function biImplicationRule(original) {
-  let node = buildTreeFromString(original);
+function biImplicationRule(node) {
   if (node.value === '⇔') {
     let firstChild = Object.assign({}, node.children[0]);
     let secondChild = Object.assign({}, node.children[1]);
@@ -124,8 +120,7 @@ function biImplicationRule(original) {
   }
 }
 
-function absorptionRule(original) {
-  let node = buildTreeFromString(original);
+function absorptionRule(node) {
   if (node.value === '∧' && node.children[1].value === '∨' && nodesEqual(node.children[0], node.children[1].children[0])) {
     node = node.children[0];
     return node;
@@ -135,8 +130,7 @@ function absorptionRule(original) {
   }
 }
 
-function associativityRule(original) {
-  let node = buildTreeFromString(original);
+function associativityRule(node) {
   if (node.value === '∧' && node.children[1].value === '∧') {
     node = associativityForwardRule(node, '∧');
     return node;
@@ -168,8 +162,7 @@ function associativityReverseRule(node, symbol) {
   return node;
 }
 
-function distributivityRule(original) {
-  let node = buildTreeFromString(original);
+function distributivityRule(node) {
   if (node.value === '∧' && node.children[1].value === '∨') {
     node = distributivityForwardRule(node, '∧', '∨');
     return node;
