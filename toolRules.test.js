@@ -72,3 +72,32 @@ test('complex double negation - applied to give a∧(a∨b)', () => {
   let asString = toolRules.convertTreeToString(afterDoubleNegation);
   expect(asString).toBe('a∧(a∨b)');
 });
+
+// NEGATION TESTS
+test('simple negation - applied to give false', () => {
+  let formula = toolRules.buildTreeFromString('a∧(¬a)');
+  let afterNegation = toolRules.applyRule(formula, 'negation');
+  let asString = toolRules.convertTreeToString(afterNegation);
+  expect(asString).toBe('false');
+});
+
+test('simple negation - applied to give true', () => {
+  let formula = toolRules.buildTreeFromString('a∨(¬a)');
+  let afterNegation = toolRules.applyRule(formula, 'negation');
+  let asString = toolRules.convertTreeToString(afterNegation);
+  expect(asString).toBe('true');
+});
+
+test('complex negation with brackets - applied to give false', () => {
+  let formula = toolRules.buildTreeFromString('(a∧b)∧¬(a∧b)');
+  let afterNegation = toolRules.applyRule(formula, 'negation');
+  let asString = toolRules.convertTreeToString(afterNegation);
+  expect(asString).toBe('false');
+});
+
+test('complex negation with brackets - applied to give true', () => {
+  let formula = toolRules.buildTreeFromString('(a∧b)∨¬(a∧b)');
+  let afterNegation = toolRules.applyRule(formula, 'negation');
+  let asString = toolRules.convertTreeToString(afterNegation);
+  expect(asString).toBe('true');
+});
