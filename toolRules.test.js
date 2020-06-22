@@ -1,9 +1,25 @@
 const toolRules = require('./toolRules');
 
+// PARSING AND REPARSING INTO STRING TESTS
 test('string should return the same', () => {
   let formula = toolRules.buildTreeFromString('a∧b⇒c');
   let sameFormula = toolRules.convertTreeToString(formula);
   expect(sameFormula).toBe('a∧b⇒c');
+});
+
+// IDEMPOTENCE TESTS
+test('simple idempotence - should return a', () => {
+  let formula = toolRules.buildTreeFromString('a∧a');
+  let afterIdempotence = toolRules.applyRule(formula, 'idempotence');
+  let asString = toolRules.convertTreeToString(afterIdempotence);
+  expect(asString).toBe('a');
+});
+
+test('idempotence with brackets - should return a∧b', () => {
+  let formula = toolRules.buildTreeFromString('(a∧b)∨(a∧b)');
+  let afterIdempotence = toolRules.applyRule(formula, 'idempotence');
+  let asString = toolRules.convertTreeToString(afterIdempotence);
+  expect(asString).toBe('a∧b');
 });
 
 // COMMUTATIVITY TESTS
