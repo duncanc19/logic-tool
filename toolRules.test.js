@@ -43,3 +43,25 @@ test('complex commutativity with brackets - applied to give (b∨(b∨c))∧(a�
   let asString = toolRules.convertTreeToString(afterCommutativity);
   expect(asString).toBe('(b∨(b∨c))∧(a∨(a∨b))');
 });
+
+// DOUBLE NEGATION TESTS
+test('simple double negation(with brackets) - applied to give a', () => {
+  let formula = toolRules.buildTreeFromString('¬(¬a)');
+  let afterDoubleNegation = toolRules.applyRule(formula, 'doubleNegation');
+  let asString = toolRules.convertTreeToString(afterDoubleNegation);
+  expect(asString).toBe('a');
+});
+
+test('simple double negation(without brackets) - applied to give a', () => {
+  let formula = toolRules.buildTreeFromString('¬¬a');
+  let afterDoubleNegation = toolRules.applyRule(formula, 'doubleNegation');
+  let asString = toolRules.convertTreeToString(afterDoubleNegation);
+  expect(asString).toBe('a');
+});
+
+test('complex double negation - applied to give a∨b', () => {
+  let formula = toolRules.buildTreeFromString('¬(¬(a∨b))');
+  let afterDoubleNegation = toolRules.applyRule(formula, 'doubleNegation');
+  let asString = toolRules.convertTreeToString(afterDoubleNegation);
+  expect(asString).toBe('a∨b');
+});
