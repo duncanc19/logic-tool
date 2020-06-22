@@ -65,3 +65,10 @@ test('complex double negation - applied to give a∨b', () => {
   let asString = toolRules.convertTreeToString(afterDoubleNegation);
   expect(asString).toBe('a∨b');
 });
+
+test('complex double negation - applied to give a∧(a∨b)', () => {
+  let formula = toolRules.buildTreeFromString('¬(¬(a∧(a∨b)))');
+  let afterDoubleNegation = toolRules.applyRule(formula, 'doubleNegation');
+  let asString = toolRules.convertTreeToString(afterDoubleNegation);
+  expect(asString).toBe('a∧(a∨b)');
+});
