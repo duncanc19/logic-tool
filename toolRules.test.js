@@ -130,3 +130,32 @@ test('more complex reverse implication - applied to give a∧b⇒b∧c', () => {
   let asString = toolRules.convertTreeToString(afterImplication);
   expect(asString).toBe('a∧b⇒b∧c'); // will remove brackets because of rules of precedence
 });
+
+// DE MORGAN TESTS
+test('simple from and de Morgan - applied to give ¬a∨¬b', () => {
+  let formula = toolRules.buildTreeFromString('¬(a∧b)');
+  let afterDeMorgan = toolRules.applyRule(formula, 'deMorgan');
+  let asString = toolRules.convertTreeToString(afterDeMorgan);
+  expect(asString).toBe('¬a∨¬b');
+});
+
+test('simple from or de Morgan - applied to give ¬a∧¬b', () => {
+  let formula = toolRules.buildTreeFromString('¬(a∨b)');
+  let afterDeMorgan = toolRules.applyRule(formula, 'deMorgan');
+  let asString = toolRules.convertTreeToString(afterDeMorgan);
+  expect(asString).toBe('¬a∧¬b');
+});
+
+test('simple reverse from and de Morgan - applied to give ¬(a∧b)', () => {
+  let formula = toolRules.buildTreeFromString('¬a∨¬b');
+  let afterDeMorgan = toolRules.applyRule(formula, 'deMorgan');
+  let asString = toolRules.convertTreeToString(afterDeMorgan);
+  expect(asString).toBe('¬(a∧b)');
+});
+
+test('simple reverse from or de Morgan - applied to give ¬(a∨b)', () => {
+  let formula = toolRules.buildTreeFromString('¬a∧¬b');
+  let afterDeMorgan = toolRules.applyRule(formula, 'deMorgan');
+  let asString = toolRules.convertTreeToString(afterDeMorgan);
+  expect(asString).toBe('¬(a∨b)');
+});
