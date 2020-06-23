@@ -101,3 +101,32 @@ test('complex negation with brackets - applied to give true', () => {
   let asString = toolRules.convertTreeToString(afterNegation);
   expect(asString).toBe('true');
 });
+
+// IMPLICATION TESTS
+test('simple implication - applied to give ¬a∨b', () => {
+  let formula = toolRules.buildTreeFromString('a⇒b');
+  let afterImplication = toolRules.applyRule(formula, 'implication');
+  let asString = toolRules.convertTreeToString(afterImplication);
+  expect(asString).toBe('¬a∨b');
+});
+
+test('simple reverse implication - applied to give ¬a∨b', () => {
+  let formula = toolRules.buildTreeFromString('¬a∨b');
+  let afterImplication = toolRules.applyRule(formula, 'implication');
+  let asString = toolRules.convertTreeToString(afterImplication);
+  expect(asString).toBe('a⇒b');
+});
+
+test('more complex implication - applied to give ¬(a∧b)∨b∧c', () => {
+  let formula = toolRules.buildTreeFromString('(a∧b)⇒(b∧c)');
+  let afterImplication = toolRules.applyRule(formula, 'implication');
+  let asString = toolRules.convertTreeToString(afterImplication);
+  expect(asString).toBe('¬(a∧b)∨b∧c'); // will remove brackets because of rules of precedence
+});
+
+test('more complex reverse implication - applied to give a∧b⇒b∧c', () => {
+  let formula = toolRules.buildTreeFromString('¬(a∧b)∨b∧c');
+  let afterImplication = toolRules.applyRule(formula, 'implication');
+  let asString = toolRules.convertTreeToString(afterImplication);
+  expect(asString).toBe('a∧b⇒b∧c'); // will remove brackets because of rules of precedence
+});
