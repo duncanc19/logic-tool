@@ -202,3 +202,32 @@ test('complex reverse bi-implication - applied to give (a∧c)⇔(b∧c)', () =>
   let asString = toolRules.convertTreeToString(afterBiImplication);
   expect(asString).toBe('a∧c⇔b∧c');
 });
+
+// ABSORPTION RULE
+test('simple and absorption - applied to give a', () => {
+  let formula = toolRules.buildTreeFromString('a∧(a∨b)');
+  let afterAbsorption = toolRules.applyRule(formula, 'absorption');
+  let asString = toolRules.convertTreeToString(afterAbsorption);
+  expect(asString).toBe('a');
+});
+
+test('simple or absorption - applied to give a', () => {
+  let formula = toolRules.buildTreeFromString('a∨(a∧b)');
+  let afterAbsorption = toolRules.applyRule(formula, 'absorption');
+  let asString = toolRules.convertTreeToString(afterAbsorption);
+  expect(asString).toBe('a');
+});
+
+test('and absorption with brackets - applied to give a∧c', () => {
+  let formula = toolRules.buildTreeFromString('(a∧c)∧((a∧c)∨b)');
+  let afterAbsorption = toolRules.applyRule(formula, 'absorption');
+  let asString = toolRules.convertTreeToString(afterAbsorption);
+  expect(asString).toBe('a∧c');
+});
+
+test('or absorption with brackets - applied to give a∧c', () => {
+  let formula = toolRules.buildTreeFromString('(a∧c)∨((a∧c)∧(b∨c))');
+  let afterAbsorption = toolRules.applyRule(formula, 'absorption');
+  let asString = toolRules.convertTreeToString(afterAbsorption);
+  expect(asString).toBe('a∧c');
+});
