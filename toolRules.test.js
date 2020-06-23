@@ -159,3 +159,17 @@ test('simple reverse from or de Morgan - applied to give ¬(a∨b)', () => {
   let asString = toolRules.convertTreeToString(afterDeMorgan);
   expect(asString).toBe('¬(a∨b)');
 });
+
+test('complex from and de Morgan - applied to give ¬(a∨b)∨¬(b∧c)', () => {
+  let formula = toolRules.buildTreeFromString('¬((a∨b)∧(b∧c))');
+  let afterDeMorgan = toolRules.applyRule(formula, 'deMorgan');
+  let asString = toolRules.convertTreeToString(afterDeMorgan);
+  expect(asString).toBe('¬(a∨b)∨¬(b∧c)');
+});
+
+test('complex reverse from or de Morgan - applied to give ¬((a∨b)∨(b∧c))', () => {
+  let formula = toolRules.buildTreeFromString('¬(a∨b)∧¬(b∧c)');
+  let afterDeMorgan = toolRules.applyRule(formula, 'deMorgan');
+  let asString = toolRules.convertTreeToString(afterDeMorgan);
+  expect(asString).toBe('¬((a∨b)∨b∧c)');
+});
