@@ -46,13 +46,13 @@ function doubleNegationRule(node) {
 
 function negationRule(node) {
   if (node.value === '∧' && node.children[1].value === '¬') {
-    if (node.children[0].value === node.children[1].children[0].value) {
+    if (nodesEqual(node.children[0], node.children[1].children[0])) {
       node.value = 'false';
       node.children = [];
     }
     return node;
   } else if (node.value === '∨' && node.children[1].value === '¬')  {
-    if (node.children[0].value === node.children[1].children[0].value) {
+    if (nodesEqual(node.children[0], node.children[1].children[0])) {
       node.value = 'true';
       node.children = [];
     }
