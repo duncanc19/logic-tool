@@ -173,3 +173,32 @@ test('complex reverse from or de Morgan - applied to give ¬((a∨b)∨(b∧c))'
   let asString = toolRules.convertTreeToString(afterDeMorgan);
   expect(asString).toBe('¬((a∨b)∨b∧c)');
 });
+
+// BI-IMPLICATION TESTS
+test('simple bi-implication - applied to give (a⇒b)∧(b⇒a)', () => {
+  let formula = toolRules.buildTreeFromString('a⇔b');
+  let afterBiImplication = toolRules.applyRule(formula, 'biImplication');
+  let asString = toolRules.convertTreeToString(afterBiImplication);
+  expect(asString).toBe('(a⇒b)∧(b⇒a)');
+});
+
+test('simple reverse bi-implication - applied to give a⇔b', () => {
+  let formula = toolRules.buildTreeFromString('(a⇒b)∧(b⇒a)');
+  let afterBiImplication = toolRules.applyRule(formula, 'biImplication');
+  let asString = toolRules.convertTreeToString(afterBiImplication);
+  expect(asString).toBe('a⇔b');
+});
+
+test('complex bi-implication - applied to give (a∧c⇒b∧c)∧(b∧c⇒a∧c)', () => {
+  let formula = toolRules.buildTreeFromString('(a∧c)⇔(b∧c)');
+  let afterBiImplication = toolRules.applyRule(formula, 'biImplication');
+  let asString = toolRules.convertTreeToString(afterBiImplication);
+  expect(asString).toBe('(a∧c⇒b∧c)∧(b∧c⇒a∧c)');
+});
+
+test('complex reverse bi-implication - applied to give (a∧c)⇔(b∧c)', () => {
+  let formula = toolRules.buildTreeFromString('(a∧c⇒b∧c)∧(b∧c⇒a∧c)');
+  let afterBiImplication = toolRules.applyRule(formula, 'biImplication');
+  let asString = toolRules.convertTreeToString(afterBiImplication);
+  expect(asString).toBe('a∧c⇔b∧c');
+});
