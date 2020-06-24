@@ -260,3 +260,17 @@ test('simple reverse or associativity - applied to give a∨(b∨c)', () => {
   let asString = toolRules.convertTreeToString(afterAssociativity);
   expect(asString).toBe('a∨(b∨c)');
 });
+
+test('complex and associativity - applied to give ((a∨c)∧(b∨c))∧c', () => {
+  let formula = toolRules.buildTreeFromString('(a∨c)∧((b∨c)∧c)');
+  let afterAssociativity = toolRules.applyRule(formula, 'associativity');
+  let asString = toolRules.convertTreeToString(afterAssociativity);
+  expect(asString).toBe('((a∨c)∧(b∨c))∧c');
+});
+
+test('complex reverse or associativity - applied to give (a∧c)∨((b∧c)∨c)', () => {
+  let formula = toolRules.buildTreeFromString('((a∧c)∨(b∧c))∨c');
+  let afterAssociativity = toolRules.applyRule(formula, 'associativity');
+  let asString = toolRules.convertTreeToString(afterAssociativity);
+  expect(asString).toBe('(a∧c)∨((b∧c)∨c)');
+});
