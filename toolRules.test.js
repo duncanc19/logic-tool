@@ -203,7 +203,7 @@ test('complex reverse bi-implication - applied to give (a∧c)⇔(b∧c)', () =>
   expect(asString).toBe('a∧c⇔b∧c');
 });
 
-// ABSORPTION RULE
+// ABSORPTION TESTS
 test('simple and absorption - applied to give a', () => {
   let formula = toolRules.buildTreeFromString('a∧(a∨b)');
   let afterAbsorption = toolRules.applyRule(formula, 'absorption');
@@ -273,4 +273,33 @@ test('complex reverse or associativity - applied to give (a∧c)∨((b∧c)∨c)
   let afterAssociativity = toolRules.applyRule(formula, 'associativity');
   let asString = toolRules.convertTreeToString(afterAssociativity);
   expect(asString).toBe('(a∧c)∨((b∧c)∨c)');
+});
+
+// DISTRIBUTIVITY TESTS
+test('simple and distributivity - applied to give a∧b∨a∧c', () => {
+  let formula = toolRules.buildTreeFromString('a∧(b∨c)');
+  let afterDistributivity = toolRules.applyRule(formula, 'distributivity');
+  let asString = toolRules.convertTreeToString(afterDistributivity);
+  expect(asString).toBe('a∧b∨a∧c');
+});
+
+test('simple or distributivity - applied to give (a∨b)∧(a∨c)', () => {
+  let formula = toolRules.buildTreeFromString('a∨(b∧c)');
+  let afterDistributivity = toolRules.applyRule(formula, 'distributivity');
+  let asString = toolRules.convertTreeToString(afterDistributivity);
+  expect(asString).toBe('(a∨b)∧(a∨c)');
+});
+
+test('simple reverse and distributivity - applied to give a∧(b∨c)', () => {
+  let formula = toolRules.buildTreeFromString('a∧b∨a∧c');
+  let afterDistributivity = toolRules.applyRule(formula, 'distributivity');
+  let asString = toolRules.convertTreeToString(afterDistributivity);
+  expect(asString).toBe('a∧(b∨c)');
+});
+
+test('simple reverse or distributivity - applied to give a∨b∧c', () => {
+  let formula = toolRules.buildTreeFromString('(a∨b)∧(a∨c)');
+  let afterDistributivity = toolRules.applyRule(formula, 'distributivity');
+  let asString = toolRules.convertTreeToString(afterDistributivity);
+  expect(asString).toBe('a∨b∧c');
 });
