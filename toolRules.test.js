@@ -231,3 +231,32 @@ test('or absorption with brackets - applied to give a∧c', () => {
   let asString = toolRules.convertTreeToString(afterAbsorption);
   expect(asString).toBe('a∧c');
 });
+
+// ASSOCIATIVITY TESTS
+test('simple and associativity - applied to give (a∧b)∧c', () => {
+  let formula = toolRules.buildTreeFromString('a∧(b∧c)');
+  let afterAssociativity = toolRules.applyRule(formula, 'associativity');
+  let asString = toolRules.convertTreeToString(afterAssociativity);
+  expect(asString).toBe('(a∧b)∧c');
+});
+
+test('simple or associativity - applied to give (a∨b)∨c', () => {
+  let formula = toolRules.buildTreeFromString('a∨(b∨c)');
+  let afterAssociativity = toolRules.applyRule(formula, 'associativity');
+  let asString = toolRules.convertTreeToString(afterAssociativity);
+  expect(asString).toBe('(a∨b)∨c');
+});
+
+test('simple reverse and associativity - applied to give a∧(b∧c)', () => {
+  let formula = toolRules.buildTreeFromString('(a∧b)∧c');
+  let afterAssociativity = toolRules.applyRule(formula, 'associativity');
+  let asString = toolRules.convertTreeToString(afterAssociativity);
+  expect(asString).toBe('a∧(b∧c)');
+});
+
+test('simple reverse or associativity - applied to give a∨(b∨c)', () => {
+  let formula = toolRules.buildTreeFromString('(a∨b)∨c');
+  let afterAssociativity = toolRules.applyRule(formula, 'associativity');
+  let asString = toolRules.convertTreeToString(afterAssociativity);
+  expect(asString).toBe('a∨(b∨c)');
+});
