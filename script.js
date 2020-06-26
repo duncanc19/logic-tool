@@ -101,7 +101,8 @@ function setupProof() {
     if (formulaSection.toString().length !== 0) {
       originalTree = buildTreeFromString(formulaToChange.innerHTML);
       let node = buildTreeFromString(formulaSection.toString());
-      let rootNodeIndex = formulaSection.anchorOffset + node.arrayIndex;
+      // min of anchor and focus offsets prevents errors if user highlights from right to left
+      let rootNodeIndex = Math.min(formulaSection.anchorOffset, formulaSection.focusOffset) + node.arrayIndex;
       let nodeToSwap = findNodeWithIndex(rootNodeIndex, originalTree);
       if (nodesEqual(nodeToSwap, node)) {
         let previousStep = formulaToChange.innerHTML;
