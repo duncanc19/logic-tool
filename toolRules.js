@@ -127,15 +127,15 @@ function convertTreeToString(rootNode) {
     addNodeToString(node.children[0], node);
     let nodeString;
     if (node.value === '¬') {
-     if (!isSymbol(node.children[0].value)) {
-      nodeString = `${node.value}${node.children[0].value}`;
-      if (parentNode !== undefined) {
-        if (lowerPrecedence(node.value, parentNode.value)) {
-          nodeString = `(${nodeString})`;
+      if (!isSymbol(node.children[0].value)) {
+        nodeString = `${node.value}${node.children[0].value}`;
+        if (parentNode !== undefined) {
+          if (lowerPrecedence(node.value, parentNode.value)) {
+            nodeString = `(${nodeString})`;
+          }
         }
-      }
-      treeChangedToString = treeChangedToString.concat(nodeString);
-     } else {
+        treeChangedToString = treeChangedToString.concat(nodeString);
+      } else {
        addNegation();
       }
     }
