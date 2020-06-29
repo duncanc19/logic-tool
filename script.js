@@ -86,7 +86,7 @@ function setupProof() {
   // present the problem to solve with Apply Rule button
   mainBody.innerHTML = "<h3>Prove that " + formInput + " ≡ " + transFormula +
   "</h3><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p>" +
-  "<table id=workings><tr id='lastRow'><td id='formulaToChange'>" + formInput + "</td><td>" + ruleSelect + "</td></tr></table>";
+  "<table id=workings><tr id='lastRow'><td id='formulaToChange'>" + formInput + "</td><td id='selectArea'>" + ruleSelect + "</td></tr></table>";
   console.log(originalTree);
   console.log(finalTree);
 
@@ -95,6 +95,7 @@ function setupProof() {
   const workingsTable = document.getElementById('workings');
   const ruleSelection = document.getElementById('ruleSelect');
   const lastRow = document.getElementById('lastRow');
+  const selectArea = document.getElementById('selectArea');
   // when Apply Rule button is clicked
   applyRuleButton.addEventListener("click", function() {
     let formulaSection = window.getSelection();
@@ -110,6 +111,7 @@ function setupProof() {
         nodeToSwap.value = node.value;
         nodeToSwap.children = node.children;
         console.log(originalTree);
+        // add extra row before last one with the formula as it was and rule applied 
         let previousRow = workingsTable.insertRow(workingsTable.rows.length - 1);
         let formulaPart = previousRow.insertCell(0);
         let rulePart = previousRow.insertCell(1);
@@ -117,8 +119,12 @@ function setupProof() {
         formulaPart.appendChild(previousStepFormula);
         let previousStepRule = document.createTextNode(mySelect.value);
         rulePart.appendChild(previousStepRule);
-
+        // change last row to current state of formula
         formulaToChange.innerHTML = convertTreeToString(originalTree);
+        // check if proof is finished
+        if (nodesEqual(originalTree, finalTree)) {
+          selectArea.innerHTML = 'Proof complete, congratulations!';
+        }
       }
     } else {
      alert(`Please select part of the formula`);
