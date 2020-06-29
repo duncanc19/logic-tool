@@ -127,19 +127,8 @@ function convertTreeToString(rootNode) {
     addNodeToString(node.children[0], node);
     let nodeString;
     if (node.value === '¬') {
-      if (!isSymbol(node.children[0].value)) {
-        nodeString = `${node.value}${node.children[0].value}`;
-        if (parentNode !== undefined) {
-          if (lowerPrecedence(node.value, parentNode.value)) {
-            nodeString = `(${nodeString})`;
-          }
-        }
-        treeChangedToString = treeChangedToString.concat(nodeString);
-      } else {
-       addNegation();
-      }
-    }
-    else if (isSymbol(node.value)) {
+       addNegation(node, parentNode);
+    } else if (isSymbol(node.value)) {
       if (isSymbol(node.children[1].value) && isSymbol(node.children[0].value)) {
         //if children are both symbols
         nodeString = `${node.value}`;
@@ -163,17 +152,27 @@ function convertTreeToString(rootNode) {
     }
   }
 
-  function addNegation() {
-    let brackets = 0;
-    for (let i=treeChangedToString.length-1; i>=0; i--) {
-      if (treeChangedToString[i] === ')') {
-        brackets += 1;
-      } else
-       if (treeChangedToString[i] === '(' && brackets === 1) {
-        treeChangedToString = treeChangedToString.slice(0, i) + '¬' + treeChangedToString.slice(i);
-        break;
-      } else if (treeChangedToString[i] === '(') {
-        brackets -= 1;
+  function addNegation(node, parentNode) {
+    if (!isSymbol(node.children[0].value)) {
+      nodeString = `${node.value}${node.children[0].value}`;
+      if (parentNode !== undefined) {
+        if (lowerPrecedence(node.value, parentNode.value)) {
+          nodeString = `(${nodeString})`;
+        }
+      }
+      treeChangedToString = treeChangedToString.concat(nodeString);
+    } else {
+      let brackets = 0;
+      for (let i=treeChangedToString.length-1; i>=0; i--) {
+        if (treeChangedToString[i] === ')') {
+          brackets += 1;
+        } else
+         if (treeChangedToString[i] === '(' && brackets === 1) {
+          treeChangedToString = treeChangedToString.slice(0, i) + '¬' + treeChangedToString.slice(i);
+          break;
+        } else if (treeChangedToString[i] === '(') {
+          brackets -= 1;
+        }
       }
     }
   }
