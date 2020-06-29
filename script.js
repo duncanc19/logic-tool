@@ -78,8 +78,13 @@ let ruleSelect = '<form id=ruleSelect>Select rule:' + '<select id="mySelect" cla
 
 function setupProof() {
   // take inputs and convert them into trees
-  let originalTree = buildTreeFromString(formulaInput.value);
-  let finalTree = buildTreeFromString(transformedFormula.value);
+  try {
+    let originalTree = buildTreeFromString(formulaInput.value);
+    let finalTree = buildTreeFromString(transformedFormula.value);
+  } catch {
+    alert('The formulae you have entered are not valid. Please check them and look out for problems such as unclosed brackets.');
+    return;
+  }
 
   let formInput = formulaInput.value.replace(/\s+/g, '');
   let transFormula = transformedFormula.value.replace(/\s+/g, '');
