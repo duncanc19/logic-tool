@@ -62,7 +62,7 @@ function selectTextBox(textBox) {
 
 /* SETTING UP PROBLEM SOLUTION FEATURES */
 
-let ruleSelect = '<form id=ruleSelect>Select rule:' + '<select id="mySelect">' +
+let ruleSelect = '<form id=ruleSelect>Select rule:' + '<select id="mySelect" class="btn btn-sm btn-outline-dark">' +
     '<option value="idempotence">Idempotence</option>' +
     '<option value="commutativity">Commutativity</option>' +
     '<option value="associativity">Associativity</option>'+
