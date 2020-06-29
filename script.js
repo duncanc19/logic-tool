@@ -73,7 +73,7 @@ let ruleSelect = '<form id=ruleSelect>Select rule:' + '<select id="mySelect">' +
     '<option value="deMorgan">de Morgan</option>' +
     '<option value="implication">Implication</option>' +
     '<option value="biImplication">Bi-Implication</option>' +
-    '</select>' + '<input type="button" id="applyRule" value="Apply Rule">' +
+    '</select>' + '<input type="button" id="applyRule" value="Apply Rule" class="btn btn-sm btn-outline-dark">' +
     '</form>';
 
 function setupProof() {
@@ -111,7 +111,7 @@ function setupProof() {
         nodeToSwap.value = node.value;
         nodeToSwap.children = node.children;
         console.log(originalTree);
-        // add extra row before last one with the formula as it was and rule applied 
+        // add extra row before last one with the formula as it was and rule applied
         let previousRow = workingsTable.insertRow(workingsTable.rows.length - 1);
         let formulaPart = previousRow.insertCell(0);
         let rulePart = previousRow.insertCell(1);
