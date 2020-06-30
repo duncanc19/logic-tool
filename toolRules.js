@@ -168,8 +168,12 @@ function convertTreeToString(rootNode) {
           brackets += 1;
         } else
          if (treeChangedToString[i] === '(' && brackets === 1) {
-          treeChangedToString = treeChangedToString.slice(0, i) + '¬' + treeChangedToString.slice(i);
-          break;
+           if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value)) {
+               treeChangedToString = treeChangedToString.slice(0, i) + '(¬' + treeChangedToString.slice(i) + ')';
+           } else {
+              treeChangedToString = treeChangedToString.slice(0, i) + '¬' + treeChangedToString.slice(i);
+           }
+           break;
         } else if (treeChangedToString[i] === '(') {
           brackets -= 1;
         }
