@@ -104,7 +104,7 @@ function setupProof() {
     originalTree = buildTreeFromString(formulaInput.value);
     finalTree = buildTreeFromString(transformedFormula.value);
   } catch {
-    showAlert('The formulae you have entered are not valid. </br>Please check them and look out for problems such as unclosed brackets.');
+    showAlert('The formulae you have entered are not valid.</br>Please check them and look out for problems such as unclosed brackets.');
     return;
   }
 
@@ -119,36 +119,37 @@ function setupProof() {
   // when Apply Rule button is clicked
   applyRuleButton.addEventListener("click", function() {
     let formulaSection = window.getSelection();
-    if (formulaSection.toString().length !== 0) {
-      originalTree = buildTreeFromString(formulaToChange.innerHTML);
-      let node = buildTreeFromString(formulaSection.toString());
-      // min of anchor and focus offsets prevents errors if user highlights from right to left
-      let rootNodeIndex = Math.min(formulaSection.anchorOffset, formulaSection.focusOffset) + node.arrayIndex;
-      let nodeToSwap = findNodeWithIndex(rootNodeIndex, originalTree);
-      if (nodesEqual(nodeToSwap, node)) {
-        let previousStep = formulaToChange.innerHTML;
-        node = applyRule(node, mySelect.value);
-        nodeToSwap.value = node.value;
-        nodeToSwap.children = node.children;
-        console.log(originalTree);
-        // add extra row before last one with the formula as it was and rule applied
-        let previousRow = workingsTable.insertRow(workingsTable.rows.length - 1);
-        let formulaPart = previousRow.insertCell(0);
-        let rulePart = previousRow.insertCell(1);
-        let previousStepFormula = document.createTextNode(previousStep);
-        formulaPart.appendChild(previousStepFormula);
-        let previousStepRule = document.createTextNode(mySelect.value);
-        rulePart.appendChild(previousStepRule);
-        // change last row to current state of formula
-        formulaToChange.innerHTML = convertTreeToString(originalTree);
-        // check if proof is finished
-        if (nodesEqual(originalTree, finalTree)) {
-          selectArea.innerHTML = 'Proof complete, congratulations!';
-        }
+    if (formulaSection.toString().length === 0) {
+      showAlert(`Please select part of the formula`);
+      return;
+    }
+
+    originalTree = buildTreeFromString(formulaToChange.innerHTML);
+    let node = buildTreeFromString(formulaSection.toString());
+    // min of anchor and focus offsets prevents errors if user highlights from right to left
+    let rootNodeIndex = Math.min(formulaSection.anchorOffset, formulaSection.focusOffset) + node.arrayIndex;
+    let nodeToSwap = findNodeWithIndex(rootNodeIndex, originalTree);
+    if (nodesEqual(nodeToSwap, node)) {
+      let previousStep = formulaToChange.innerHTML;
+      node = applyRule(node, mySelect.value);
+      nodeToSwap.value = node.value;
+      nodeToSwap.children = node.children;
+      console.log(originalTree);
+      // add extra row before last one with the formula as it was and rule applied
+      let previousRow = workingsTable.insertRow(workingsTable.rows.length - 1);
+      let formulaPart = previousRow.insertCell(0);
+      let rulePart = previousRow.insertCell(1);
+      let previousStepFormula = document.createTextNode(previousStep);
+      formulaPart.appendChild(previousStepFormula);
+      let previousStepRule = document.createTextNode(mySelect.value);
+      rulePart.appendChild(previousStepRule);
+      // change last row to current state of formula
+      formulaToChange.innerHTML = convertTreeToString(originalTree);
+      // check if proof is finished
+      if (nodesEqual(originalTree, finalTree)) {
+        selectArea.innerHTML = 'Proof complete, congratulations!';
       }
-    } else {
-     alert(`Please select part of the formula`);
-   }
+    }
       /*
       let change = prompt(`You selected ${mySelect.value} on ${formulaSection}, please enter what you want to change it to:`, `Your change`);
      */
