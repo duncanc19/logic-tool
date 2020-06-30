@@ -106,11 +106,12 @@ function setNodeAndChildren(node,symbol) {
 
 /* CONVERTING TREE BACK TO STRING */
 function lowerPrecedence(nodeValue, parentNodeValue) {
-    if (isSymbol(nodeValue)) {
-      if (symbolPrecedenceLookup.indexOf(nodeValue)<=symbolPrecedenceLookup.indexOf(parentNodeValue)) {
-        return true;
-      }
+  if (nodeValue === undefined || parentNodeValue === undefined) return false;
+  if (isSymbol(nodeValue)) {
+    if (symbolPrecedenceLookup.indexOf(nodeValue)<=symbolPrecedenceLookup.indexOf(parentNodeValue)) {
+      return true;
     }
+  }
   return false;
 }
 
@@ -122,32 +123,52 @@ function convertTreeToString(rootNode) {
   let treeChangedToString = '';
 
   function addNodeToString(node, parentNode) {
-    debugger;
     if (node === undefined)
       return; //base case to stop recursion when you reach leaf node
-    addNodeToString(node.children[0], node);
+
     let nodeString;
     if (node.value === '¬') {
-       addNegation(node, parentNode);
+      addNodeToString(node.children[0], node);
+      addNegation(node, parentNode);
     } else if (isSymbol(node.value)) {
       if (isSymbol(node.children[1].value) && isSymbol(node.children[0].value)) {
-        //if children are both symbols
+        //if children are both symbols - add bracket to string before calling children
+        if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value)) {
+          treeChangedToString = treeChangedToString.concat('(');
+        }
+        addNodeToString(node.children[0], node);
         nodeString = `${node.value}`;
+        treeChangedToString = treeChangedToString.concat(nodeString);
+        addNodeToString(node.children[1], node);
+        if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
+          treeChangedToString = treeChangedToString.concat(')');
       } else if (isSymbol(node.children[1].value)) {
         //if right child is symbol
+        if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
+          treeChangedToString = treeChangedToString.concat('(');
         nodeString = `${node.children[0].value}${node.value}`;
+        treeChangedToString = treeChangedToString.concat(nodeString);
+        addNodeToString(node.children[1], node);
+        if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
+          treeChangedToString = treeChangedToString.concat(')');
       } else if (isSymbol(node.children[0].value)) {
         //if left child is symbol
+        if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
+          treeChangedToString = treeChangedToString.concat('(');
+        addNodeToString(node.children[0], node);
         nodeString = `${node.value}${node.children[1].value}`;
+        treeChangedToString = treeChangedToString.concat(nodeString);
+        if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
+          treeChangedToString = treeChangedToString.concat(')');
       } else {
         //case where both children are not symbols
+        if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
+          treeChangedToString = treeChangedToString.concat('(');
         nodeString = `${node.children[0].value}${node.value}${node.children[1].value}`;
+        treeChangedToString = treeChangedToString.concat(nodeString);
+        if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
+          treeChangedToString = treeChangedToString.concat(')');
       }
-      if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value)) {
-          nodeString = `(${nodeString})`;
-      }
-      treeChangedToString = treeChangedToString.concat(nodeString);
-      addNodeToString(node.children[1], node);
     }
   }
 
@@ -160,6 +181,7 @@ function convertTreeToString(rootNode) {
       treeChangedToString = treeChangedToString.concat(nodeString);
     } else {
       let brackets = 0;
+      // finds start bracket - as negation is highest precedence and has symbol child, it must have brackets around it
       for (let i=treeChangedToString.length-1; i>=0; i--) {
         if (treeChangedToString[i] === ')') {
           brackets += 1;

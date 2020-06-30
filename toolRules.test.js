@@ -272,7 +272,7 @@ test('complex reverse or associativity - applied to give (a∧c)∨((b∧c)∨c)
   let formula = toolRules.buildTreeFromString('((a∧c)∨(b∧c))∨c');
   let afterAssociativity = toolRules.applyRule(formula, 'associativity');
   let asString = toolRules.convertTreeToString(afterAssociativity);
-  expect(asString).toBe('(a∧c)∨((b∧c)∨c)');
+  expect(asString).toBe('a∧c∨(b∧c∨c)');
 });
 
 // DISTRIBUTIVITY TESTS
