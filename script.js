@@ -108,14 +108,7 @@ function setupProof() {
     return;
   }
 
-  let formInput = formulaInput.value.replace(/\s+/g, '');
-  let transFormula = transformedFormula.value.replace(/\s+/g, '');
-  // present the problem to solve with Apply Rule button
-  mainBody.innerHTML = "<h3>Prove that " + formInput + " ≡ " + transFormula +
-  "</h3><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p>" +
-  "<table id=workings><tr id='lastRow'><td id='formulaToChange'>" + formInput + "</td><td id='selectArea'>" + ruleSelect + "</td></tr></table>";
-  console.log(originalTree);
-  console.log(finalTree);
+  setUpWorkingsTable();
 
   const applyRuleButton = document.getElementById('applyRule');
   const formulaToChange = document.getElementById('formulaToChange');
@@ -160,4 +153,15 @@ function setupProof() {
       let change = prompt(`You selected ${mySelect.value} on ${formulaSection}, please enter what you want to change it to:`, `Your change`);
      */
   });
+
+  function setUpWorkingsTable() {
+    let formInput = formulaInput.value.replace(/\s+/g, '');
+    let transFormula = transformedFormula.value.replace(/\s+/g, '');
+    // present the problem to solve with Apply Rule button
+    mainBody.innerHTML = "<h3>Prove that " + formInput + " ≡ " + transFormula +
+    "</h3><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p>" +
+    "<table id=workings><tr id='lastRow'><td id='formulaToChange'>" + formInput + "</td><td id='selectArea'>" + ruleSelect + "</td></tr></table>";
+    console.log(originalTree);
+    console.log(finalTree);
+  }
 }
