@@ -78,7 +78,7 @@ window.onclick = function(event) {
   if (event.target == modal) {
     modal.style.display = "none";
   }
-} 
+}
 
 /* SETTING UP PROBLEM SOLUTION FEATURES */
 
@@ -104,7 +104,7 @@ function setupProof() {
     originalTree = buildTreeFromString(formulaInput.value);
     finalTree = buildTreeFromString(transformedFormula.value);
   } catch {
-    showAlert('The formulae you have entered are not valid. Please check them and look out for problems such as unclosed brackets.');
+    showAlert('The formulae you have entered are not valid. </br>Please check them and look out for problems such as unclosed brackets.');
     return;
   }
 
