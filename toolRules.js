@@ -122,6 +122,7 @@ function convertTreeToString(rootNode) {
   let treeChangedToString = '';
 
   function addNodeToString(node, parentNode) {
+    debugger;
     if (node === undefined)
       return; //base case to stop recursion when you reach leaf node
     addNodeToString(node.children[0], node);
@@ -142,10 +143,8 @@ function convertTreeToString(rootNode) {
         //case where both children are not symbols
         nodeString = `${node.children[0].value}${node.value}${node.children[1].value}`;
       }
-      if (parentNode !== undefined) {
-        if (lowerPrecedence(node.value, parentNode.value)) {
+      if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value)) {
           nodeString = `(${nodeString})`;
-        }
       }
       treeChangedToString = treeChangedToString.concat(nodeString);
       addNodeToString(node.children[1], node);
@@ -155,10 +154,8 @@ function convertTreeToString(rootNode) {
   function addNegation(node, parentNode) {
     if (!isSymbol(node.children[0].value)) {
       nodeString = `${node.value}${node.children[0].value}`;
-      if (parentNode !== undefined) {
-        if (lowerPrecedence(node.value, parentNode.value)) {
+      if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value)) {
           nodeString = `(${nodeString})`;
-        }
       }
       treeChangedToString = treeChangedToString.concat(nodeString);
     } else {
