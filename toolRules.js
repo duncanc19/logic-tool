@@ -121,7 +121,14 @@ function isSymbol(value) {
 
 function convertTreeToString(rootNode) {
   let treeChangedToString = '';
+  if (rootNode.children === undefined || rootNode.children.length === 0) {
+    treeChangedToString = rootNode.value;
+  } else {
+    addNodeToString(rootNode);
+  }
+  return treeChangedToString;
 
+  // recursive function to add nodes to treeChangedToString
   function addNodeToString(node, parentNode) {
     if (node === undefined)
       return; //base case to stop recursion when you reach leaf node
@@ -175,13 +182,6 @@ function convertTreeToString(rootNode) {
       }
     }
   }
-
-  if (rootNode.children === undefined || rootNode.children.length === 0) {
-    treeChangedToString = rootNode.value;
-  } else {
-    addNodeToString(rootNode);
-  }
-  return treeChangedToString;
 }
 
 /* RULES */
