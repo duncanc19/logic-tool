@@ -124,12 +124,12 @@ function convertTreeToString(rootNode) {
   if (rootNode.children === undefined || rootNode.children.length === 0) {
     treeChangedToString = rootNode.value;
   } else {
-    addNodeToString(rootNode);
+    buildString(rootNode);
   }
   return treeChangedToString;
 
   // recursive function to add nodes to treeChangedToString
-  function addNodeToString(node, parentNode) {
+  function buildString(node, parentNode) {
     if (node === undefined)
       return; //base case to stop recursion when you reach leaf node
 
@@ -137,7 +137,7 @@ function convertTreeToString(rootNode) {
     if (node.value === '¬') {
       addToString(node.value);
       if (isSymbol(node.children[0].value)) {
-        addNodeToString(node.children[0], node);
+        buildString(node.children[0], node);
       } else {
         addToString(node.children[0].value);
       }
@@ -147,10 +147,10 @@ function convertTreeToString(rootNode) {
         if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value)) {
           addToString('(');
         }
-        addNodeToString(node.children[0], node);
+        buildString(node.children[0], node);
         nodeString = `${node.value}`;
         addToString(nodeString);
-        addNodeToString(node.children[1], node);
+        buildString(node.children[1], node);
         if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
           addToString(')');
       } else if (isSymbol(node.children[1].value)) {
@@ -159,14 +159,14 @@ function convertTreeToString(rootNode) {
           addToString('(');
         nodeString = `${node.children[0].value}${node.value}`;
         addToString(nodeString);
-        addNodeToString(node.children[1], node);
+        buildString(node.children[1], node);
         if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
           addToString(')');
       } else if (isSymbol(node.children[0].value)) {
         //if left child is symbol
         if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
           addToString('(');
-        addNodeToString(node.children[0], node);
+        buildString(node.children[0], node);
         nodeString = `${node.value}${node.children[1].value}`;
         addToString(nodeString);
         if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
