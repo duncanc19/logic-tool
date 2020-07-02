@@ -135,52 +135,56 @@ function convertTreeToString(rootNode) {
 
     let nodeString;
     if (node.value === '¬') {
-      treeChangedToString = treeChangedToString.concat(node.value);
+      addToString(node.value);
       if (isSymbol(node.children[0].value)) {
         addNodeToString(node.children[0], node);
       } else {
-        treeChangedToString = treeChangedToString.concat(node.children[0].value);
+        addToString(node.children[0].value);
       }
     } else if (isSymbol(node.value)) {
       if (isSymbol(node.children[1].value) && isSymbol(node.children[0].value)) {
         //if children are both symbols - add bracket to string before calling children
         if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value)) {
-          treeChangedToString = treeChangedToString.concat('(');
+          addToString('(');
         }
         addNodeToString(node.children[0], node);
         nodeString = `${node.value}`;
-        treeChangedToString = treeChangedToString.concat(nodeString);
+        addToString(nodeString);
         addNodeToString(node.children[1], node);
         if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
-          treeChangedToString = treeChangedToString.concat(')');
+          addToString(')');
       } else if (isSymbol(node.children[1].value)) {
         //if right child is symbol
         if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
-          treeChangedToString = treeChangedToString.concat('(');
+          addToString('(');
         nodeString = `${node.children[0].value}${node.value}`;
-        treeChangedToString = treeChangedToString.concat(nodeString);
+        addToString(nodeString);
         addNodeToString(node.children[1], node);
         if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
-          treeChangedToString = treeChangedToString.concat(')');
+          addToString(')');
       } else if (isSymbol(node.children[0].value)) {
         //if left child is symbol
         if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
-          treeChangedToString = treeChangedToString.concat('(');
+          addToString('(');
         addNodeToString(node.children[0], node);
         nodeString = `${node.value}${node.children[1].value}`;
-        treeChangedToString = treeChangedToString.concat(nodeString);
+        addToString(nodeString);
         if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
-          treeChangedToString = treeChangedToString.concat(')');
+          addToString(')');
       } else {
         //case where both children are not symbols
         if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
-          treeChangedToString = treeChangedToString.concat('(');
+          addToString('(');
         nodeString = `${node.children[0].value}${node.value}${node.children[1].value}`;
-        treeChangedToString = treeChangedToString.concat(nodeString);
+        addToString(nodeString);
         if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
-          treeChangedToString = treeChangedToString.concat(')');
+          addToString(')');
       }
     }
+  }
+
+  function addToString(value) {
+    treeChangedToString = treeChangedToString.concat(value);
   }
 }
 
