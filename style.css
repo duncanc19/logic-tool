@@ -29,6 +29,10 @@ td, th {
   padding: 10px;
 }
 
+.tableHighlight tr:hover {
+  background-color: rgba(71, 72, 181, 0.5);
+}
+
 tr:nth-child(even) {background-color: #f2f2f2;}
 
 #mySelect {

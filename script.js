@@ -165,4 +165,14 @@ function setupProof() {
     console.log(originalTree);
     console.log(finalTree);
   }
+
+  const previousStepButton = document.getElementById('previousStepButton');
+  previousStepButton.addEventListener("click", function() {
+    workingsTable.classList.toggle('tableHighlight');
+    if (workingsTable.classList.contains('tableHighlight')) {
+      previousStepButton.innerHTML = "Cancel changing step";
+    } else {
+      previousStepButton.innerHTML = "Go back to a previous step";
+    }
+  });
 }
