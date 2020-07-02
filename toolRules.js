@@ -105,10 +105,10 @@ function setNodeAndChildren(node,symbol) {
 
 
 /* CONVERTING TREE BACK TO STRING */
-function lowerPrecedence(nodeValue, parentNodeValue) {
-  if (nodeValue === undefined || parentNodeValue === undefined) return false;
-  if (isSymbol(nodeValue)) {
-    if (symbolPrecedenceLookup.indexOf(nodeValue)<=symbolPrecedenceLookup.indexOf(parentNodeValue)) {
+function lowerPrecedence(node, parentNode) {
+  if (node === undefined || parentNode === undefined) return false;
+  if (isSymbol(node.value)) {
+    if (symbolPrecedenceLookup.indexOf(node.value)<=symbolPrecedenceLookup.indexOf(parentNode.value)) {
       return true;
     }
   }
@@ -144,40 +144,40 @@ function convertTreeToString(rootNode) {
     } else if (isSymbol(node.value)) {
       if (isSymbol(node.children[1].value) && isSymbol(node.children[0].value)) {
         //if children are both symbols - add bracket to string before calling children
-        if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value)) {
+        if (lowerPrecedence(node, parentNode)) {
           addToString('(');
         }
         buildString(node.children[0], node);
         nodeString = `${node.value}`;
         addToString(nodeString);
         buildString(node.children[1], node);
-        if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
+        if (lowerPrecedence(node, parentNode))
           addToString(')');
       } else if (isSymbol(node.children[1].value)) {
         //if right child is symbol
-        if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
+        if (lowerPrecedence(node, parentNode))
           addToString('(');
         nodeString = `${node.children[0].value}${node.value}`;
         addToString(nodeString);
         buildString(node.children[1], node);
-        if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
+        if (lowerPrecedence(node, parentNode))
           addToString(')');
       } else if (isSymbol(node.children[0].value)) {
         //if left child is symbol
-        if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
+        if (lowerPrecedence(node, parentNode))
           addToString('(');
         buildString(node.children[0], node);
         nodeString = `${node.value}${node.children[1].value}`;
         addToString(nodeString);
-        if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
+        if (lowerPrecedence(node, parentNode))
           addToString(')');
       } else {
         //case where both children are not symbols
-        if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
+        if (lowerPrecedence(node, parentNode))
           addToString('(');
         nodeString = `${node.children[0].value}${node.value}${node.children[1].value}`;
         addToString(nodeString);
-        if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value))
+        if (lowerPrecedence(node, parentNode))
           addToString(')');
       }
     }
