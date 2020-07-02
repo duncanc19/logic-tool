@@ -128,8 +128,12 @@ function convertTreeToString(rootNode) {
 
     let nodeString;
     if (node.value === '¬') {
-      addNodeToString(node.children[0], node);
-      addNegation(node, parentNode);
+      treeChangedToString = treeChangedToString.concat(node.value);
+      if (isSymbol(node.children[0].value)) {
+        addNodeToString(node.children[0], node);
+      } else {
+        treeChangedToString = treeChangedToString.concat(node.children[0].value);
+      }
     } else if (isSymbol(node.value)) {
       if (isSymbol(node.children[1].value) && isSymbol(node.children[0].value)) {
         //if children are both symbols - add bracket to string before calling children
@@ -172,34 +176,6 @@ function convertTreeToString(rootNode) {
     }
   }
 
-  function addNegation(node, parentNode) {
-    if (!isSymbol(node.children[0].value)) {
-      nodeString = `${node.value}${node.children[0].value}`;
-      if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value)) {
-          nodeString = `(${nodeString})`;
-      }
-      treeChangedToString = treeChangedToString.concat(nodeString);
-    } else {
-      let brackets = 0;
-      // finds start bracket - as negation is highest precedence and has symbol child, it must have brackets around it
-      for (let i=treeChangedToString.length-1; i>=0; i--) {
-        if (treeChangedToString[i] === ')') {
-          brackets += 1;
-        } else
-         if (treeChangedToString[i] === '(' && brackets === 1) {
-           if (parentNode !== undefined && lowerPrecedence(node.value, parentNode.value)) {
-               treeChangedToString = treeChangedToString.slice(0, i) + '(¬' + treeChangedToString.slice(i) + ')';
-           } else {
-              treeChangedToString = treeChangedToString.slice(0, i) + '¬' + treeChangedToString.slice(i);
-           }
-           break;
-        } else if (treeChangedToString[i] === '(') {
-          brackets -= 1;
-        }
-      }
-    }
-  }
-
   if (rootNode.children === undefined || rootNode.children.length === 0) {
     treeChangedToString = rootNode.value;
   } else {
@@ -207,7 +183,6 @@ function convertTreeToString(rootNode) {
   }
   return treeChangedToString;
 }
-
 
 /* RULES */
 function idempotenceRule(node) {
