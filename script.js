@@ -166,13 +166,45 @@ function setupProof() {
     console.log(finalTree);
   }
 
+  // Previous Steps 
   const previousStepButton = document.getElementById('previousStepButton');
-  previousStepButton.addEventListener("click", function() {
+  previousStepButton.addEventListener("click", goToPreviousStep);
+
+  function goToPreviousStep() {
     workingsTable.classList.toggle('tableHighlight');
     if (workingsTable.classList.contains('tableHighlight')) {
       previousStepButton.innerHTML = "Cancel changing step";
+      for (let row of workingsTable.rows) {
+        row.onclick = function removeRows() {
+          selectRow(row);
+          previousStepButton.innerHTML = "Go back to a previous step";
+          workingsTable.classList.toggle('tableHighlight');
+        }
+      }
     } else {
+      // case where user presses button again to cancel
+      removeEventListeners();
       previousStepButton.innerHTML = "Go back to a previous step";
     }
-  });
+  }
+
+  function selectRow(row) {
+    // changes last table row formula to selected
+    formulaToChange.innerHTML = row.cells[0].innerHTML;
+    let lastRowIndex = workingsTable.rows.length-1;
+    let originalIndex = row.rowIndex;
+    // remove the event listeners from all the table rows
+    removeEventListeners();
+    for (let i = originalIndex; i<lastRowIndex; i++) {
+      workingsTable.deleteRow(originalIndex);
+    }
+  }
+
+  function removeEventListeners() {
+    for (let row of workingsTable.rows) {
+      row.onclick = function() {
+        return false;
+      }
+    }
+  }
 }
