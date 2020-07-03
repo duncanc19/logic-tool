@@ -50,7 +50,7 @@ function addSymbol(whichButton)
     currentTextBox.value += symbolButtonLookup[whichButton];
     currentTextBox.focus();
   } else {
-    alert("Please select a text box!");
+    showAlert("Please select a text box!");
   }
 }
 
@@ -166,7 +166,7 @@ function setupProof() {
     console.log(finalTree);
   }
 
-  // Previous Steps 
+  // Previous Steps
   const previousStepButton = document.getElementById('previousStepButton');
   previousStepButton.addEventListener("click", goToPreviousStep);
 
