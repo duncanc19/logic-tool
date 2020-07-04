@@ -142,6 +142,8 @@ function convertTreeToString(rootNode) {
   } else {
     buildString(rootNode);
   }
+  // return any parsed 0s and 1s back to true and false
+  treeChangedToString = treeChangedToString.replace(/0/g, "false").replace(/1/g, "true");
   return treeChangedToString;
 
   // recursive function to add nodes to treeChangedToString
