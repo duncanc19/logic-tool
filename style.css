@@ -43,6 +43,15 @@ tr:nth-child(even) {background-color: #f2f2f2;}
   float: right;
 }
 
+.rulesInTool {
+  float: right;
+  font-size: 18px;
+}
+
+.rulesInTool p:hover {
+  cursor: pointer;
+}
+
 /* The Modal (background) */
 .modal {
   display: none; /* Hidden by default */

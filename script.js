@@ -82,7 +82,7 @@ window.onclick = function(event) {
 
 /* SETTING UP PROBLEM SOLUTION FEATURES */
 
-let ruleSelect = '<form id=ruleSelect>Select rule:' + '<select id="mySelect" class="btn btn-sm btn-outline-dark">' +
+const ruleSelect = '<form id=ruleSelect>Select rule:' + '<select id="mySelect" class="btn btn-sm btn-outline-dark">' +
     '<option value="idempotence">Idempotence</option>' +
     '<option value="commutativity">Commutativity</option>' +
     '<option value="associativity">Associativity</option>'+
@@ -95,6 +95,19 @@ let ruleSelect = '<form id=ruleSelect>Select rule:' + '<select id="mySelect" cla
     '<option value="biImplication">Bi-Implication</option>' +
     '</select>' + '<input type="button" id="applyRule" value="Apply Rule" class="btn btn-sm btn-outline-dark">' +
     '</form>';
+
+const rulesInTool = `<div class="rulesInTool"><h5>Rules</h5>
+  <p onclick="showAlert('<h5>Idempotence</h5><p>A ∧ A ≡ A</p><p>A ∨ A ≡ A</p>')">Idempotence</p>
+  <p onclick="showAlert('<h5>Commutativity</h5><p>A ∧ B ≡ B ∧ A</p><p>A ∨ B ≡ B ∨ A</p>')">Commutativity</p>
+  <p onclick="showAlert('<h5>Associativity:</h5><p>A ∧ (B ∧ C) ≡ (A ∧ B) ∧ C</p><p>A ∨ (B ∨ C) ≡ (A ∨ B) ∨ C</p>')">Associativity</p>
+  <p onclick="showAlert('<h5>Absorption:</h5><p>A ∧ (A ∨ B) ≡ A</p><p>A ∨ (A ∧ B) ≡ A</p>')">Absorption</p>
+  <p onclick="showAlert('<h5>Distributivity:</h5><p>A ∧ (B ∨ C) ≡ (A ∧ B) ∨ (A ∧ C)</p><p>A ∨ (B ∧ C) ≡ (A ∨ B) ∧ (A ∨ C)</p>')">Distributivity</p>
+  <p onclick="showAlert('<h5>Negation:</h5><p>A ∧ (¬A) ≡ false</p><p>A ∨ (¬A) ≡ true</p>')">Negation</p>
+  <p onclick="showAlert('<h5>Double Negation:</h5><p>¬(¬A) ≡ A</p>')">Double Negation</p>
+  <p onclick="showAlert('<h5>de Morgan:</h5><p>¬(A ∧ B) ≡ (¬A) ∨ (¬B)</p><p>¬(A ∨ B) ≡ (¬A) ∧ (¬B)</p>')">de Morgan</p>
+  <p onclick="showAlert('<h5>Implication:</h5><p>A ⇒ B ≡ (¬A) ∨ B</p>')">Implication</p>
+  <p onclick="showAlert('<h5>Bi-Implication:</h5><p>A ⇔ B ≡ (A ⇒ B) ∧ (B ⇒ A)</p>')">Bi-Implication</p>
+</div>`;
 
 function setupProof() {
   // take inputs and convert them into trees
@@ -161,7 +174,7 @@ function setupProof() {
     // present the problem to solve with Apply Rule button
     mainBody.innerHTML = "<h3>Prove that " + formInput + " ≡ " + transFormula +
     "</h3><button type='button' id='previousStepButton' class='btn btn-sm btn-outline-dark'>Go back to a previous step</button><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p>" +
-    "<table id=workings><tr id='lastRow'><td id='formulaToChange'>" + formInput + "</td><td id='selectArea'>" + ruleSelect + "</td></tr></table>";
+    "<table id=workings><tr id='lastRow'><td id='formulaToChange'>" + formInput + "</td><td id='selectArea'>" + ruleSelect + "</td></tr></table>" + rulesInTool;
     console.log(originalTree);
     console.log(finalTree);
   }
