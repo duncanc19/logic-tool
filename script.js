@@ -96,7 +96,7 @@ const ruleSelect = '<form id=ruleSelect>Select rule:' + '<select id="mySelect" c
     '</select>' + '<input type="button" id="applyRule" value="Apply Rule" class="btn btn-sm btn-outline-dark">' +
     '</form>';
 
-const rulesInTool = `<div class="rulesInTool"><h5>Rules</h5>
+const rulesInTool = `<div id="rulesInTool"><h5>Rules</h5>
   <p onclick="showAlert('<h5>Idempotence</h5><p>A ∧ A ≡ A</p><p>A ∨ A ≡ A</p>')">Idempotence</p>
   <p onclick="showAlert('<h5>Commutativity</h5><p>A ∧ B ≡ B ∧ A</p><p>A ∨ B ≡ B ∨ A</p>')">Commutativity</p>
   <p onclick="showAlert('<h5>Associativity:</h5><p>A ∧ (B ∧ C) ≡ (A ∧ B) ∧ C</p><p>A ∨ (B ∨ C) ≡ (A ∨ B) ∨ C</p>')">Associativity</p>
@@ -175,11 +175,25 @@ function setupProof() {
     mainBody.innerHTML = "<h3>Prove that " + formInput + " ≡ " + transFormula +
     "</h3><button type='button' id='previousStepButton' class='btn btn-sm btn-outline-dark'>Go back to a previous step</button><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p>" +
     rulesInTool + "<table id=workings><tr id='lastRow'><td id='formulaToChange'>" + formInput + "</td><td id='selectArea'>" + ruleSelect + "</td></tr></table>";
+    rulesChecked(); // display rules if checked in the navbar
     console.log(originalTree);
     console.log(finalTree);
   }
 
-  // Previous Steps
+  /* NAVBAR SETTINGS */
+  function rulesChecked() {
+    const rulesCheckbox = document.getElementById('rulesCheckbox');
+    const rulesInToolRef = document.getElementById('rulesInTool');
+    if (rulesCheckbox.checked === true) {
+      rulesInToolRef.style.display = "block";
+    } else {
+      rulesInToolRef.style.display = "none";
+    }
+  }
+
+  rulesCheckbox.addEventListener('change', rulesChecked);
+
+  // PREVIOUS STEPS
   const previousStepButton = document.getElementById('previousStepButton');
   previousStepButton.addEventListener("click", goToPreviousStep);
 

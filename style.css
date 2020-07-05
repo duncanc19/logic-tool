@@ -43,13 +43,14 @@ tr:nth-child(even) {background-color: #f2f2f2;}
   float: right;
 }
 
-.rulesInTool {
+#rulesInTool {
+  display: none;
   float: right;
   font-size: 18px;
   padding-right: 15px;
 }
 
-.rulesInTool p:hover {
+#rulesInTool p:hover {
   cursor: pointer;
 }
 
