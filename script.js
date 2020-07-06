@@ -149,15 +149,22 @@ function setupProof() {
     // min of anchor and focus offsets prevents errors if user highlights from right to left
     let rootNodeIndex = Math.min(formulaSection.anchorOffset, formulaSection.focusOffset) + node.arrayIndex;
     let nodeToSwap = findNodeWithIndex(rootNodeIndex, originalTree);
+    // gives error message if highlighted section doesn't match section of formula in the tree
     if (!nodesEqual(nodeToSwap, node)) {
       showAlert(`<h5>Section highlighted doesn't match formula</h5>If highlighting brackets,
       make sure you get both opening and closing brackets. Be careful with the rules of precedence,
-      for example, a∧<span style="background-color:red;">b∨c</span> won't work, as b is linked with a(i.e. the same as (a∧b)∨c).`);
+      for example, a∧<span style="background-color:yellow;">b∨c</span> won't work, as b is linked with a(i.e. the same as (a∧b)∨c).`);
       return;
     }
 
     let previousStep = formulaToChange.innerHTML;
     node = applyRule(node, mySelect.value);
+    if (!node) {
+      showAlert(`<h5>The rule could not be applied</h5>
+        The section highlighted matched the formula but it did not conform to the requirements of the ${mySelect.value} rule.
+        Have a look at the rules section(toggle in the Settings or look on the Rules page for more details).`);
+      return;
+    }
     nodeToSwap.value = node.value;
     nodeToSwap.children = node.children;
     console.log(originalTree);

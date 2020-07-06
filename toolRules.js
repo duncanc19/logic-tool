@@ -214,6 +214,7 @@ function idempotenceRule(node) {
       return node;
     }
   }
+  return false;
 }
 
 function nodesEqual(firstNode, secondNode) {
@@ -238,6 +239,7 @@ function commutativityRule(node) {
     node.children[1] = newSecondChild;
     return node;
   }
+  return false;
 }
 
 function doubleNegationRule(node) {
@@ -253,19 +255,16 @@ function doubleNegationRule(node) {
 }
 
 function negationRule(node) {
-  if (node.value === '∧' && node.children[1].value === '¬') {
-    if (nodesEqual(node.children[0], node.children[1].children[0])) {
-      node.value = 'false';
-      node.children = [];
-    }
+  if (node.value === '∧' && node.children[1].value === '¬' && nodesEqual(node.children[0], node.children[1].children[0])) {
+    node.value = 'false';
+    node.children = [];
     return node;
-  } else if (node.value === '∨' && node.children[1].value === '¬')  {
-    if (nodesEqual(node.children[0], node.children[1].children[0])) {
-      node.value = 'true';
-      node.children = [];
-    }
+  } else if (node.value === '∨' && node.children[1].value === '¬' && nodesEqual(node.children[0], node.children[1].children[0])) {
+    node.value = 'true';
+    node.children = [];
     return node;
   }
+  return false;
 }
 
 function implicationRule(node) {
@@ -280,6 +279,7 @@ function implicationRule(node) {
     node.value = '⇒';
     return node;
   }
+  return false;
 }
 
 function deMorganRule(node) {
@@ -300,6 +300,7 @@ function deMorganRule(node) {
     node = deMorganReverseRule(node, '∨');
     return node;
   }
+  return false;
 }
 
 function deMorganReverseRule(node, symbol) {
@@ -326,6 +327,7 @@ function biImplicationRule(node) {
       return node;
     }
   }
+  return false;
 }
 
 function absorptionRule(node) {
@@ -336,6 +338,7 @@ function absorptionRule(node) {
     node = node.children[0];
     return node;
   }
+  return false;
 }
 
 function associativityRule(node) {
@@ -352,6 +355,7 @@ function associativityRule(node) {
     node = associativityReverseRule(node, '∨');
     return node;
   }
+  return false;
 }
 
 function associativityForwardRule(node, symbol) {
@@ -384,6 +388,7 @@ function distributivityRule(node) {
     node = distributivityForwardRule(node, '∨', '∧');
     return node;
   }
+  return false;
 }
 
 function distributivityForwardRule(node, symbol1, symbol2) {
