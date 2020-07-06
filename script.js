@@ -4,6 +4,7 @@ const ifButton = document.getElementById("ifButton");
 const onlyIfButton = document.getElementById("onlyIfButton");
 const notButton = document.getElementById("notButton");
 const startProof = document.getElementById("startProof");
+const buttons = document.getElementById('symbolButtons');
 
 const formulaInput = document.getElementById("formula");
 const transformedFormula = document.getElementById("transformedFormula");
@@ -159,33 +160,66 @@ function setupProof() {
     }
 
     let previousStep = formulaToChange.innerHTML;
-    node = applyRule(node, mySelect.value);
-    if (!node) {
-      showAlert(`<h5>The rule could not be applied</h5>
-        The section highlighted matched the formula but it did not conform to the requirements of the ${mySelect.value} rule.
-        Have a look at the rules section(toggle in the Settings or look on the Rules page for more details).`);
-      return;
+    let mySelectValue = mySelect.value;
+    let nodeAfterRule = applyRule(node, mySelectValue);
+    if (!nodeAfterRule) {
+      // if reverse rule requires extra information
+      if (mySelect.value === 'idempotence' || mySelect.value === 'absorption' || mySelect.value === 'negation') {
+        showAlert(`<div id="addRuleChange"><label for="ruleChange">You are applying ${mySelect.value} to ${formulaSection.toString()}, please enter what you'd like to change it to:</label>
+        <input type="text" name="ruleChange" placeholder="Your change" id="ruleChange" onblur="selectTextBox(this.id)"></div>
+        <input type="button" id="enterChange"  data-dismiss="modal" class="btn btn-sm btn-outline-dark" value="Enter Change">`);
+        const addRuleChange = document.getElementById('addRuleChange');
+        const ruleChange = document.getElementById('ruleChange');
+        const enterChange = document.getElementById('enterChange');
+        selectTextBox('ruleChange');
+        addRuleChange.appendChild(buttons);
+        ruleChange.onkeypress = function(e) {
+          keyboardSymbols(this, e);
+        }
+        // close modal after entering your change
+        enterChange.onclick = function() {
+          modal.style.display = "none";
+        }
+        enterChange.addEventListener("click", () => {
+          let newNode = buildTreeFromString(ruleChange.value);
+          let ruleAppliedToNewNode = applyRule(newNode, mySelectValue);
+          if (!nodesEqual(node, ruleAppliedToNewNode)) {
+            showAlert(`The rule can't be applied.`);
+          }
+          nodeToSwap.value = newNode.value;
+          nodeToSwap.children = newNode.children;
+          addRowToTable();
+        });
+      } else {
+        showAlert(`<h5>The rule could not be applied</h5>
+          The section highlighted matched the formula but it did not conform to the requirements of the ${mySelect.value} rule.
+          Have a look at the rules section(toggle in the Settings or look on the Rules page for more details).`);
+        return;
+      }
+    } else {
+      nodeToSwap.value = nodeAfterRule.value;
+      nodeToSwap.children = nodeAfterRule.children;
+      addRowToTable();
     }
-    nodeToSwap.value = node.value;
-    nodeToSwap.children = node.children;
-    console.log(originalTree);
-    // add extra row before last one with the formula as it was and rule applied
-    let previousRow = workingsTable.insertRow(workingsTable.rows.length - 1);
-    let formulaPart = previousRow.insertCell(0);
-    let rulePart = previousRow.insertCell(1);
-    let previousStepFormula = document.createTextNode(previousStep);
-    formulaPart.appendChild(previousStepFormula);
-    let previousStepRule = document.createTextNode(mySelect.value);
-    rulePart.appendChild(previousStepRule);
-    // change last row to current state of formula
-    formulaToChange.innerHTML = convertTreeToString(originalTree);
-    // check if proof is finished
-    if (nodesEqual(originalTree, finalTree)) {
-      selectArea.innerHTML = 'Proof complete, congratulations!';
+
+    function addRowToTable() {
+      console.log(originalTree);
+      // add extra row before last one with the formula as it was and rule applied
+      let previousRow = workingsTable.insertRow(workingsTable.rows.length - 1);
+      let formulaPart = previousRow.insertCell(0);
+      let rulePart = previousRow.insertCell(1);
+      let previousStepFormula = document.createTextNode(previousStep);
+      formulaPart.appendChild(previousStepFormula);
+      let previousStepRule = document.createTextNode(mySelect.value);
+      rulePart.appendChild(previousStepRule);
+      // change last row to current state of formula
+      formulaToChange.innerHTML = convertTreeToString(originalTree);
+      // check if proof is finished
+      if (nodesEqual(originalTree, finalTree)) {
+        selectArea.innerHTML = 'Proof complete, congratulations!';
+      }
     }
-      /*
-      let change = prompt(`You selected ${mySelect.value} on ${formulaSection}, please enter what you want to change it to:`, `Your change`);
-     */
+
   });
 
   function setUpWorkingsTable() {
