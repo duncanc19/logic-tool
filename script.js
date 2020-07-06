@@ -138,30 +138,42 @@ function setupProof() {
     }
 
     originalTree = buildTreeFromString(formulaToChange.innerHTML);
-    let node = buildTreeFromString(formulaSection.toString());
+    let node;
+    try {
+      node = buildTreeFromString(formulaSection.toString());
+    } catch {
+      showAlert(`<h5>Section highlighted can't be parsed</h5>Make sure you are highlighting part of the formula from the latest step of your workings.`);
+      return;
+    }
+
     // min of anchor and focus offsets prevents errors if user highlights from right to left
     let rootNodeIndex = Math.min(formulaSection.anchorOffset, formulaSection.focusOffset) + node.arrayIndex;
     let nodeToSwap = findNodeWithIndex(rootNodeIndex, originalTree);
-    if (nodesEqual(nodeToSwap, node)) {
-      let previousStep = formulaToChange.innerHTML;
-      node = applyRule(node, mySelect.value);
-      nodeToSwap.value = node.value;
-      nodeToSwap.children = node.children;
-      console.log(originalTree);
-      // add extra row before last one with the formula as it was and rule applied
-      let previousRow = workingsTable.insertRow(workingsTable.rows.length - 1);
-      let formulaPart = previousRow.insertCell(0);
-      let rulePart = previousRow.insertCell(1);
-      let previousStepFormula = document.createTextNode(previousStep);
-      formulaPart.appendChild(previousStepFormula);
-      let previousStepRule = document.createTextNode(mySelect.value);
-      rulePart.appendChild(previousStepRule);
-      // change last row to current state of formula
-      formulaToChange.innerHTML = convertTreeToString(originalTree);
-      // check if proof is finished
-      if (nodesEqual(originalTree, finalTree)) {
-        selectArea.innerHTML = 'Proof complete, congratulations!';
-      }
+    if (!nodesEqual(nodeToSwap, node)) {
+      showAlert(`<h5>Section highlighted doesn't match formula</h5>If highlighting brackets,
+      make sure you get both opening and closing brackets. Be careful with the rules of precedence,
+      for example, a∧<span style="background-color:red;">b∨c</span> won't work, as b is linked with a(i.e. the same as (a∧b)∨c).`);
+      return;
+    }
+
+    let previousStep = formulaToChange.innerHTML;
+    node = applyRule(node, mySelect.value);
+    nodeToSwap.value = node.value;
+    nodeToSwap.children = node.children;
+    console.log(originalTree);
+    // add extra row before last one with the formula as it was and rule applied
+    let previousRow = workingsTable.insertRow(workingsTable.rows.length - 1);
+    let formulaPart = previousRow.insertCell(0);
+    let rulePart = previousRow.insertCell(1);
+    let previousStepFormula = document.createTextNode(previousStep);
+    formulaPart.appendChild(previousStepFormula);
+    let previousStepRule = document.createTextNode(mySelect.value);
+    rulePart.appendChild(previousStepRule);
+    // change last row to current state of formula
+    formulaToChange.innerHTML = convertTreeToString(originalTree);
+    // check if proof is finished
+    if (nodesEqual(originalTree, finalTree)) {
+      selectArea.innerHTML = 'Proof complete, congratulations!';
     }
       /*
       let change = prompt(`You selected ${mySelect.value} on ${formulaSection}, please enter what you want to change it to:`, `Your change`);
