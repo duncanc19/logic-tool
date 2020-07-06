@@ -50,7 +50,7 @@ function addSymbol(whichButton)
     currentTextBox.value += symbolButtonLookup[whichButton];
     currentTextBox.focus();
   } else {
-    showAlert("Please select a text box!");
+    showAlert("<h5>No text box selected</h5>Please select a text box!");
   }
 }
 
@@ -117,7 +117,8 @@ function setupProof() {
     originalTree = buildTreeFromString(formulaInput.value);
     finalTree = buildTreeFromString(transformedFormula.value);
   } catch {
-    showAlert('The formulae you have entered are not valid. Please check them and look out for problems such as unclosed brackets.');
+    showAlert(`<h5>The formulae entered are not valid</h5>
+    Please check them and look out for problems such as unclosed brackets.`);
     return;
   }
 
@@ -133,7 +134,7 @@ function setupProof() {
   applyRuleButton.addEventListener("click", function() {
     let formulaSection = window.getSelection();
     if (formulaSection.toString().length === 0) {
-      showAlert(`Please select part of the formula`);
+      showAlert(`<h5>Nothing is highlighted</h5>Please select part of the formula`);
       return;
     }
 
