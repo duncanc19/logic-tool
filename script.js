@@ -176,7 +176,7 @@ function setupProof() {
         ruleChange.onkeypress = function(e) {
           keyboardSymbols(this, e);
         }
-        
+
         enterChange.addEventListener("click", () => {
           let newNode;
           try {
@@ -185,7 +185,8 @@ function setupProof() {
             showAlert(`The entered formula is not valid. Look out for things such as unclosed brackets.`);
             return;
           }
-          let ruleAppliedToNewNode = applyRule(newNode, mySelectValue);
+          let newNodeClone = Object.assign({}, newNode);
+          let ruleAppliedToNewNode = applyRule(newNodeClone, mySelectValue);
           if (!ruleAppliedToNewNode || !nodesEqual(node, ruleAppliedToNewNode)) {
             showAlert(`The rule can't be applied to give what you have entered.`);
             return;
