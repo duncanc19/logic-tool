@@ -176,10 +176,7 @@ function setupProof() {
         ruleChange.onkeypress = function(e) {
           keyboardSymbols(this, e);
         }
-        // close modal after entering your change
-        // enterChange.onclick = function() {
-        //   modal.style.display = "none";
-        // }
+        
         enterChange.addEventListener("click", () => {
           let newNode;
           try {

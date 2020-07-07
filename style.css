@@ -16,6 +16,10 @@ p {
   padding: 15px;
 }
 
+#symbolButtons {
+  float: right;
+}
+
 table {
   font-family: arial, sans-serif;
   border: 2px solid;
