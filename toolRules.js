@@ -256,11 +256,11 @@ function doubleNegationRule(node) {
 
 function negationRule(node) {
   if (node.value === '∧' && node.children[1].value === '¬' && nodesEqual(node.children[0], node.children[1].children[0])) {
-    node.value = 'false';
+    node.value = '0';
     node.children = [];
     return node;
   } else if (node.value === '∨' && node.children[1].value === '¬' && nodesEqual(node.children[0], node.children[1].children[0])) {
-    node.value = 'true';
+    node.value = '1';
     node.children = [];
     return node;
   }

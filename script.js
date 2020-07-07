@@ -177,18 +177,26 @@ function setupProof() {
           keyboardSymbols(this, e);
         }
         // close modal after entering your change
-        enterChange.onclick = function() {
-          modal.style.display = "none";
-        }
+        // enterChange.onclick = function() {
+        //   modal.style.display = "none";
+        // }
         enterChange.addEventListener("click", () => {
-          let newNode = buildTreeFromString(ruleChange.value);
+          let newNode;
+          try {
+            newNode = buildTreeFromString(ruleChange.value);
+          } catch {
+            showAlert(`The entered formula is not valid. Look out for things such as unclosed brackets.`);
+            return;
+          }
           let ruleAppliedToNewNode = applyRule(newNode, mySelectValue);
-          if (!nodesEqual(node, ruleAppliedToNewNode)) {
-            showAlert(`The rule can't be applied.`);
+          if (!ruleAppliedToNewNode || !nodesEqual(node, ruleAppliedToNewNode)) {
+            showAlert(`The rule can't be applied to give what you have entered.`);
+            return;
           }
           nodeToSwap.value = newNode.value;
           nodeToSwap.children = newNode.children;
           addRowToTable();
+          modal.style.display = "none";
         });
       } else {
         showAlert(`<h5>The rule could not be applied</h5>
