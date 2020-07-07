@@ -4,21 +4,13 @@ function buildTreeFromString(formula) {
   formula = formula.replace(/false/g, "0").replace(/true/g, "1");
   let array = buildArray(formula);
   let index = [];
-  let originalArrayLength = array.length;
-  // find original array length to adjust for offset checks in highlighting
-  for (let i=0; i<array.length; i++) {
-    if (array[i] === '0') {
-      originalArrayLength += 4;
-    } else if (array[i] === '1') {
-      originalArrayLength += 3;
-    }
-  }
-  for (let j=0; j<originalArrayLength; j++) {
-    index.push(j);
+  // indexes from array added into index with offset added for true and false 
+  for (let j=0, k=0; j<array.length; j++, k++) {
+    index.push(k);
     if (array[j] === '0') {
-      j += 4;
+      k += 4;
     } else if (array[j] === '1') {
-      j += 3;
+      k += 3;
     }
   }
   let tree = { value: array, children: [], arrayIndex: index };

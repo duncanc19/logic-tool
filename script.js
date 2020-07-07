@@ -185,6 +185,7 @@ function setupProof() {
             showAlert(`The entered formula is not valid. Look out for things such as unclosed brackets.`);
             return;
           }
+          // make clone of node so original is not modified when applying rule
           let newNodeClone = Object.assign({}, newNode);
           let ruleAppliedToNewNode = applyRule(newNodeClone, mySelectValue);
           if (!ruleAppliedToNewNode || !nodesEqual(node, ruleAppliedToNewNode)) {
