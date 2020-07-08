@@ -1,3 +1,6 @@
+const mainBody = document.getElementById("mainBody");
+
+// Formula Input Buttons
 const andButton = document.getElementById("andButton");
 const orButton = document.getElementById("orButton");
 const ifButton = document.getElementById("ifButton");
@@ -5,6 +8,13 @@ const onlyIfButton = document.getElementById("onlyIfButton");
 const notButton = document.getElementById("notButton");
 const startProof = document.getElementById("startProof");
 const buttons = document.getElementById('symbolButtons');
+
+andButton.addEventListener("click", function() { addSymbol(0) });
+orButton.addEventListener("click", function() { addSymbol(1) });
+ifButton.addEventListener("click", function() { addSymbol(2) });
+onlyIfButton.addEventListener("click", function() { addSymbol(3) });
+notButton.addEventListener("click", function() { addSymbol(4) });
+startProof.addEventListener("click", setupProof);
 
 const formulaInput = document.getElementById("formula");
 const transformedFormula = document.getElementById("transformedFormula");
@@ -21,20 +31,8 @@ function taskGiven() {
 }
 taskGiven();
 
-
-const mainBody = document.getElementById("mainBody");
-
-let currentTextBox;
-
-andButton.addEventListener("click", function() { addSymbol(0) });
-orButton.addEventListener("click", function() { addSymbol(1) });
-ifButton.addEventListener("click", function() { addSymbol(2) });
-onlyIfButton.addEventListener("click", function() { addSymbol(3) });
-notButton.addEventListener("click", function() { addSymbol(4) });
-startProof.addEventListener("click", setupProof);
-
-
 /* FORMULA INPUT */
+let currentTextBox;
 
 /* Keyboard shortcuts */
 function keyboardSymbols(textbox, e) {
@@ -258,11 +256,8 @@ function setupProof() {
   function rulesChecked() {
     const rulesCheckbox = document.getElementById('rulesCheckbox');
     const rulesInToolRef = document.getElementById('rulesInTool');
-    if (rulesCheckbox.checked === true) {
-      rulesInToolRef.style.display = "block";
-    } else {
-      rulesInToolRef.style.display = "none";
-    }
+    // display rules if show rules checked
+    rulesCheckbox.checked ? rulesInToolRef.style.display = "block" : rulesInToolRef.style.display = "none";
   }
 
   rulesCheckbox.addEventListener('change', rulesChecked);
@@ -303,9 +298,7 @@ function setupProof() {
 
   function removeEventListeners() {
     for (let row of workingsTable.rows) {
-      row.onclick = function() {
-        return false;
-      }
+      row.onclick = () => false;
     }
   }
 }
