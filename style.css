@@ -11,7 +11,7 @@ p {
   display: inline;
 }
 
-/* tool.html */
+/* TOOL.HTML */
 #mainBody {
   padding: 15px;
 }
@@ -31,6 +31,10 @@ td, th {
   text-align: left;
   border: 1px solid;
   padding: 10px;
+}
+
+#backwardWorkings {
+  display: none;
 }
 
 .tableHighlight tr:hover {

@@ -31,6 +31,31 @@ function taskGiven() {
 }
 taskGiven();
 
+/* NAVBAR SETTINGS */
+const rulesShown = document.getElementById('rulesShown');
+rulesShown.addEventListener('click', toggleRulesDisplay);
+
+function toggleRulesDisplay() {
+  const rulesInToolRef = document.getElementById('rulesInTool');
+  if (rulesShown.innerHTML === "Show rules") {
+    rulesShown.innerHTML = "Hide rules";
+  } else {
+    rulesShown.innerHTML = "Show rules";
+  }
+  if (rulesInToolRef) {
+    showOrHideRules();
+  }
+}
+function showOrHideRules() {
+  const rulesInToolRef = document.getElementById('rulesInTool');
+  // display rules if show rules
+  if (rulesShown.innerHTML === "Hide rules") {
+    rulesInToolRef.style.display = "block";
+  } else {
+    rulesInToolRef.style.display = "none";
+  }
+}
+
 /* FORMULA INPUT */
 let currentTextBox;
 
@@ -93,21 +118,6 @@ window.onclick = function(event) {
 }
 
 /* SETTING UP PROBLEM SOLUTION FEATURES */
-
-const ruleSelect = '<form id=ruleSelect>Select rule:' + '<select id="mySelect" class="btn btn-sm btn-outline-dark">' +
-    '<option value="idempotence">Idempotence</option>' +
-    '<option value="commutativity">Commutativity</option>' +
-    '<option value="associativity">Associativity</option>'+
-    '<option value="absorption">Absorption</option>' +
-    '<option value="distributivity">Distributivity</option>' +
-    '<option value="negation">Negation</option>' +
-    '<option value="doubleNegation">Double Negation</option>' +
-    '<option value="deMorgan">de Morgan</option>' +
-    '<option value="implication">Implication</option>' +
-    '<option value="biImplication">Bi-Implication</option>' +
-    '</select>' + '<input type="button" id="applyRule" value="Apply Rule" class="btn btn-sm btn-outline-dark">' +
-    '</form>';
-
 const rulesInTool = `<div id="rulesInTool"><h5>Rules</h5>
   <p onclick="showAlert('<h5>Idempotence</h5><p>A ∧ A ≡ A</p><p>A ∨ A ≡ A</p>')">Idempotence</p>
   <p onclick="showAlert('<h5>Commutativity</h5><p>A ∧ B ≡ B ∧ A</p><p>A ∨ B ≡ B ∨ A</p>')">Commutativity</p>
@@ -122,6 +132,26 @@ const rulesInTool = `<div id="rulesInTool"><h5>Rules</h5>
 </div>`;
 
 function setupProof() {
+  // rule application selects
+  const ruleSelectGeneral = '<option value="idempotence">Idempotence</option>' +
+      '<option value="commutativity">Commutativity</option>' +
+      '<option value="associativity">Associativity</option>'+
+      '<option value="absorption">Absorption</option>' +
+      '<option value="distributivity">Distributivity</option>' +
+      '<option value="negation">Negation</option>' +
+      '<option value="doubleNegation">Double Negation</option>' +
+      '<option value="deMorgan">de Morgan</option>' +
+      '<option value="implication">Implication</option>' +
+      '<option value="biImplication">Bi-Implication</option>';
+
+  const ruleSelect = '<select id="mySelect" class="btn btn-sm btn-outline-dark">' +
+    '<form id=ruleSelect>Select rule:' + ruleSelectGeneral +
+    '<input type="button" id="applyRule" value="Apply Rule" class="btn btn-sm btn-outline-dark">' + '</select></form>';
+
+  const backwardRuleSelect = '<select id="myBackwardSelect" class="btn btn-sm btn-outline-dark">' +
+    '<form id=backwardRuleSelect>Select rule:' + ruleSelectGeneral +
+    '<input type="button" id="applyBackwardRule" value="Apply Rule" class="btn btn-sm btn-outline-dark">' + '</select></form>';
+
   // take inputs and convert them into trees
   let originalTree;
   let finalTree;
@@ -171,8 +201,7 @@ function setupProof() {
     }
 
     let previousStep = formulaToChange.innerHTML;
-    let mySelectValue = mySelect.value;
-    let nodeAfterRule = applyRule(node, mySelectValue);
+    let nodeAfterRule = applyRule(node, mySelect.value);
     if (!nodeAfterRule) {
       // if reverse rule requires extra information
       if (mySelect.value === 'idempotence' || mySelect.value === 'absorption' || mySelect.value === 'negation') {
@@ -198,7 +227,7 @@ function setupProof() {
           }
           // make clone of node so original is not modified when applying rule
           let newNodeClone = Object.assign({}, newNode);
-          let ruleAppliedToNewNode = applyRule(newNodeClone, mySelectValue);
+          let ruleAppliedToNewNode = applyRule(newNodeClone, mySelect.value);
           if (!ruleAppliedToNewNode || !nodesEqual(node, ruleAppliedToNewNode)) {
             showAlert(`The rule can't be applied to give what you have entered.`);
             return;
@@ -246,26 +275,22 @@ function setupProof() {
     // present the problem to solve with Apply Rule button
     mainBody.innerHTML = "<h3>Prove that " + formInput + " ≡ " + transFormula +
     "</h3><button type='button' id='previousStepButton' class='btn btn-sm btn-outline-dark'>Go back to a previous step</button><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p>" +
-    rulesInTool + "<table id=workings><tr id='lastRow'><td id='formulaToChange'>" + formInput + "</td><td id='selectArea'>" + ruleSelect + "</td></tr></table>";
-    showRules(); // display rules if checked in the navbar
+    rulesInTool + "<table id=workings><tr id='lastRow'><td id='formulaToChange'>" + formInput + "</td><td id='selectArea'>" + ruleSelect + "</td></tr></table>" +
+    "<table id=backwardWorkings><tr id='finalRow'><td id='finalFormula'>" + transFormula +
+    "</td><td id='backwardSelectArea'>" + ruleSelect + "</td></tr></table>";
+
+
+    showOrHideRules(); // display rules if checked in the navbar
     console.log(originalTree);
     console.log(finalTree);
+
+
   }
 
-  /* NAVBAR SETTINGS */
-  rulesShown.addEventListener('click', showRules);
 
-  function showRules() {
-    const rulesShown = document.getElementById('rulesShown');
-    const rulesInToolRef = document.getElementById('rulesInTool');
-    // display rules if show rules checked
-    if (rulesShown.innerHTML === "Show rules") {
-      rulesShown.innerHTML = "Hide rules";
-      rulesInToolRef.style.display = "block";
-    } else {
-      rulesShown.innerHTML = "Show rules";
-      rulesInToolRef.style.display = "none";
-    }
+
+  function workBackwards() {
+
   }
 
   // PREVIOUS STEPS
