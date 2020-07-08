@@ -9,6 +9,19 @@ const buttons = document.getElementById('symbolButtons');
 const formulaInput = document.getElementById("formula");
 const transformedFormula = document.getElementById("transformedFormula");
 
+// If task is passed in from exercises page, put formulae into input boxes
+function taskGiven() {
+  let givenTask = sessionStorage.getItem('task');
+  if (givenTask) {
+    let beforeAndAfterFormulae = givenTask.split('≡');
+    formulaInput.value = beforeAndAfterFormulae[0].trim();
+    transformedFormula.value = beforeAndAfterFormulae[1].trim();
+    sessionStorage.removeItem('task');
+  }
+}
+taskGiven();
+
+
 const mainBody = document.getElementById("mainBody");
 
 let currentTextBox;
