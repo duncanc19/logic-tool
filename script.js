@@ -247,20 +247,26 @@ function setupProof() {
     mainBody.innerHTML = "<h3>Prove that " + formInput + " ≡ " + transFormula +
     "</h3><button type='button' id='previousStepButton' class='btn btn-sm btn-outline-dark'>Go back to a previous step</button><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p>" +
     rulesInTool + "<table id=workings><tr id='lastRow'><td id='formulaToChange'>" + formInput + "</td><td id='selectArea'>" + ruleSelect + "</td></tr></table>";
-    rulesChecked(); // display rules if checked in the navbar
+    showRules(); // display rules if checked in the navbar
     console.log(originalTree);
     console.log(finalTree);
   }
 
   /* NAVBAR SETTINGS */
-  function rulesChecked() {
-    const rulesCheckbox = document.getElementById('rulesCheckbox');
+  rulesShown.addEventListener('click', showRules);
+
+  function showRules() {
+    const rulesShown = document.getElementById('rulesShown');
     const rulesInToolRef = document.getElementById('rulesInTool');
     // display rules if show rules checked
-    rulesCheckbox.checked ? rulesInToolRef.style.display = "block" : rulesInToolRef.style.display = "none";
+    if (rulesShown.innerHTML === "Show rules") {
+      rulesShown.innerHTML = "Hide rules";
+      rulesInToolRef.style.display = "block";
+    } else {
+      rulesShown.innerHTML = "Show rules";
+      rulesInToolRef.style.display = "none";
+    }
   }
-
-  rulesCheckbox.addEventListener('change', rulesChecked);
 
   // PREVIOUS STEPS
   const previousStepButton = document.getElementById('previousStepButton');
