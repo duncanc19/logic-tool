@@ -32,6 +32,8 @@ function taskGiven() {
 taskGiven();
 
 /* NAVBAR SETTINGS */
+// Toggling rules display
+// rules toggle separated from showing or hiding the rules so it can be toggled before inputting formulae
 const rulesShown = document.getElementById('rulesShown');
 rulesShown.addEventListener('click', toggleRulesDisplay);
 
@@ -46,6 +48,7 @@ function toggleRulesDisplay() {
     showOrHideRules();
   }
 }
+
 function showOrHideRules() {
   const rulesInToolRef = document.getElementById('rulesInTool');
   // display rules if show rules
@@ -53,6 +56,31 @@ function showOrHideRules() {
     rulesInToolRef.style.display = "block";
   } else {
     rulesInToolRef.style.display = "none";
+  }
+}
+
+// Working backwards toggle
+const workBackwardsToggle = document.getElementById('workBackwardsToggle');
+workBackwardsToggle.addEventListener('click', toggleWorkingBackwards);
+
+function toggleWorkingBackwards() {
+  const backwardWorkings = document.getElementById('backwardWorkings');
+  if (workBackwardsToggle.innerHTML === "Work from top and bottom") {
+    workBackwardsToggle.innerHTML = "Work only from top";
+  } else {
+    workBackwardsToggle.innerHTML = "Work from top and bottom";
+  }
+  if (backwardWorkings) {
+    showBackwardWorkings();
+  }
+}
+
+function showBackwardWorkings() {
+  const backwardWorkings = document.getElementById('backwardWorkings');
+  if (workBackwardsToggle.innerHTML === "Work from top and bottom") {
+    backwardWorkings.style.display = "none";
+  } else {
+    backwardWorkings.style.display = "block";
   }
 }
 
@@ -277,20 +305,12 @@ function setupProof() {
     "</h3><button type='button' id='previousStepButton' class='btn btn-sm btn-outline-dark'>Go back to a previous step</button><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p>" +
     rulesInTool + "<table id=workings><tr id='lastRow'><td id='formulaToChange'>" + formInput + "</td><td id='selectArea'>" + ruleSelect + "</td></tr></table>" +
     "<table id=backwardWorkings><tr id='finalRow'><td id='finalFormula'>" + transFormula +
-    "</td><td id='backwardSelectArea'>" + ruleSelect + "</td></tr></table>";
-
+    "</td><td id='backwardSelectArea'>" + backwardRuleSelect + "</td></tr></table>";
 
     showOrHideRules(); // display rules if checked in the navbar
+    showBackwardWorkings(); // show backwards if applied in settings
     console.log(originalTree);
     console.log(finalTree);
-
-
-  }
-
-
-
-  function workBackwards() {
-
   }
 
   // PREVIOUS STEPS
