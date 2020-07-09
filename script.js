@@ -203,17 +203,14 @@ function setupProof() {
   // when Apply Rule button is clicked
   applyRuleButton.addEventListener("click", function() {
     let formulaSection = window.getSelection();
-    if (formulaSection.toString().length === 0) {
-      showAlert(`<h5>Nothing is highlighted</h5>Please select part of the formula`);
-      return;
-    }
+    let node;
 
     originalTree = buildTreeFromString(formulaToChange.innerHTML);
-    let node;
+
     try {
-      node = buildTreeFromString(formulaSection.toString());
-    } catch {
-      showAlert(`<h5>Section highlighted can't be parsed</h5>Make sure you are highlighting part of the formula from the latest step of your workings.`);
+      node = buildSelectionTree(formulaSection);
+    } catch (err) {
+      showAlert(err);
       return;
     }
 
@@ -297,6 +294,7 @@ function setupProof() {
 
   });
 
+
   function setUpWorkingsTable() {
     let formInput = formulaInput.value.replace(/\s+/g, '');
     let transFormula = transformedFormula.value.replace(/\s+/g, '');
@@ -311,6 +309,19 @@ function setupProof() {
     showBackwardWorkings(); // show backwards if applied in settings
     console.log(originalTree);
     console.log(finalTree);
+  }
+
+  function buildSelectionTree(highlightedSection) {
+    if (highlightedSection.toString().length === 0) {
+      throw `<h5>Nothing is highlighted</h5>Please select part of the formula`;
+    }
+    let node;
+    try {
+      node = buildTreeFromString(highlightedSection.toString());
+      return node;
+    } catch {
+      throw `<h5>Section highlighted can't be parsed</h5>Make sure you are highlighting part of the formula from the latest step of your workings.`;
+    }
   }
 
   // PREVIOUS STEPS
