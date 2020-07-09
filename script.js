@@ -205,34 +205,17 @@ function setupProof() {
     let formulaSection = window.getSelection();
     let node;
     let nodeToSwap;
-
-    originalTree = buildTreeFromString(formulaToChange.innerHTML);
+    let previousStep = formulaToChange.innerHTML;
+    originalTree = buildTreeFromString(previousStep);
+    let nodeAfterRule;
 
     try {
       node = buildSelectionTree(formulaSection);
       nodeToSwap = findHighlightedNode(formulaSection, node, originalTree);
-    } catch (err) {
-      showAlert(err);
-      return;
-    }
-
-    let previousStep = formulaToChange.innerHTML;
-    let nodeAfterRule = applyRule(node, mySelect.value);
-    if (!nodeAfterRule) {
-      // if reverse rule requires extra information
-      if (mySelect.value === 'idempotence' || mySelect.value === 'absorption' || mySelect.value === 'negation') {
-        showAlert(`<div id="addRuleChange"><label for="ruleChange">You are applying ${mySelect.value} to ${formulaSection.toString()}, please enter what you'd like to change it to:</label>
-        <input type="text" name="ruleChange" placeholder="Your change" id="ruleChange" onblur="selectTextBox(this.id)"></div>
-        <input type="button" id="enterChange"  data-dismiss="modal" class="btn btn-sm btn-outline-dark" value="Enter Change">`);
-        const addRuleChange = document.getElementById('addRuleChange');
-        const ruleChange = document.getElementById('ruleChange');
+      nodeAfterRule = applyRule(node, mySelect.value);
+      if (!nodeAfterRule) {
+        setupRuleInput(mySelect.value, formulaSection);
         const enterChange = document.getElementById('enterChange');
-        selectTextBox('ruleChange');
-        addRuleChange.appendChild(buttons);
-        ruleChange.onkeypress = function(e) {
-          keyboardSymbols(this, e);
-        }
-
         enterChange.addEventListener("click", () => {
           let newNode;
           try {
@@ -248,22 +231,21 @@ function setupProof() {
             showAlert(`The rule can't be applied to give what you have entered.`);
             return;
           }
+          modal.style.display = "none";
           nodeToSwap.value = newNode.value;
           nodeToSwap.children = newNode.children;
           addRowToTable();
-          modal.style.display = "none";
         });
       } else {
-        showAlert(`<h5>The rule could not be applied</h5>
-          The section highlighted matched the formula but it did not conform to the requirements of the ${mySelect.value} rule.
-          Have a look at the rules section(toggle in the Settings or look on the Rules page for more details).`);
-        return;
+        nodeToSwap.value = nodeAfterRule.value;
+        nodeToSwap.children = nodeAfterRule.children;
+        addRowToTable();
       }
-    } else {
-      nodeToSwap.value = nodeAfterRule.value;
-      nodeToSwap.children = nodeAfterRule.children;
-      addRowToTable();
+    } catch (err) {
+      showAlert(err);
+      return;
     }
+
 
     function addRowToTable() {
       console.log(originalTree);
@@ -282,9 +264,27 @@ function setupProof() {
         selectArea.innerHTML = 'Proof complete, congratulations!';
       }
     }
-
   });
 
+  // if rule requires extra information
+  function setupRuleInput(rule, highlighted) {
+    if (!(mySelect.value === 'idempotence' || mySelect.value === 'absorption' || mySelect.value === 'negation')) {
+      throw `<h5>The rule could not be applied</h5>
+        The section highlighted matched the formula but it did not conform to the requirements of the ${mySelect.value} rule.
+        Have a look at the rules section(toggle in the Settings or look on the Rules page for more details).`;
+    }
+    showAlert(`<div id="addRuleChange"><label for="ruleChange">You are applying ${rule} to ${highlighted.toString()}, please enter what you'd like to change it to:</label>
+    <input type="text" name="ruleChange" placeholder="Your change" id="ruleChange" onblur="selectTextBox(this.id)"></div>
+    <input type="button" id="enterChange"  data-dismiss="modal" class="btn btn-sm btn-outline-dark" value="Enter Change">`);
+    const addRuleChange = document.getElementById('addRuleChange');
+    const ruleChange = document.getElementById('ruleChange');
+
+    selectTextBox('ruleChange');
+    addRuleChange.appendChild(buttons);
+    ruleChange.onkeypress = function(e) {
+      keyboardSymbols(this, e);
+    }
+  }
 
   function setUpWorkingsTable() {
     let formInput = formulaInput.value.replace(/\s+/g, '');
