@@ -204,24 +204,15 @@ function setupProof() {
   applyRuleButton.addEventListener("click", function() {
     let formulaSection = window.getSelection();
     let node;
+    let nodeToSwap;
 
     originalTree = buildTreeFromString(formulaToChange.innerHTML);
 
     try {
       node = buildSelectionTree(formulaSection);
+      nodeToSwap = findHighlightedNode(formulaSection, node, originalTree);
     } catch (err) {
       showAlert(err);
-      return;
-    }
-
-    // min of anchor and focus offsets prevents errors if user highlights from right to left
-    let rootNodeIndex = Math.min(formulaSection.anchorOffset, formulaSection.focusOffset) + node.arrayIndex;
-    let nodeToSwap = findNodeWithIndex(rootNodeIndex, originalTree);
-    // gives error message if highlighted section doesn't match section of formula in the tree
-    if (!nodesEqual(nodeToSwap, node)) {
-      showAlert(`<h5>Section highlighted doesn't match formula</h5>If highlighting brackets,
-      make sure you get both opening and closing brackets. Be careful with the rules of precedence,
-      for example, a∧<span style="background-color:yellow;">b∨c</span> won't work, as b is linked with a(i.e. the same as (a∧b)∨c).`);
       return;
     }
 
@@ -322,6 +313,19 @@ function setupProof() {
     } catch {
       throw `<h5>Section highlighted can't be parsed</h5>Make sure you are highlighting part of the formula from the latest step of your workings.`;
     }
+  }
+
+  function findHighlightedNode(highlightedSection, highlightedNode, wholeTree) {
+    // min of anchor and focus offsets prevents errors if user highlights from right to left
+    let rootNodeIndex = Math.min(highlightedSection.anchorOffset, highlightedSection.focusOffset) + highlightedNode.arrayIndex;
+    let nodeToSwap = findNodeWithIndex(rootNodeIndex, wholeTree);
+    // gives error message if highlighted section doesn't match section of formula in the tree
+    if (!nodesEqual(nodeToSwap, highlightedNode)) {
+      throw `<h5>Section highlighted doesn't match formula</h5>If highlighting brackets,
+      make sure you get both opening and closing brackets. Be careful with the rules of precedence,
+      for example, a∧<span style="background-color:yellow;">b∨c</span> won't work, as b is linked with a(i.e. the same as (a∧b)∨c).`;
+    }
+    return nodeToSwap;
   }
 
   // PREVIOUS STEPS
