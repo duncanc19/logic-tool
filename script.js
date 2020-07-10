@@ -214,61 +214,39 @@ function setupProof() {
       nodeToSwap = findHighlightedNode(formulaSection, node, originalTree);
       nodeAfterRule = applyRule(node, mySelect.value);
       if (!nodeAfterRule) {
-        setupRuleInput(mySelect.value, formulaSection);
-        const enterChange = document.getElementById('enterChange');
-        enterChange.addEventListener("click", () => {
-          let newNode;
-          try {
-            newNode = buildTreeFromString(ruleChange.value);
-          } catch {
-            showAlert(`The entered formula is not valid. Look out for things such as unclosed brackets.`);
-            return;
-          }
-          // make clone of node so original is not modified when applying rule
-          let newNodeClone = Object.assign({}, newNode);
-          let ruleAppliedToNewNode = applyRule(newNodeClone, mySelect.value);
-          if (!ruleAppliedToNewNode || !nodesEqual(node, ruleAppliedToNewNode)) {
-            showAlert(`The rule can't be applied to give what you have entered.`);
-            return;
-          }
-          modal.style.display = "none";
-          nodeToSwap.value = newNode.value;
-          nodeToSwap.children = newNode.children;
-          addRowToTable();
-        });
+        ruleWithAddedInformation(mySelect.value, formulaSection, node, nodeToSwap, previousStep);
       } else {
         nodeToSwap.value = nodeAfterRule.value;
         nodeToSwap.children = nodeAfterRule.children;
-        addRowToTable();
+        addRowToTable(mySelect.value, previousStep);
       }
     } catch (err) {
       showAlert(err);
       return;
     }
-
-
-    function addRowToTable() {
-      console.log(originalTree);
-      // add extra row before last one with the formula as it was and rule applied
-      let previousRow = workingsTable.insertRow(workingsTable.rows.length - 1);
-      let formulaPart = previousRow.insertCell(0);
-      let rulePart = previousRow.insertCell(1);
-      let previousStepFormula = document.createTextNode(previousStep);
-      formulaPart.appendChild(previousStepFormula);
-      let previousStepRule = document.createTextNode(mySelect.value);
-      rulePart.appendChild(previousStepRule);
-      // change last row to current state of formula
-      formulaToChange.innerHTML = convertTreeToString(originalTree);
-      // check if proof is finished
-      if (nodesEqual(originalTree, finalTree)) {
-        selectArea.innerHTML = 'Proof complete, congratulations!';
-      }
-    }
   });
 
+  function addRowToTable(rule, formulaBeforeChange) {
+    console.log(originalTree);
+    // add extra row before last one with the formula as it was and rule applied
+    let previousRow = workingsTable.insertRow(workingsTable.rows.length - 1);
+    let formulaPart = previousRow.insertCell(0);
+    let rulePart = previousRow.insertCell(1);
+    let previousStepFormula = document.createTextNode(formulaBeforeChange);
+    formulaPart.appendChild(previousStepFormula);
+    let previousStepRule = document.createTextNode(rule);
+    rulePart.appendChild(previousStepRule);
+    // change last row to current state of formula
+    formulaToChange.innerHTML = convertTreeToString(originalTree);
+    // check if proof is finished
+    if (nodesEqual(originalTree, finalTree)) {
+      selectArea.innerHTML = 'Proof complete, congratulations!';
+    }
+  }
+  
   // if rule requires extra information
   function setupRuleInput(rule, highlighted) {
-    if (!(mySelect.value === 'idempotence' || mySelect.value === 'absorption' || mySelect.value === 'negation')) {
+    if (!(rule === 'idempotence' || rule === 'absorption' || rule === 'negation')) {
       throw `<h5>The rule could not be applied</h5>
         The section highlighted matched the formula but it did not conform to the requirements of the ${mySelect.value} rule.
         Have a look at the rules section(toggle in the Settings or look on the Rules page for more details).`;
@@ -276,6 +254,10 @@ function setupProof() {
     showAlert(`<div id="addRuleChange"><label for="ruleChange">You are applying ${rule} to ${highlighted.toString()}, please enter what you'd like to change it to:</label>
     <input type="text" name="ruleChange" placeholder="Your change" id="ruleChange" onblur="selectTextBox(this.id)"></div>
     <input type="button" id="enterChange"  data-dismiss="modal" class="btn btn-sm btn-outline-dark" value="Enter Change">`);
+  }
+
+  function ruleWithAddedInformation(rule, highlighted, originalNode, switchedNode, formulaBeforeChange) {
+    setupRuleInput(rule, highlighted);
     const addRuleChange = document.getElementById('addRuleChange');
     const ruleChange = document.getElementById('ruleChange');
 
@@ -284,6 +266,28 @@ function setupProof() {
     ruleChange.onkeypress = function(e) {
       keyboardSymbols(this, e);
     }
+
+    const enterChange = document.getElementById('enterChange');
+    enterChange.addEventListener("click", () => {
+      let newNode;
+      try {
+        newNode = buildTreeFromString(ruleChange.value);
+      } catch {
+        showAlert(`The entered formula is not valid. Look out for things such as unclosed brackets.`);
+        return;
+      }
+      // make clone of node so original is not modified when applying rule
+      let newNodeClone = Object.assign({}, newNode);
+      let ruleAppliedToNewNode = applyRule(newNodeClone, rule);
+      if (!ruleAppliedToNewNode || !nodesEqual(originalNode, ruleAppliedToNewNode)) {
+        showAlert(`The rule can't be applied to give what you have entered.`);
+        return;
+      }
+      modal.style.display = "none";
+      switchedNode.value = newNode.value;
+      switchedNode.children = newNode.children;
+      addRowToTable(rule, formulaBeforeChange);
+    });
   }
 
   function setUpWorkingsTable() {
