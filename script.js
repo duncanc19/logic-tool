@@ -186,6 +186,7 @@ function setupProof() {
   let finalTree;
   try {
     originalTree = buildTreeFromString(formulaInput.value);
+    backwardsTree = buildTreeFromString(transformedFormula.value);
     finalTree = buildTreeFromString(transformedFormula.value);
   } catch {
     showAlert(`<h5>The formulae entered are not valid</h5>
@@ -202,19 +203,23 @@ function setupProof() {
   const lastRow = document.getElementById('lastRow');
   const selectArea = document.getElementById('selectArea');
   // when Apply Rule button is clicked
-  applyRuleButton.addEventListener("click", function() { applyRuleButtonsFunctionality(mySelect.value, formulaToChange, false) });
+  applyRuleButton.addEventListener("click", function() { applyRuleButtonsFunctionality(mySelect.value, formulaToChange, false, originalTree) });
 
-  function applyRuleButtonsFunctionality(selectValue, formula, isBackwardsTable) {
+  function applyRuleButtonsFunctionality(selectValue, formula, isBackwardsTable, whichTree) {
     let formulaSection = window.getSelection();
     let node;
     let nodeToSwap;
     let previousStep = formula.innerHTML;
-    originalTree = buildTreeFromString(previousStep);
+    // change the original/backwards tree by changing its inner state
+    let nextStep = buildTreeFromString(previousStep);
+    whichTree.value =  nextStep.value;
+    whichTree.children = nextStep.children;
+    whichTree.arrayIndex = nextStep.arrayIndex;
     let nodeAfterRule;
 
     try {
       node = buildSelectionTree(formulaSection);
-      nodeToSwap = findHighlightedNode(formulaSection, node, originalTree);
+      nodeToSwap = findHighlightedNode(formulaSection, node, whichTree);
       nodeAfterRule = applyRule(node, selectValue);
       if (!nodeAfterRule) {
         ruleWithAddedInformation(selectValue, formulaSection, node, nodeToSwap, previousStep);
@@ -243,7 +248,7 @@ function setupProof() {
   const myBackwardSelect = document.getElementById('myBackwardSelect');
 
   // when Backwards Apply Rule button is clicked
-  applyBackwardRuleButton.addEventListener("click", function() { applyRuleButtonsFunctionality(myBackwardSelect.value, finalFormula, true) });
+  applyBackwardRuleButton.addEventListener("click", function() { applyRuleButtonsFunctionality(myBackwardSelect.value, topFormula, true, backwardsTree) });
 
   function addRowToBackwardTable(rule, formulaBeforeChange) {
     let topRow = backwardWorkingsTable.insertRow(0);
@@ -254,7 +259,7 @@ function setupProof() {
     let reinsertedFormula = backwardWorkingsTable.rows[1].insertCell(0);
     let previousStepFormula = document.createTextNode(formulaBeforeChange);
     reinsertedFormula.appendChild(previousStepFormula);
-    topFormula.innerHTML = convertTreeToString(originalTree);
+    topFormula.innerHTML = convertTreeToString(backwardsTree);
   }
 
   function addRowToTable(rule, formulaBeforeChange) {
