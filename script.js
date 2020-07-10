@@ -226,6 +226,42 @@ function setupProof() {
     }
   });
 
+  function setUpBackwardWorkings() {
+    const applyBackwardRuleButton = document.getElementById('applyBackwardRule');
+    const finalFormula = document.getElementById('finalFormula');
+    const backwardWorkingsTable = document.getElementById('backwardWorkings');
+    const backwardRuleSelection = document.getElementById('backwardRuleSelect');
+    const finalRow = document.getElementById('finalRow');
+    const backwardSelectArea = document.getElementById('backwardSelectArea');
+    const myBackwardSelect = document.getElementById('myBackwardSelect');
+
+    // when Apply Rule button is clicked
+    applyBackwardRuleButton.addEventListener("click", function() {
+      let formulaSection = window.getSelection();
+      let node;
+      let nodeToSwap;
+      let previousStep = finalFormula.innerHTML;
+      originalTree = buildTreeFromString(previousStep);
+      let nodeAfterRule;
+
+      try {
+        node = buildSelectionTree(formulaSection);
+        nodeToSwap = findHighlightedNode(formulaSection, node, originalTree);
+        nodeAfterRule = applyRule(node, myBackwardSelect.value);
+        if (!nodeAfterRule) {
+          ruleWithAddedInformation(myBackwardSelect.value, formulaSection, node, nodeToSwap, previousStep);
+        } else {
+          nodeToSwap.value = nodeAfterRule.value;
+          nodeToSwap.children = nodeAfterRule.children;
+          addRowToTable(mySelect.value, previousStep);
+        }
+      } catch (err) {
+        showAlert(err);
+        return;
+      }
+    });
+  }
+
   function addRowToTable(rule, formulaBeforeChange) {
     console.log(originalTree);
     // add extra row before last one with the formula as it was and rule applied
@@ -243,7 +279,7 @@ function setupProof() {
       selectArea.innerHTML = 'Proof complete, congratulations!';
     }
   }
-  
+
   // if rule requires extra information
   function setupRuleInput(rule, highlighted) {
     if (!(rule === 'idempotence' || rule === 'absorption' || rule === 'negation')) {
@@ -302,6 +338,7 @@ function setupProof() {
 
     showOrHideRules(); // display rules if checked in the navbar
     showBackwardWorkings(); // show backwards if applied in settings
+    setUpBackwardWorkings();
     console.log(originalTree);
     console.log(finalTree);
   }
