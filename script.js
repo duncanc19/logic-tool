@@ -182,6 +182,7 @@ function setupProof() {
 
   // take inputs and convert them into trees
   let originalTree;
+  let backwardsTree;
   let finalTree;
   try {
     originalTree = buildTreeFromString(formulaInput.value);
@@ -201,9 +202,9 @@ function setupProof() {
   const lastRow = document.getElementById('lastRow');
   const selectArea = document.getElementById('selectArea');
   // when Apply Rule button is clicked
-  applyRuleButton.addEventListener("click", function() { applyRuleButtonsFunctionality(mySelect.value, formulaToChange) });
+  applyRuleButton.addEventListener("click", function() { applyRuleButtonsFunctionality(mySelect.value, formulaToChange, false) });
 
-  function applyRuleButtonsFunctionality(selectValue, formula) {
+  function applyRuleButtonsFunctionality(selectValue, formula, isBackwardsTable) {
     let formulaSection = window.getSelection();
     let node;
     let nodeToSwap;
@@ -220,7 +221,11 @@ function setupProof() {
       } else {
         nodeToSwap.value = nodeAfterRule.value;
         nodeToSwap.children = nodeAfterRule.children;
-        addRowToTable(selectValue, previousStep);
+        if (isBackwardsTable) {
+          addRowToBackwardTable(selectValue, previousStep);
+        } else {
+          addRowToTable(selectValue, previousStep);
+        }
       }
     } catch (err) {
       showAlert(err);
@@ -228,17 +233,28 @@ function setupProof() {
     }
   }
 
-  function setUpBackwardWorkings() {
-    const applyBackwardRuleButton = document.getElementById('applyBackwardRule');
-    const finalFormula = document.getElementById('finalFormula');
-    const backwardWorkingsTable = document.getElementById('backwardWorkings');
-    const backwardRuleSelection = document.getElementById('backwardRuleSelect');
-    const finalRow = document.getElementById('finalRow');
-    const backwardSelectArea = document.getElementById('backwardSelectArea');
-    const myBackwardSelect = document.getElementById('myBackwardSelect');
+  // backward rule elements
+  const applyBackwardRuleButton = document.getElementById('applyBackwardRule');
+  const topFormula = document.getElementById('finalFormula');
+  const backwardWorkingsTable = document.getElementById('backwardWorkings');
+  const backwardRuleSelection = document.getElementById('backwardRuleSelect');
+  const topRow = document.getElementById('finalRow');
+  const backwardSelectArea = document.getElementById('backwardSelectArea');
+  const myBackwardSelect = document.getElementById('myBackwardSelect');
 
-    // when Apply Rule button is clicked
-    applyBackwardRuleButton.addEventListener("click", function() { applyRuleButtonsFunctionality(myBackwardSelect.value, finalFormula) });
+  // when Backwards Apply Rule button is clicked
+  applyBackwardRuleButton.addEventListener("click", function() { applyRuleButtonsFunctionality(myBackwardSelect.value, finalFormula, true) });
+
+  function addRowToBackwardTable(rule, formulaBeforeChange) {
+    let topRow = backwardWorkingsTable.insertRow(0);
+    topRow.appendChild(topFormula);
+    let rulePart = topRow.insertCell(1);
+    let previousStepRule = document.createTextNode(rule);
+    rulePart.appendChild(previousStepRule);
+    let reinsertedFormula = backwardWorkingsTable.rows[1].insertCell(0);
+    let previousStepFormula = document.createTextNode(formulaBeforeChange);
+    reinsertedFormula.appendChild(previousStepFormula);
+    topFormula.innerHTML = convertTreeToString(originalTree);
   }
 
   function addRowToTable(rule, formulaBeforeChange) {
@@ -258,6 +274,8 @@ function setupProof() {
       selectArea.innerHTML = 'Proof complete, congratulations!';
     }
   }
+
+
 
   // if rule requires extra information
   function setupRuleInput(rule, highlighted) {
@@ -312,12 +330,10 @@ function setupProof() {
     mainBody.innerHTML = "<h3>Prove that " + formInput + " ≡ " + transFormula +
     "</h3><button type='button' id='previousStepButton' class='btn btn-sm btn-outline-dark'>Go back to a previous step</button><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p>" +
     rulesInTool + "<table id=workings><tr id='lastRow'><td id='formulaToChange'>" + formInput + "</td><td id='selectArea'>" + ruleSelect + "</td></tr></table></br>" +
-    "<table id=backwardWorkings><tr id='finalRow'><td id='finalFormula'>" + transFormula +
-    "</td><td id='backwardSelectArea'>" + backwardRuleSelect + "</td></tr></table>";
+    "<table id=backwardWorkings><tr id='finalRow'><td id='finalFormula'>" + transFormula + "</td><td id='backwardSelectArea'>" + backwardRuleSelect + "</td></tr></table>";
 
     showOrHideRules(); // display rules if checked in the navbar
     showBackwardWorkings(); // show backwards if applied in settings
-    setUpBackwardWorkings();
     console.log(originalTree);
     console.log(finalTree);
   }
