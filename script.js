@@ -272,21 +272,30 @@ function setupProof() {
   }
 
   function addRowToTable(rule, formulaBeforeChange) {
-    console.log(originalTree);
-    // add extra row before last one with the formula as it was and rule applied
-    let previousRow = workingsTable.insertRow(workingsTable.rows.length - 1);
-    let formulaPart = previousRow.insertCell(0);
-    let rulePart = previousRow.insertCell(1);
-    let previousStepFormula = document.createTextNode(formulaBeforeChange);
-    formulaPart.appendChild(previousStepFormula);
-    let previousStepRule = document.createTextNode(rule);
-    rulePart.appendChild(previousStepRule);
-    // change last row to current state of formula
-    formulaToChange.innerHTML = convertTreeToString(originalTree);
-    // check if proof is finished
-    if (nodesEqual(originalTree, finalTree)) {
-      selectArea.innerHTML = 'Proof complete, congratulations!';
+    if (nodesEqual(backwardsTree, originalTree)) {
+      selectArea.innerHTML = rule;
+      while (backwardWorkingsTable.rows.length > 0) {
+        workingsTable.appendChild(backwardWorkingsTable.rows[0]);
+      }
+      backwardSelectArea.innerHTML = 'Proof complete, congratulations!';
+    } else {
+      console.log(originalTree);
+      // add extra row before last one with the formula as it was and rule applied
+      let previousRow = workingsTable.insertRow(workingsTable.rows.length - 1);
+      let formulaPart = previousRow.insertCell(0);
+      let rulePart = previousRow.insertCell(1);
+      let previousStepFormula = document.createTextNode(formulaBeforeChange);
+      formulaPart.appendChild(previousStepFormula);
+      let previousStepRule = document.createTextNode(rule);
+      rulePart.appendChild(previousStepRule);
+      // change last row to current state of formula
+      formulaToChange.innerHTML = convertTreeToString(originalTree);
+      // check if proof is finished
+      if (nodesEqual(originalTree, finalTree)) {
+        selectArea.innerHTML = 'Proof complete, congratulations!';
+      }
     }
+
   }
 
 
