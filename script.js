@@ -251,15 +251,24 @@ function setupProof() {
   applyBackwardRuleButton.addEventListener("click", function() { applyRuleButtonsFunctionality(myBackwardSelect.value, topFormula, true, backwardsTree) });
 
   function addRowToBackwardTable(rule, formulaBeforeChange) {
-    let topRow = backwardWorkingsTable.insertRow(0);
-    topRow.appendChild(topFormula);
-    let rulePart = topRow.insertCell(1);
-    let previousStepRule = document.createTextNode(rule);
-    rulePart.appendChild(previousStepRule);
-    let reinsertedFormula = backwardWorkingsTable.rows[1].insertCell(0);
-    let previousStepFormula = document.createTextNode(formulaBeforeChange);
-    reinsertedFormula.appendChild(previousStepFormula);
-    topFormula.innerHTML = convertTreeToString(backwardsTree);
+    if (nodesEqual(backwardsTree, originalTree)) {
+      selectArea.innerHTML = rule;
+      while (backwardWorkingsTable.rows.length > 0) {
+        workingsTable.appendChild(backwardWorkingsTable.rows[0]);
+      }
+      backwardSelectArea.innerHTML = 'Proof complete, congratulations!';
+    } else {
+      let topRow = backwardWorkingsTable.insertRow(0);
+      topRow.appendChild(topFormula);
+      let rulePart = topRow.insertCell(1);
+      let previousStepRule = document.createTextNode(rule);
+      rulePart.appendChild(previousStepRule);
+      let reinsertedFormula = backwardWorkingsTable.rows[1].insertCell(0);
+      let previousStepFormula = document.createTextNode(formulaBeforeChange);
+      reinsertedFormula.appendChild(previousStepFormula);
+      topFormula.innerHTML = convertTreeToString(backwardsTree);
+    }
+
   }
 
   function addRowToTable(rule, formulaBeforeChange) {
