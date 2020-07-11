@@ -384,26 +384,23 @@ function setupProof() {
     if (workingsTable.classList.contains('tableHighlight')) {
       previousStepButton.innerHTML = "Cancel changing step";
       for (let row of workingsTable.rows) {
-        row.onclick = function removeRows() {
-          selectRow(row);
-          previousStepButton.innerHTML = "Go back to a previous step";
-          workingsTable.classList.toggle('tableHighlight');
-          backwardWorkingsTable.classList.toggle('tableHighlight');
-        }
+        row.onclick = () => { removeRows(false, row) };
       }
       for (let row of backwardWorkingsTable.rows) {
-        row.onclick = function removeRows() {
-          selectBackwardRow(row);
-          previousStepButton.innerHTML = "Go back to a previous step";
-          workingsTable.classList.toggle('tableHighlight');
-          backwardWorkingsTable.classList.toggle('tableHighlight');
-        }
+        row.onclick = () => { removeRows(true, row) };
       }
     } else {
       // case where user presses button again to cancel
       removeEventListeners();
       previousStepButton.innerHTML = "Go back to a previous step";
     }
+  }
+
+  function removeRows(isBackwardsTable, whichRow) {
+    isBackwardsTable ? selectBackwardRow(whichRow) : selectRow(whichRow);
+    previousStepButton.innerHTML = "Go back to a previous step";
+    workingsTable.classList.toggle('tableHighlight');
+    backwardWorkingsTable.classList.toggle('tableHighlight');
   }
 
   function selectRow(row) {
