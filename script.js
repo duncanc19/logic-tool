@@ -380,6 +380,7 @@ function setupProof() {
 
   function goToPreviousStep() {
     workingsTable.classList.toggle('tableHighlight');
+    backwardWorkingsTable.classList.toggle('tableHighlight');
     if (workingsTable.classList.contains('tableHighlight')) {
       previousStepButton.innerHTML = "Cancel changing step";
       for (let row of workingsTable.rows) {
@@ -387,6 +388,15 @@ function setupProof() {
           selectRow(row);
           previousStepButton.innerHTML = "Go back to a previous step";
           workingsTable.classList.toggle('tableHighlight');
+          backwardWorkingsTable.classList.toggle('tableHighlight');
+        }
+      }
+      for (let row of backwardWorkingsTable.rows) {
+        row.onclick = function removeRows() {
+          selectBackwardRow(row);
+          previousStepButton.innerHTML = "Go back to a previous step";
+          workingsTable.classList.toggle('tableHighlight');
+          backwardWorkingsTable.classList.toggle('tableHighlight');
         }
       }
     } else {
@@ -408,8 +418,19 @@ function setupProof() {
     }
   }
 
+  function selectBackwardRow(row) {
+    removeEventListeners();
+    while (row.rowIndex > 0) {
+      backwardWorkingsTable.deleteRow(0);
+      i++;
+    }
+  }
+
   function removeEventListeners() {
     for (let row of workingsTable.rows) {
+      row.onclick = () => false;
+    }
+    for (let row of backwardWorkingsTable.rows) {
       row.onclick = () => false;
     }
   }
