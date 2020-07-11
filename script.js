@@ -222,7 +222,7 @@ function setupProof() {
       nodeToSwap = findHighlightedNode(formulaSection, node, whichTree);
       nodeAfterRule = applyRule(node, selectValue);
       if (!nodeAfterRule) {
-        ruleWithAddedInformation(selectValue, formulaSection, node, nodeToSwap, previousStep);
+        ruleWithAddedInformation(selectValue, formulaSection, node, nodeToSwap, previousStep, isBackwardsTable);
       } else {
         nodeToSwap.value = nodeAfterRule.value;
         nodeToSwap.children = nodeAfterRule.children;
@@ -294,7 +294,7 @@ function setupProof() {
     <input type="button" id="enterChange"  data-dismiss="modal" class="btn btn-sm btn-outline-dark" value="Enter Change">`);
   }
 
-  function ruleWithAddedInformation(rule, highlighted, originalNode, switchedNode, formulaBeforeChange) {
+  function ruleWithAddedInformation(rule, highlighted, originalNode, switchedNode, formulaBeforeChange, isBackwardsTable) {
     setupRuleInput(rule, highlighted);
     const addRuleChange = document.getElementById('addRuleChange');
     const ruleChange = document.getElementById('ruleChange');
@@ -324,7 +324,12 @@ function setupProof() {
       modal.style.display = "none";
       switchedNode.value = newNode.value;
       switchedNode.children = newNode.children;
-      addRowToTable(rule, formulaBeforeChange);
+      if (isBackwardsTable) {
+        addRowToBackwardTable(rule, formulaBeforeChange);
+      } else {
+        addRowToTable(rule, formulaBeforeChange);
+      }
+
     });
   }
 
