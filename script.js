@@ -80,7 +80,7 @@ function showBackwardWorkings() {
   if (workBackwardsToggle.innerHTML === "Work from top and bottom") {
     backwardWorkings.style.display = "none";
   } else {
-    backwardWorkings.style.display = "block";
+    backwardWorkings.style.display = "table";
   }
 }
 
@@ -178,7 +178,7 @@ function setupProof() {
 
   const backwardRuleSelect = '<select id="myBackwardSelect" class="btn btn-sm btn-outline-dark">' +
     '<form id=backwardRuleSelect>Select rule:' + ruleSelectGeneral +
-    '<input type="button" id="applyBackwardRule" value="Apply Rule" class="btn btn-sm btn-outline-dark">' + '</select></form>';
+    '<input type="button" id="applyBackwardRule" value="Apply Rule Backwards" class="btn btn-sm btn-outline-dark">' + '</select></form>';
 
   // take inputs and convert them into trees
   let originalTree;
@@ -210,7 +210,7 @@ function setupProof() {
     let node;
     let nodeToSwap;
     let previousStep = formula.innerHTML;
-    // change the original/backwards tree by changing its inner state
+    // change the original/backwards tree outside of function scope by changing its inner state
     let nextStep = buildTreeFromString(previousStep);
     whichTree.value =  nextStep.value;
     whichTree.children = nextStep.children;
