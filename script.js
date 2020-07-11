@@ -250,13 +250,18 @@ function setupProof() {
   // when Backwards Apply Rule button is clicked
   applyBackwardRuleButton.addEventListener("click", function() { applyRuleButtonsFunctionality(myBackwardSelect.value, topFormula, true, backwardsTree) });
 
+  function mergeTwoTables(rule) {
+    selectArea.innerHTML = rule;
+    while (backwardWorkingsTable.rows.length > 0) {
+      workingsTable.appendChild(backwardWorkingsTable.rows[0]);
+    }
+    backwardSelectArea.innerHTML = 'Proof complete, congratulations!';
+  }
+
   function addRowToBackwardTable(rule, formulaBeforeChange) {
+    // if forward and backward formula match, merge the two tables
     if (nodesEqual(backwardsTree, originalTree)) {
-      selectArea.innerHTML = rule;
-      while (backwardWorkingsTable.rows.length > 0) {
-        workingsTable.appendChild(backwardWorkingsTable.rows[0]);
-      }
-      backwardSelectArea.innerHTML = 'Proof complete, congratulations!';
+      mergeTwoTables(rule);
     } else {
       let topRow = backwardWorkingsTable.insertRow(0);
       topRow.appendChild(topFormula);
@@ -268,16 +273,12 @@ function setupProof() {
       reinsertedFormula.appendChild(previousStepFormula);
       topFormula.innerHTML = convertTreeToString(backwardsTree);
     }
-
   }
 
   function addRowToTable(rule, formulaBeforeChange) {
+    // if forward and backward formula match, merge the two tables
     if (nodesEqual(backwardsTree, originalTree)) {
-      selectArea.innerHTML = rule;
-      while (backwardWorkingsTable.rows.length > 0) {
-        workingsTable.appendChild(backwardWorkingsTable.rows[0]);
-      }
-      backwardSelectArea.innerHTML = 'Proof complete, congratulations!';
+      mergeTwoTables(rule);
     } else {
       console.log(originalTree);
       // add extra row before last one with the formula as it was and rule applied
@@ -297,7 +298,6 @@ function setupProof() {
     }
 
   }
-
 
 
   // if rule requires extra information
