@@ -252,10 +252,11 @@ function setupProof() {
 
   function mergeTwoTables(rule) {
     selectArea.innerHTML = rule;
+    backwardWorkingsTable.deleteRow(0);
     while (backwardWorkingsTable.rows.length > 0) {
       workingsTable.appendChild(backwardWorkingsTable.rows[0]);
     }
-    backwardSelectArea.innerHTML = 'Proof complete, congratulations!';
+    workingsTable.rows[workingsTable.rows.length-1].cells[1].innerHTML = 'Proof complete, congratulations!';
   }
 
   function addRowToBackwardTable(rule, formulaBeforeChange) {
@@ -359,7 +360,7 @@ function setupProof() {
     mainBody.innerHTML = "<h3>Prove that " + formInput + " ≡ " + transFormula +
     "</h3><button type='button' id='previousStepButton' class='btn btn-sm btn-outline-dark'>Go back to a previous step</button><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p>" +
     rulesInTool + "<table id=workings><tr id='lastRow'><td id='formulaToChange'>" + formInput + "</td><td id='selectArea'>" + ruleSelect + "</td></tr></table></br>" +
-    "<table id=backwardWorkings><tr><td></td><td id='backwardSelectArea'>" + backwardRuleSelect + "</td></tr><tr id='topRow'><td id='topFormula'>" + transFormula + "</td><td></td></tr></table>";
+    "<table id=backwardWorkings><tr><td></td><td id='backwardSelectArea'>" + backwardRuleSelect + "</td></tr><tr id='topRow'><td id='topFormula'>" + transFormula + "</td><td>Apply rules to the top formula in this table</td></tr></table>";
 
     showOrHideRules(); // display rules if checked in the navbar
     showBackwardWorkings(); // show backwards if applied in settings
