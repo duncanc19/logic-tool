@@ -434,6 +434,11 @@ function setupProof() {
   }
 
   function selectBackwardRow(row) {
+    // replace the formula section of row with topFormula so that the reference is maintained for the apply rule button
+    let formulaToKeep = row.cells[0].innerHTML;
+    let cellToReplace = row.cells[0];
+    cellToReplace.parentNode.replaceChild(topFormula, cellToReplace);
+    topFormula.innerHTML = formulaToKeep;
     removeEventListeners();
     while (row.rowIndex > 0) {
       backwardWorkingsTable.deleteRow(0);
