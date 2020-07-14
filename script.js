@@ -240,10 +240,10 @@ function setupProof() {
 
   // backward rule elements
   const applyBackwardRuleButton = document.getElementById('applyBackwardRule');
-  const topFormula = document.getElementById('finalFormula');
+  const topFormula = document.getElementById('topFormula');
   const backwardWorkingsTable = document.getElementById('backwardWorkings');
   const backwardRuleSelection = document.getElementById('backwardRuleSelect');
-  const topRow = document.getElementById('finalRow');
+  const topRow = document.getElementById('topRow');
   const backwardSelectArea = document.getElementById('backwardSelectArea');
   const myBackwardSelect = document.getElementById('myBackwardSelect');
 
@@ -358,7 +358,7 @@ function setupProof() {
     mainBody.innerHTML = "<h3>Prove that " + formInput + " ≡ " + transFormula +
     "</h3><button type='button' id='previousStepButton' class='btn btn-sm btn-outline-dark'>Go back to a previous step</button><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p>" +
     rulesInTool + "<table id=workings><tr id='lastRow'><td id='formulaToChange'>" + formInput + "</td><td id='selectArea'>" + ruleSelect + "</td></tr></table></br>" +
-    "<table id=backwardWorkings><tr id='finalRow'><td id='finalFormula'>" + transFormula + "</td><td id='backwardSelectArea'>" + backwardRuleSelect + "</td></tr></table>";
+    "<table id=backwardWorkings><tr id='topRow'><td id='topFormula'>" + transFormula + "</td><td id='backwardSelectArea'>" + backwardRuleSelect + "</td></tr></table>";
 
     showOrHideRules(); // display rules if checked in the navbar
     showBackwardWorkings(); // show backwards if applied in settings
@@ -440,6 +440,7 @@ function setupProof() {
     cellToReplace.parentNode.replaceChild(topFormula, cellToReplace);
     topFormula.innerHTML = formulaToKeep;
     removeEventListeners();
+    // delete all rows above selected row
     while (row.rowIndex > 0) {
       backwardWorkingsTable.deleteRow(0);
       i++;
