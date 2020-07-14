@@ -263,15 +263,16 @@ function setupProof() {
     if (nodesEqual(backwardsTree, originalTree)) {
       mergeTwoTables(rule);
     } else {
-      let topRow = backwardWorkingsTable.insertRow(0);
-      topRow.appendChild(topFormula);
-      let rulePart = topRow.insertCell(1);
-      let previousStepRule = document.createTextNode(rule);
-      rulePart.appendChild(previousStepRule);
-      let reinsertedFormula = backwardWorkingsTable.rows[1].insertCell(0);
-      let previousStepFormula = document.createTextNode(formulaBeforeChange);
-      reinsertedFormula.appendChild(previousStepFormula);
+      let newTopRow = backwardWorkingsTable.insertRow(0);
+      newTopRow.insertCell(0);
+      newTopRow.appendChild(backwardSelectArea);
+      let ruleArea = backwardWorkingsTable.rows[1].cells[0];
+      let previousStepFormula = topFormula.innerHTML;
+      backwardWorkingsTable.rows[1].insertBefore(topFormula, ruleArea);
+      ruleArea.innerHTML = rule;
       topFormula.innerHTML = convertTreeToString(backwardsTree);
+      let previousStepFormulaSpace = backwardWorkingsTable.rows[2].insertCell(0);
+      previousStepFormulaSpace.innerHTML = previousStepFormula;
     }
   }
 
@@ -358,7 +359,7 @@ function setupProof() {
     mainBody.innerHTML = "<h3>Prove that " + formInput + " ≡ " + transFormula +
     "</h3><button type='button' id='previousStepButton' class='btn btn-sm btn-outline-dark'>Go back to a previous step</button><p>Highlight the part of the formula you want to change, select the rule and click Apply Rule.</p>" +
     rulesInTool + "<table id=workings><tr id='lastRow'><td id='formulaToChange'>" + formInput + "</td><td id='selectArea'>" + ruleSelect + "</td></tr></table></br>" +
-    "<table id=backwardWorkings><tr id='topRow'><td id='topFormula'>" + transFormula + "</td><td id='backwardSelectArea'>" + backwardRuleSelect + "</td></tr></table>";
+    "<table id=backwardWorkings><tr><td></td><td id='backwardSelectArea'>" + backwardRuleSelect + "</td></tr><tr id='topRow'><td id='topFormula'>" + transFormula + "</td><td></td></tr></table>";
 
     showOrHideRules(); // display rules if checked in the navbar
     showBackwardWorkings(); // show backwards if applied in settings
