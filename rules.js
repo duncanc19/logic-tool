@@ -26,6 +26,6 @@ const idempotenceCard = document.getElementById('idempotence');
 idempotenceCard.addEventListener("click", () => {
   showAlert(`<h3>Idempotence</h3><p>A ∧ A ≡ A</p><p>A ∨ A ≡ A</p>
     <p>The idempotence rule can be used to remove or add the same variable. Below is an example of the idempotence rule being applied in reverse:</p>
-    <img class="exampleOfRule" src="idempotence.png" alt="Idempotence applied in reverse">
+    <img class="exampleOfRule" src="/images/idempotence.png" alt="Idempotence applied in reverse">
     <p>It can also be used for a section of a formula, e.g. (a⇒b)∧(a⇒b) ≡ a⇒b.`);
 })
