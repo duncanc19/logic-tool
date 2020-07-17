@@ -53,7 +53,7 @@ associativityCard.addEventListener("click", () => {
   <img class="exampleOfRule" src="/images/associativityReverse.png" alt="Associativity applied in reverse">
   <img class="exampleOfRule" src="/images/associativityComplex.png" alt="Associativity applied">
   <p>The first example shows a simple case in reverse. The second example shows a more complex case where there are nested brackets,
-  but the rule can be applied the same.`)
+  but the rule can be applied the same.`);
 })
 
 absorptionCard.addEventListener("click", () => {
@@ -61,5 +61,11 @@ absorptionCard.addEventListener("click", () => {
   be used to simplify a formula and can be useful applied in reverse to add an extra variable.</p>
   <img class="exampleOfRule" src="/images/absorptionReverse.png" alt="Absorption applied in reverse">
   <img class="exampleOfRule" src="/images/absorption2.png" alt="Absorption applied in reverse">
-  <p>The rule can be applied in reverse to any section of a formula(assuming it conforms to the rules of precedence.), `)
+  <p>The rule can be applied in reverse to any section of a formula(assuming it conforms to the rules of precedence).`);
+})
+
+distributivityCard.addEventListener("click", () => {
+  showAlert(`<h5>Distributivity</h5><p>A ∧ (B ∨ C) ≡ (A ∧ B) ∨ (A ∧ C)</p><p>A ∨ (B ∧ C) ≡ (A ∨ B) ∧ (A ∨ C)</p>
+  <p>Here is a more complex example of distributivity being applied with the tool:</p>
+  <img class="exampleOfRule" src="/images/distributivity.png" alt="Complex example of distributivity">`);
 })
