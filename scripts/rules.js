@@ -37,7 +37,7 @@ idempotenceCard.addEventListener("click", () => {
     <p>The idempotence rule can be used to remove or add the same variable. Below is an example of the idempotence rule being applied in reverse:</p>
     <img class="exampleOfRule" src="/images/idempotence.png" alt="Idempotence applied in reverse">
     <p>It can also be used for a section of a formula, e.g. (a⇒b)∧(a⇒b) ≡ a⇒b.`);
-})
+});
 
 commutativityCard.addEventListener("click", () => {
   showAlert(`<h3>Commutativity</h3><p>A ∧ B ≡ B ∧ A</p><p>A ∨ B ≡ B ∨ A</p><p>The commutativity rule can be used
@@ -45,7 +45,7 @@ commutativityCard.addEventListener("click", () => {
     <img class="exampleOfRule" src="/images/commutativity.png" alt="Commutativity applied in reverse">
     <p>Here, as ∧ has higher precedence than ∨ and the whole formula was highlighted when applying the rule,
     the parts before and after the ∨ were switched. You could instead highlight a∧b to change the formula to b∧a∨c.`);
-})
+});
 
 associativityCard.addEventListener("click", () => {
   showAlert(`<h3>Associativity</h3><p>A ∧ (B ∧ C) ≡ (A ∧ B) ∧ C</p><p>A ∨ (B ∨ C) ≡ (A ∨ B) ∨ C</p>
@@ -54,7 +54,7 @@ associativityCard.addEventListener("click", () => {
   <img class="exampleOfRule" src="/images/associativityComplex.png" alt="Associativity applied">
   <p>The first example shows a simple case in reverse. The second example shows a more complex case where there are nested brackets,
   but the rule can be applied the same.`);
-})
+});
 
 absorptionCard.addEventListener("click", () => {
   showAlert(`<h3>Absorption</h3><p>A ∧ (A ∨ B) ≡ A</p><p>A ∨ (A ∧ B) ≡ A</p><p>Absorption can
@@ -62,17 +62,24 @@ absorptionCard.addEventListener("click", () => {
   <img class="exampleOfRule" src="/images/absorptionReverse.png" alt="Absorption applied in reverse">
   <img class="exampleOfRule" src="/images/absorption2.png" alt="Absorption applied in reverse">
   <p>The rule can be applied in reverse to any section of a formula(assuming it conforms to the rules of precedence).`);
-})
+});
 
 distributivityCard.addEventListener("click", () => {
   showAlert(`<h3>Distributivity</h3><p>A ∧ (B ∨ C) ≡ (A ∧ B) ∨ (A ∧ C)</p><p>A ∨ (B ∧ C) ≡ (A ∨ B) ∧ (A ∨ C)</p>
   <p>Here is a more complex example of distributivity being applied with the tool:</p>
   <img class="exampleOfRule" src="/images/distributivity.png" alt="Complex example of distributivity">`);
-})
+});
 
 negationCard.addEventListener("click", () => {
   showAlert(`<h3>Negation</h3><p>A ∧ (¬A) ≡ false</p><p>A ∨ (¬A) ≡ true</p>
   <p>Negation can be used to replace a formula which must always be true/false. It can be useful to use in reverse as
   true or false can be replaced by any variable. Here is an example of using negation to change the variables in a formula:
   <img class="exampleOfRule" src="/images/negation.png" alt="Example of negation">`);
-})
+});
+
+doubleNegationCard.addEventListener("click", () => {
+  showAlert(`<h3>Double Negation</h3><p>¬(¬A) ≡ A</p>
+  <p>Double negation can be applied to either remove two negations or to add two negations in front of a variable.</p>
+  <p>It can be applied to a single variable or a section of a formula. Here is an example of it applied both forwards and backwards:</p>
+  <img class="exampleOfRule" src="/images/doubleNegation.png" alt="Example of double negation">`);
+});
