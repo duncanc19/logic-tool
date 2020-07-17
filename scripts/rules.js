@@ -65,7 +65,14 @@ absorptionCard.addEventListener("click", () => {
 })
 
 distributivityCard.addEventListener("click", () => {
-  showAlert(`<h5>Distributivity</h5><p>A ∧ (B ∨ C) ≡ (A ∧ B) ∨ (A ∧ C)</p><p>A ∨ (B ∧ C) ≡ (A ∨ B) ∧ (A ∨ C)</p>
+  showAlert(`<h3>Distributivity</h3><p>A ∧ (B ∨ C) ≡ (A ∧ B) ∨ (A ∧ C)</p><p>A ∨ (B ∧ C) ≡ (A ∨ B) ∧ (A ∨ C)</p>
   <p>Here is a more complex example of distributivity being applied with the tool:</p>
   <img class="exampleOfRule" src="/images/distributivity.png" alt="Complex example of distributivity">`);
+})
+
+negationCard.addEventListener("click", () => {
+  showAlert(`<h3>Negation</h3><p>A ∧ (¬A) ≡ false</p><p>A ∨ (¬A) ≡ true</p>
+  <p>Negation can be used to replace a formula which must always be true/false. It can be useful to use in reverse as
+  true or false can be replaced by any variable. Here is an example of using negation to change the variables in a formula:
+  <img class="exampleOfRule" src="/images/negation.png" alt="Example of negation">`);
 })
