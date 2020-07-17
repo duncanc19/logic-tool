@@ -55,3 +55,11 @@ associativityCard.addEventListener("click", () => {
   <p>The first example shows a simple case in reverse. The second example shows a more complex case where there are nested brackets,
   but the rule can be applied the same.`)
 })
+
+absorptionCard.addEventListener("click", () => {
+  showAlert(`<h3>Absorption</h3><p>A ∧ (A ∨ B) ≡ A</p><p>A ∨ (A ∧ B) ≡ A</p><p>Absorption can
+  be used to simplify a formula and can be useful applied in reverse to add an extra variable.</p>
+  <img class="exampleOfRule" src="/images/absorptionReverse.png" alt="Absorption applied in reverse">
+  <img class="exampleOfRule" src="/images/absorption2.png" alt="Absorption applied in reverse">
+  <p>The rule can be applied in reverse to any section of a formula(assuming it conforms to the rules of precedence.), `)
+})
