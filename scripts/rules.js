@@ -44,5 +44,14 @@ commutativityCard.addEventListener("click", () => {
     to move around either variables or parts of the formula linked by ∨ or ∧. Here is an example of it being used with the tool:</p>
     <img class="exampleOfRule" src="/images/commutativity.png" alt="Commutativity applied in reverse">
     <p>Here, as ∧ has higher precedence than ∨ and the whole formula was highlighted when applying the rule,
-    the parts before and after the ∨ were switched.`);
+    the parts before and after the ∨ were switched. You could instead highlight a∧b to change the formula to b∧a∨c.`);
+})
+
+associativityCard.addEventListener("click", () => {
+  showAlert(`<h3>Associativity</h3><p>A ∧ (B ∧ C) ≡ (A ∧ B) ∧ C</p><p>A ∨ (B ∨ C) ≡ (A ∨ B) ∨ C</p>
+  <p>Associativity can be used to bind variables in brackets to other variables if they are linked by the same symbol, either ∧ or ∨.</p>
+  <img class="exampleOfRule" src="/images/associativityReverse.png" alt="Associativity applied in reverse">
+  <img class="exampleOfRule" src="/images/associativityComplex.png" alt="Associativity applied">
+  <p>The first example shows a simple case in reverse. The second example shows a more complex case where there are nested brackets,
+  but the rule can be applied the same.`)
 })
