@@ -30,7 +30,8 @@ p {
   max-width: 25%;
   float: right;
   height: auto;
-  padding: 0px 15px;
+  margin: 0px 15px;
+  border-radius: 5%;
 }
 
 /* TOOL.HTML */
