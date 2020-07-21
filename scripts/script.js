@@ -444,10 +444,9 @@ function setupProof() {
     cellToReplace.parentNode.replaceChild(topFormula, cellToReplace);
     topFormula.innerHTML = formulaToKeep;
     removeEventListeners();
-    // delete all rows above selected row
-    while (row.rowIndex > 0) {
-      backwardWorkingsTable.deleteRow(0);
-      i++;
+    // delete all rows above selected row except for rule application button
+    while (row.rowIndex > 1) {
+      backwardWorkingsTable.deleteRow(1);
     }
   }
 
