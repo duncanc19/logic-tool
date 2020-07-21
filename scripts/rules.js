@@ -91,3 +91,10 @@ deMorganCard.addEventListener("click", () => {
     not (A and B) = not A or not B'. Here is an example of the rule being applied with the tool:</p>
     <img class="exampleOfRule" src="/images/deMorgan.png" alt="Example of de Morgan rule">`);
 });
+
+implicationCard.addEventListener("click", () => {
+  showAlert(`<h5>Implication</h5><p>A ⇒ B ≡ (¬A) ∨ B</p><p>The implication rule plays an important role in semantic equivalence exercises,
+  as it is the only rule which can change the implication symbol(with the exception of bi-implication).
+  Here is an example of the rule applied in reverse:</p>
+  <img class="exampleOfRule" src="/images/implication.png" alt="Example of implication rule">`);
+});
