@@ -83,3 +83,11 @@ doubleNegationCard.addEventListener("click", () => {
   <p>It can be applied to a single variable or a section of a formula. Here is an example of it applied both forwards and backwards:</p>
   <img class="exampleOfRule" src="/images/doubleNegation.png" alt="Example of double negation">`);
 });
+
+deMorganCard.addEventListener("click", () => {
+  showAlert(`<h3>de Morgan</h3><p>¬(A ∧ B) ≡ (¬A) ∨ (¬B)</p><p>¬(A ∨ B) ≡ (¬A) ∧ (¬B)</p>
+  <p>de Morgan's rules are named after a British mathematician from the 19th century and are regularly used in
+  computer programs and circuit design. The rules can be described as 'not (A or B) = not A and not B; and
+    not (A and B) = not A or not B'. Here is an example of the rule being applied with the tool:</p>
+    <img class="exampleOfRule" src="/images/deMorgan.png" alt="Example of de Morgan rule">`);
+});
