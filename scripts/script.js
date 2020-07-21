@@ -90,11 +90,7 @@ let formulaeEntered = false;
 const body = document.getElementById("body");
 body.onbeforeunload = (event) => {
   if (formulaeEntered) {
-    let confirmation = confirm(`<p>If you leave the page, you will lose all of your current workings.</p>
-      <p>Are you sure you would like to leave the page?`);
-    if (!confirmation) {
-      event.preventDefault();
-    }
+    return 'If you leave the page, you will lose all of your current workings. Are you sure you would like to leave the page?';
   }
 }
 
