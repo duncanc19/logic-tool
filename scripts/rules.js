@@ -93,8 +93,14 @@ deMorganCard.addEventListener("click", () => {
 });
 
 implicationCard.addEventListener("click", () => {
-  showAlert(`<h5>Implication</h5><p>A ⇒ B ≡ (¬A) ∨ B</p><p>The implication rule plays an important role in semantic equivalence exercises,
+  showAlert(`<h3>Implication</h3><p>A ⇒ B ≡ (¬A) ∨ B</p><p>The implication rule plays an important role in semantic equivalence exercises,
   as it is the only rule which can change the implication symbol(with the exception of bi-implication).
   Here is an example of the rule applied in reverse:</p>
   <img class="exampleOfRule" src="/images/implication.png" alt="Example of implication rule">`);
+});
+
+biImplicationCard.addEventListener("click", () => {
+  showAlert(`<h3>Bi-Implication</h3><p>A ⇔ B ≡ (A ⇒ B) ∧ (B ⇒ A)</p><p>The bi-implication symbol is often thought of as 'A is true if and only if B is true'
+  and is semantically equivalent to saying A implies B and B implies A. Here is an example of the bi-implication rule being applied with the tool:</p>
+  <img class="exampleOfRule" src="/images/biImplication.png" alt="Example of bi-implication rule">`);
 });
