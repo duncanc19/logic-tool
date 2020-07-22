@@ -31,6 +31,7 @@ const doubleNegationCard = document.getElementById('doubleNegation');
 const deMorganCard = document.getElementById('deMorgan');
 const implicationCard = document.getElementById('implication');
 const biImplicationCard = document.getElementById('biImplication');
+const rulesOfPrecedence = document.getElementById('rulesOfPrecedence');
 
 idempotenceCard.addEventListener("click", () => {
   showAlert(`<h3>Idempotence</h3><p>A ∧ A ≡ A</p><p>A ∨ A ≡ A</p>
@@ -103,4 +104,13 @@ biImplicationCard.addEventListener("click", () => {
   showAlert(`<h3>Bi-Implication</h3><p>A ⇔ B ≡ (A ⇒ B) ∧ (B ⇒ A)</p><p>The bi-implication symbol is often thought of as 'A is true if and only if B is true'
   and is semantically equivalent to saying A implies B and B implies A. Here is an example of the bi-implication rule being applied with the tool:</p>
   <img class="exampleOfRule" src="/images/biImplication.png" alt="Example of bi-implication rule">`);
+});
+
+rulesOfPrecedence.addEventListener("click", () => {
+  showAlert(`<h5>Rules of Precedence</h5><p>The order of precedence from highest to lowest: ¬, ∧, ∨, ⇒, ⇔</p>
+    <p>The rules of precedence tell us the order in which symbols are applied, in a similar way to BODMAS in maths. This means that brackets are not always
+    necessary if the formula follows the rules of precedence.</p><p>For example, (A ∧ B) ∨ C is equivalent to A ∧ B ∨ C, as ∧ has higher precedence than ∨.
+    It is particularly important to be aware of the order of precedence when using the tool, as it may remove unnecessary brackets.</p>
+    <p>This means that attempting to apply commutativity for example on A ∧ <span style="background-color: yellow">B ∨ C</span> would fail, as B is bound to
+    the ∧ symbol.</p>`)
 });
