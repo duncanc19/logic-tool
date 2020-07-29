@@ -3,16 +3,8 @@ function buildTreeFromString(formula) {
   // replace true and false with 0 and 1 for parsing
   formula = formula.replace(/false/g, "0").replace(/true/g, "1");
   let array = buildArray(formula);
-  let index = [];
-  // indexes from array added into index with offset added for true and false
-  for (let j=0, k=0; j<array.length; j++, k++) {
-    index.push(k);
-    if (array[j] === '0') {
-      k += 4;
-    } else if (array[j] === '1') {
-      k += 3;
-    }
-  }
+  let index = buildIndexArray(array);
+
   let tree = { value: array, children: [], arrayIndex: index };
   buildTree(tree);
   return tree;
@@ -22,6 +14,21 @@ function buildTreeFromString(formula) {
 function buildArray(formula) {
   let array = formula.replace(/\s/g, '').split('');
   return array;
+}
+
+// indexes from array added into index with offset added for true and false
+function buildIndexArray(formulaAsArray) {
+  let index = [];
+
+  for (let j=0, k=0; j<formulaAsArray.length; j++, k++) {
+    index.push(k);
+    if (formulaAsArray[j] === '0') {
+      k += 4;
+    } else if (formulaAsArray[j] === '1') {
+      k += 3;
+    }
+  }
+  return index;
 }
 
 // take node with long value and convert into single value and children
