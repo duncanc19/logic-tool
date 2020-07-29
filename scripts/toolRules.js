@@ -4,7 +4,7 @@ function buildTreeFromString(formula) {
   formula = formula.replace(/false/g, "0").replace(/true/g, "1");
   let array = buildArray(formula);
   let index = [];
-  // indexes from array added into index with offset added for true and false 
+  // indexes from array added into index with offset added for true and false
   for (let j=0, k=0; j<array.length; j++, k++) {
     index.push(k);
     if (array[j] === '0') {
@@ -20,14 +20,7 @@ function buildTreeFromString(formula) {
 
 // convert input string into array
 function buildArray(formula) {
-  let array = [];
-
-  for (i=0; i<formula.length; i++) {
-    if (formula[i] == " ") { // do nothing
-    } else {
-      array.push(formula[i]);
-    }
-  }
+  let array = formula.replace(/\s/g, '').split('');
   return array;
 }
 
