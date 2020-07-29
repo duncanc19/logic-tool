@@ -1,7 +1,5 @@
 /* PARSING FORMULAE INTO TREES */
 function buildTreeFromString(formula) {
-  // replace true and false with 0 and 1 for parsing
-  formula = formula.replace(/false/g, "0").replace(/true/g, "1");
   let array = buildArray(formula);
   let index = buildIndexArray(array);
   // set up tree object to then pass to recursive function buildTree
@@ -10,12 +8,15 @@ function buildTreeFromString(formula) {
   return tree;
 }
 
-// remove spaces and convert input string into array
+// convert input string into array
 function buildArray(formula) {
+  // replace true and false with 0 and 1 for parsing
+  formula = formula.replace(/false/g, "0").replace(/true/g, "1");
+  // remove spaces and convert to array
   return formula.replace(/\s/g, '').split('');
 }
 
-// indexes from array added into index with offset added for true and false
+// indexes from array put into index with offset added for true and false
 function buildIndexArray(formulaAsArray) {
   let index = [];
 
