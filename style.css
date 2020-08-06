@@ -62,6 +62,7 @@ td, th {
 
 .tableHighlight tr:hover {
   background-color: rgba(71, 72, 181, 0.5);
+  cursor: pointer;
 }
 
 tr:nth-child(even) { background-color: #f2f2f2; }
