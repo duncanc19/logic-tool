@@ -424,15 +424,15 @@ function applyRule(node, rule) {
     case 'negation':
       return negationRule(node);
       break;
-    case 'doubleNegation':
+    case 'double negation':
       return doubleNegationRule(node);
       break;
-    case 'deMorgan':
+    case 'de Morgan':
       return deMorganRule(node);
       break;
     case 'implication':
       return implicationRule(node);
-    case 'biImplication':
+    case 'bi-implication':
       return biImplicationRule(node);
       break;
   }

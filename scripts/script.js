@@ -182,10 +182,10 @@ function setupProof() {
       '<option value="absorption">Absorption</option>' +
       '<option value="distributivity">Distributivity</option>' +
       '<option value="negation">Negation</option>' +
-      '<option value="doubleNegation">Double Negation</option>' +
-      '<option value="deMorgan">de Morgan</option>' +
+      '<option value="double negation">Double Negation</option>' +
+      '<option value="de Morgan">de Morgan</option>' +
       '<option value="implication">Implication</option>' +
-      '<option value="biImplication">Bi-Implication</option>';
+      '<option value="bi-implication">Bi-Implication</option>';
 
   const ruleSelect = '<select id="mySelect" class="btn btn-sm btn-outline-dark">' +
     '<form id=ruleSelect>Select rule:' + ruleSelectGeneral +
