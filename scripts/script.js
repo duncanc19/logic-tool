@@ -417,6 +417,8 @@ function setupProof() {
     workingsTable.classList.toggle('tableHighlight');
     backwardWorkingsTable.classList.toggle('tableHighlight');
     if (workingsTable.classList.contains('tableHighlight')) {
+      showAlert(`<h5>Return to a previous step</h5><p>Click the line of your workings you wish to return to(from forward or backward workings).
+      Be careful, as you will lose all the workings which follow the line you choose. To cancel, press the 'Cancel changing step' button.`);
       previousStepButton.innerHTML = "Cancel changing step";
       for (let row of workingsTable.rows) {
         row.onclick = () => { removeRows(false, row) };
