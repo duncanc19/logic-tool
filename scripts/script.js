@@ -272,6 +272,7 @@ function setupProof() {
       workingsTable.appendChild(backwardWorkingsTable.rows[0]);
     }
     workingsTable.rows[workingsTable.rows.length-1].cells[1].innerHTML = 'Proof complete, congratulations!';
+    disablePreviousStepButton();
   }
 
   function addRowToBackwardTable(rule, formulaBeforeChange) {
@@ -311,6 +312,7 @@ function setupProof() {
       // check if proof is finished
       if (nodesEqual(originalTree, finalTree)) {
         selectArea.innerHTML = 'Proof complete, congratulations!';
+        disablePreviousStepButton();
       }
     }
 
@@ -431,6 +433,12 @@ function setupProof() {
       removeEventListeners();
       previousStepButton.innerHTML = "Go back to a previous step";
     }
+  }
+
+  function disablePreviousStepButton() {
+    previousStepButton.removeEventListener("click", goToPreviousStep);
+    previousStepButton.classList.add("disabled");
+
   }
 
   function removeRows(isBackwardsTable, whichRow) {
