@@ -276,23 +276,29 @@ function implicationRule(node) {
 
 function deMorganRule(node) {
   if (node.value === '¬') {
-    let firstChild = Object.assign({}, node.children[0].children[0]);
-    let secondChild = Object.assign({}, node.children[0].children[1]);
     if (node.children[0].value === '∧') {
-      node.value = '∨';
+      return deMorganForwardRule(node, '∧', '∨');
     } else if (node.children[0].value === '∨') {
-      node.value = '∧';
+      return deMorganForwardRule(node, '∨', '∧');
     }
-      node.children = [{value: '¬',children: [firstChild]}, {value: '¬',children: [secondChild]}];
-      return node;
   } else if (node.value === '∨' && node.children[0].value === '¬' && node.children[1].value === '¬') {
-    node = deMorganReverseRule(node, '∧');
-    return node;
+    return deMorganReverseRule(node, '∧');
   } else if (node.value === '∧' && node.children[0].value === '¬' && node.children[1].value === '¬') {
-    node = deMorganReverseRule(node, '∨');
-    return node;
+    return deMorganReverseRule(node, '∨');
   }
   return false;
+}
+
+function deMorganForwardRule(node, symbol1, symbol2) {
+    if (node.children[0].value === symbol1) {
+      let firstChild = Object.assign({}, node.children[0].children[0]);
+      let secondChild = Object.assign({}, node.children[0].children[1]);
+
+      node.value = symbol2;
+      node.children = [{value: '¬',children: [firstChild]}, {value: '¬',children: [secondChild]}];
+      return node;
+    }
+    return false;
 }
 
 function deMorganReverseRule(node, symbol) {
