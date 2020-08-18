@@ -329,11 +329,9 @@ function biImplicationRule(node) {
 
 function absorptionRule(node) {
   if (node.value === '∧' && node.children[1].value === '∨' && nodesEqual(node.children[0], node.children[1].children[0])) {
-    node = node.children[0];
-    return node;
+    return node.children[0];
   } else if (node.value === '∨' && node.children[1].value === '∧' && node.children[0].value === node.children[1].children[0].value) {
-    node = node.children[0];
-    return node;
+    return node.children[0];
   }
   return false;
 }
