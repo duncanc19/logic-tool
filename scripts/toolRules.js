@@ -367,17 +367,13 @@ function associativityReverseRule(node, symbol) {
 
 function distributivityRule(node) {
   if (node.value === '∨' && node.children[0].value === '∧' && node.children[1].value === '∧') {
-    node = distributivityReverseRule(node, '∨', '∧');
-    return node;
+    return distributivityReverseRule(node, '∨', '∧');
   } else if (node.value === '∧' && node.children[0].value === '∨' && node.children[1].value === '∨') {
-    node = distributivityReverseRule(node, '∧', '∨');
-    return node;
+    return distributivityReverseRule(node, '∧', '∨');
   } else if (node.value === '∧' && node.children[1].value === '∨') {
-    node = distributivityForwardRule(node, '∧', '∨');
-    return node;
+    return distributivityForwardRule(node, '∧', '∨');
   } else if (node.value === '∨' && node.children[1].value === '∧') {
-    node = distributivityForwardRule(node, '∨', '∧');
-    return node;
+    return distributivityForwardRule(node, '∨', '∧');
   }
   return false;
 }
