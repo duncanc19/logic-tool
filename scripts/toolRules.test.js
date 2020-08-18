@@ -47,28 +47,28 @@ test('complex commutativity with brackets - applied to give (b∨(b∨c))∧(a�
 // DOUBLE NEGATION TESTS
 test('simple double negation(with brackets) - applied to give a', () => {
   let formula = toolRules.buildTreeFromString('¬(¬a)');
-  let afterDoubleNegation = toolRules.applyRule(formula, 'doubleNegation');
+  let afterDoubleNegation = toolRules.applyRule(formula, 'double negation');
   let asString = toolRules.convertTreeToString(afterDoubleNegation);
   expect(asString).toBe('a');
 });
 
 test('simple double negation(without brackets) - applied to give a', () => {
   let formula = toolRules.buildTreeFromString('¬¬a');
-  let afterDoubleNegation = toolRules.applyRule(formula, 'doubleNegation');
+  let afterDoubleNegation = toolRules.applyRule(formula, 'double negation');
   let asString = toolRules.convertTreeToString(afterDoubleNegation);
   expect(asString).toBe('a');
 });
 
 test('complex double negation - applied to give a∨b', () => {
   let formula = toolRules.buildTreeFromString('¬(¬(a∨b))');
-  let afterDoubleNegation = toolRules.applyRule(formula, 'doubleNegation');
+  let afterDoubleNegation = toolRules.applyRule(formula, 'double negation');
   let asString = toolRules.convertTreeToString(afterDoubleNegation);
   expect(asString).toBe('a∨b');
 });
 
 test('complex double negation - applied to give a∧(a∨b)', () => {
   let formula = toolRules.buildTreeFromString('¬(¬(a∧(a∨b)))');
-  let afterDoubleNegation = toolRules.applyRule(formula, 'doubleNegation');
+  let afterDoubleNegation = toolRules.applyRule(formula, 'double negation');
   let asString = toolRules.convertTreeToString(afterDoubleNegation);
   expect(asString).toBe('a∧(a∨b)');
 });
@@ -134,42 +134,42 @@ test('more complex reverse implication - applied to give a∧b⇒b∧c', () => {
 // DE MORGAN TESTS
 test('simple from and de Morgan - applied to give ¬a∨¬b', () => {
   let formula = toolRules.buildTreeFromString('¬(a∧b)');
-  let afterDeMorgan = toolRules.applyRule(formula, 'deMorgan');
+  let afterDeMorgan = toolRules.applyRule(formula, 'de Morgan');
   let asString = toolRules.convertTreeToString(afterDeMorgan);
   expect(asString).toBe('¬a∨¬b');
 });
 
 test('simple from or de Morgan - applied to give ¬a∧¬b', () => {
   let formula = toolRules.buildTreeFromString('¬(a∨b)');
-  let afterDeMorgan = toolRules.applyRule(formula, 'deMorgan');
+  let afterDeMorgan = toolRules.applyRule(formula, 'de Morgan');
   let asString = toolRules.convertTreeToString(afterDeMorgan);
   expect(asString).toBe('¬a∧¬b');
 });
 
 test('simple reverse from and de Morgan - applied to give ¬(a∧b)', () => {
   let formula = toolRules.buildTreeFromString('¬a∨¬b');
-  let afterDeMorgan = toolRules.applyRule(formula, 'deMorgan');
+  let afterDeMorgan = toolRules.applyRule(formula, 'de Morgan');
   let asString = toolRules.convertTreeToString(afterDeMorgan);
   expect(asString).toBe('¬(a∧b)');
 });
 
 test('simple reverse from or de Morgan - applied to give ¬(a∨b)', () => {
   let formula = toolRules.buildTreeFromString('¬a∧¬b');
-  let afterDeMorgan = toolRules.applyRule(formula, 'deMorgan');
+  let afterDeMorgan = toolRules.applyRule(formula, 'de Morgan');
   let asString = toolRules.convertTreeToString(afterDeMorgan);
   expect(asString).toBe('¬(a∨b)');
 });
 
 test('complex from and de Morgan - applied to give ¬(a∨b)∨¬(b∧c)', () => {
   let formula = toolRules.buildTreeFromString('¬((a∨b)∧(b∧c))');
-  let afterDeMorgan = toolRules.applyRule(formula, 'deMorgan');
+  let afterDeMorgan = toolRules.applyRule(formula, 'de Morgan');
   let asString = toolRules.convertTreeToString(afterDeMorgan);
   expect(asString).toBe('¬(a∨b)∨¬(b∧c)');
 });
 
 test('complex reverse from or de Morgan - applied to give ¬((a∨b)∨(b∧c))', () => {
   let formula = toolRules.buildTreeFromString('¬(a∨b)∧¬(b∧c)');
-  let afterDeMorgan = toolRules.applyRule(formula, 'deMorgan');
+  let afterDeMorgan = toolRules.applyRule(formula, 'de Morgan');
   let asString = toolRules.convertTreeToString(afterDeMorgan);
   expect(asString).toBe('¬((a∨b)∨b∧c)');
 });
@@ -177,28 +177,28 @@ test('complex reverse from or de Morgan - applied to give ¬((a∨b)∨(b∧c))'
 // BI-IMPLICATION TESTS
 test('simple bi-implication - applied to give (a⇒b)∧(b⇒a)', () => {
   let formula = toolRules.buildTreeFromString('a⇔b');
-  let afterBiImplication = toolRules.applyRule(formula, 'biImplication');
+  let afterBiImplication = toolRules.applyRule(formula, 'bi-implication');
   let asString = toolRules.convertTreeToString(afterBiImplication);
   expect(asString).toBe('(a⇒b)∧(b⇒a)');
 });
 
 test('simple reverse bi-implication - applied to give a⇔b', () => {
   let formula = toolRules.buildTreeFromString('(a⇒b)∧(b⇒a)');
-  let afterBiImplication = toolRules.applyRule(formula, 'biImplication');
+  let afterBiImplication = toolRules.applyRule(formula, 'bi-implication');
   let asString = toolRules.convertTreeToString(afterBiImplication);
   expect(asString).toBe('a⇔b');
 });
 
 test('complex bi-implication - applied to give (a∧c⇒b∧c)∧(b∧c⇒a∧c)', () => {
   let formula = toolRules.buildTreeFromString('(a∧c)⇔(b∧c)');
-  let afterBiImplication = toolRules.applyRule(formula, 'biImplication');
+  let afterBiImplication = toolRules.applyRule(formula, 'bi-implication');
   let asString = toolRules.convertTreeToString(afterBiImplication);
   expect(asString).toBe('(a∧c⇒b∧c)∧(b∧c⇒a∧c)');
 });
 
 test('complex reverse bi-implication - applied to give (a∧c)⇔(b∧c)', () => {
   let formula = toolRules.buildTreeFromString('(a∧c⇒b∧c)∧(b∧c⇒a∧c)');
-  let afterBiImplication = toolRules.applyRule(formula, 'biImplication');
+  let afterBiImplication = toolRules.applyRule(formula, 'bi-implication');
   let asString = toolRules.convertTreeToString(afterBiImplication);
   expect(asString).toBe('a∧c⇔b∧c');
 });
