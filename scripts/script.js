@@ -1,24 +1,5 @@
 const mainBody = document.getElementById("mainBody");
 
-// Formula Input Buttons
-const andButton = document.getElementById("andButton");
-const orButton = document.getElementById("orButton");
-const ifButton = document.getElementById("ifButton");
-const onlyIfButton = document.getElementById("onlyIfButton");
-const notButton = document.getElementById("notButton");
-const startProof = document.getElementById("startProof");
-const buttons = document.getElementById('symbolButtons');
-
-andButton.addEventListener("click", function() { addSymbol(0) });
-orButton.addEventListener("click", function() { addSymbol(1) });
-ifButton.addEventListener("click", function() { addSymbol(2) });
-onlyIfButton.addEventListener("click", function() { addSymbol(3) });
-notButton.addEventListener("click", function() { addSymbol(4) });
-startProof.addEventListener("click", setupProof);
-
-const formulaInput = document.getElementById("formula");
-const transformedFormula = document.getElementById("transformedFormula");
-
 // If task is passed in from exercises page, put formulae into input boxes
 function taskGiven() {
   let givenTask = sessionStorage.getItem('task');
@@ -96,6 +77,26 @@ body.onbeforeunload = (event) => {
 
 /* FORMULA INPUT */
 let currentTextBox;
+let textBoxOffset;
+
+// Formula Input Buttons
+const andButton = document.getElementById("andButton");
+const orButton = document.getElementById("orButton");
+const ifButton = document.getElementById("ifButton");
+const onlyIfButton = document.getElementById("onlyIfButton");
+const notButton = document.getElementById("notButton");
+const startProof = document.getElementById("startProof");
+const buttons = document.getElementById('symbolButtons');
+
+andButton.addEventListener("click", function() { addSymbol(0) });
+orButton.addEventListener("click", function() { addSymbol(1) });
+ifButton.addEventListener("click", function() { addSymbol(2) });
+onlyIfButton.addEventListener("click", function() { addSymbol(3) });
+notButton.addEventListener("click", function() { addSymbol(4) });
+startProof.addEventListener("click", setupProof);
+
+const formulaInput = document.getElementById("formula");
+const transformedFormula = document.getElementById("transformedFormula");
 
 /* Keyboard shortcuts */
 function keyboardSymbols(textbox, e) {
@@ -103,6 +104,7 @@ function keyboardSymbols(textbox, e) {
   if (key>=49 && key<=53) {
     e.preventDefault();
     currentTextBox = textbox;
+    textBoxOffset = e.target.selectionStart;
     // converting key codes of numbers 1-5 to switch numbers in addSymbol
     addSymbol(key-49);
   }
@@ -116,21 +118,32 @@ transformedFormula.onkeypress = function(e) {
   keyboardSymbols(this, e);
 }
 
+formulaInput.onblur = function(e) {
+  selectTextBox(this.id, e);
+}
+
+transformedFormula.onblur = function(e) {
+  selectTextBox(this.id, e);
+}
+
 /* Symbol buttons */
 const symbolButtonLookup = ["∧", "∨", "⇒", "⇔", "¬"]; //ordering important, don't change
 
 function addSymbol(whichButton)
 {
   if (currentTextBox) {
-    currentTextBox.value += symbolButtonLookup[whichButton];
+    // insert symbol into textbox at current offset and return focus to same place
+    currentTextBox.value = currentTextBox.value.substr(0, textBoxOffset) + symbolButtonLookup[whichButton] + currentTextBox.value.substr(textBoxOffset);
     currentTextBox.focus();
+    currentTextBox.setSelectionRange(textBoxOffset+1, textBoxOffset+1);
   } else {
     showAlert("<h5>No text box selected</h5>Please select a text box!");
   }
 }
 
-function selectTextBox(textBox) {
+function selectTextBox(textBox, e) {
     currentTextBox = document.getElementById(textBox);
+    textBoxOffset = e.target.selectionStart;
 }
 
 /* ALERT BOXES/MODALS */
