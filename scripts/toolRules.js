@@ -202,8 +202,7 @@ function convertTreeToString(rootNode) {
 function idempotenceRule(node) {
   if (node.value === '∧' || node.value === '∨') {
     if (nodesEqual(node.children[0], node.children[1])) {
-      node = node.children[0];
-      return node;
+      return node.children[0];
     }
   }
   return false;
