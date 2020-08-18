@@ -338,17 +338,13 @@ function absorptionRule(node) {
 
 function associativityRule(node) {
   if (node.value === '∧' && node.children[1].value === '∧') {
-    node = associativityForwardRule(node, '∧');
-    return node;
+    return associativityForwardRule(node, '∧');
   } else if (node.value === '∨' && node.children[1].value === '∨') {
-    node = associativityForwardRule(node, '∨');
-    return node;
+    return associativityForwardRule(node, '∨');
   } else if (node.value === '∧' && node.children[0].value === '∧') {
-    node = associativityReverseRule(node, '∧');
-    return node;
+    return associativityReverseRule(node, '∧');
   } else if (node.value === '∨' && node.children[0].value === '∨') {
-    node = associativityReverseRule(node, '∨');
-    return node;
+    return associativityReverseRule(node, '∨');
   }
   return false;
 }
