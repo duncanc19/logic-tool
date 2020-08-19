@@ -142,7 +142,9 @@ function addSymbol(whichButton)
 
 function selectTextBox(textBox, e) {
     currentTextBox = document.getElementById(textBox);
-    textBoxOffset = e.target.selectionStart;
+    if (e) {
+      textBoxOffset = e.target.selectionStart;
+    }
 }
 
 /* ALERT BOXES/MODALS */
