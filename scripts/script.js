@@ -1,4 +1,6 @@
 const mainBody = document.getElementById("mainBody");
+const formulaInput = document.getElementById("formula");
+const transformedFormula = document.getElementById("transformedFormula");
 
 // If task is passed in from exercises page, put formulae into input boxes
 function taskGiven() {
@@ -94,9 +96,6 @@ ifButton.addEventListener("click", function() { addSymbol(2) });
 onlyIfButton.addEventListener("click", function() { addSymbol(3) });
 notButton.addEventListener("click", function() { addSymbol(4) });
 startProof.addEventListener("click", setupProof);
-
-const formulaInput = document.getElementById("formula");
-const transformedFormula = document.getElementById("transformedFormula");
 
 /* Keyboard shortcuts */
 function keyboardSymbols(textbox, e) {
