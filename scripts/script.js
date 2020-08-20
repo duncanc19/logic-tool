@@ -182,7 +182,9 @@ const rulesInfo = {
   'double negation': '<h5>Double Negation:</h5><p>¬(¬A) ≡ A</p>',
   'de Morgan': '<h5>de Morgan:</h5><p>¬(A ∧ B) ≡ (¬A) ∨ (¬B)</p><p>¬(A ∨ B) ≡ (¬A) ∧ (¬B)</p>',
   'implication': '<h5>Implication:</h5><p>A ⇒ B ≡ (¬A) ∨ B</p>',
-  'bi-implication': '<h5>Bi-Implication:</h5><p>A ⇔ B ≡ (A ⇒ B) ∧ (B ⇒ A)</p>'
+  'bi-implication': '<h5>Bi-Implication:</h5><p>A ⇔ B ≡ (A ⇒ B) ∧ (B ⇒ A)</p>',
+  'rules of precedence': `<h5>Rules of Precedence</h5><p>The order of precedence from highest to lowest: ¬, ∧, ∨, ⇒, ⇔</p>
+  <p>The order in which symbols are applied, e.g. (A ∧ B) ∨ C is equivalent to A ∧ B ∨ C, as ∧ has higher precedence than ∨.</p>`
 }
 
 const rulesInTool = `<div id="rulesInTool"><h5>Rules</h5>
@@ -196,6 +198,7 @@ const rulesInTool = `<div id="rulesInTool"><h5>Rules</h5>
   <p onclick="showAlert(rulesInfo['de Morgan'])">de Morgan</p>
   <p onclick="showAlert(rulesInfo['implication'])">Implication</p>
   <p onclick="showAlert(rulesInfo['bi-implication'])">Bi-Implication</p>
+  <p onclick="showAlert(rulesInfo['rules of precedence'])">Rules of Precedence</p>
 </div>`;
 
 function setupProof() {
