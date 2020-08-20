@@ -172,28 +172,30 @@ function showAlert(text) {
 
 
 /* SETTING UP PROBLEM SOLUTION FEATURES */
-const idempotenceInfo = '<h5>Idempotence</h5><p>A ∧ A ≡ A</p><p>A ∨ A ≡ A</p>';
-const commutativityInfo = '<h5>Commutativity</h5><p>A ∧ B ≡ B ∧ A</p><p>A ∨ B ≡ B ∨ A</p>';
-const associativityInfo = '<h5>Associativity:</h5><p>A ∧ (B ∧ C) ≡ (A ∧ B) ∧ C</p><p>A ∨ (B ∨ C) ≡ (A ∨ B) ∨ C</p>';
-const absorptionInfo = '<h5>Absorption:</h5><p>A ∧ (A ∨ B) ≡ A</p><p>A ∨ (A ∧ B) ≡ A</p>';
-const distributivityInfo = '<h5>Distributivity:</h5><p>A ∧ (B ∨ C) ≡ (A ∧ B) ∨ (A ∧ C)</p><p>A ∨ (B ∧ C) ≡ (A ∨ B) ∧ (A ∨ C)</p>';
-const negationInfo = '<h5>Negation:</h5><p>A ∧ (¬A) ≡ false</p><p>A ∨ (¬A) ≡ true</p>';
-const doubleNegationInfo = '<h5>Double Negation:</h5><p>¬(¬A) ≡ A</p>';
-const deMorganInfo = '<h5>de Morgan:</h5><p>¬(A ∧ B) ≡ (¬A) ∨ (¬B)</p><p>¬(A ∨ B) ≡ (¬A) ∧ (¬B)</p>';
-const implicationInfo = '<h5>Implication:</h5><p>A ⇒ B ≡ (¬A) ∨ B</p>';
-const biImplicationInfo = '<h5>Bi-Implication:</h5><p>A ⇔ B ≡ (A ⇒ B) ∧ (B ⇒ A)</p>';
+const rulesInfo = {
+  'idempotence': '<h5>Idempotence</h5><p>A ∧ A ≡ A</p><p>A ∨ A ≡ A</p>',
+  'commutativity': '<h5>Commutativity</h5><p>A ∧ B ≡ B ∧ A</p><p>A ∨ B ≡ B ∨ A</p>',
+  'associativity': '<h5>Associativity:</h5><p>A ∧ (B ∧ C) ≡ (A ∧ B) ∧ C</p><p>A ∨ (B ∨ C) ≡ (A ∨ B) ∨ C</p>',
+  'absorption': '<h5>Absorption:</h5><p>A ∧ (A ∨ B) ≡ A</p><p>A ∨ (A ∧ B) ≡ A</p>',
+  'distributivity': '<h5>Distributivity:</h5><p>A ∧ (B ∨ C) ≡ (A ∧ B) ∨ (A ∧ C)</p><p>A ∨ (B ∧ C) ≡ (A ∨ B) ∧ (A ∨ C)</p>',
+  'negation': '<h5>Negation:</h5><p>A ∧ (¬A) ≡ false</p><p>A ∨ (¬A) ≡ true</p>',
+  'double negation': '<h5>Double Negation:</h5><p>¬(¬A) ≡ A</p>',
+  'de Morgan': '<h5>de Morgan:</h5><p>¬(A ∧ B) ≡ (¬A) ∨ (¬B)</p><p>¬(A ∨ B) ≡ (¬A) ∧ (¬B)</p>',
+  'implication': '<h5>Implication:</h5><p>A ⇒ B ≡ (¬A) ∨ B</p>',
+  'bi-implication': '<h5>Bi-Implication:</h5><p>A ⇔ B ≡ (A ⇒ B) ∧ (B ⇒ A)</p>'
+}
 
 const rulesInTool = `<div id="rulesInTool"><h5>Rules</h5>
-  <p onclick="showAlert(idempotenceInfo)">Idempotence</p>
-  <p onclick="showAlert(commutativityInfo)">Commutativity</p>
-  <p onclick="showAlert(associativityInfo)">Associativity</p>
-  <p onclick="showAlert(absorptionInfo)">Absorption</p>
-  <p onclick="showAlert(distributivityInfo)">Distributivity</p>
-  <p onclick="showAlert(negationInfo)">Negation</p>
-  <p onclick="showAlert(doubleNegationInfo)">Double Negation</p>
-  <p onclick="showAlert(deMorganInfo)">de Morgan</p>
-  <p onclick="showAlert(implicationInfo)">Implication</p>
-  <p onclick="showAlert(biImplicationInfo)">Bi-Implication</p>
+  <p onclick="showAlert(rulesInfo['idempotence'])">Idempotence</p>
+  <p onclick="showAlert(rulesInfo['commutativity'])">Commutativity</p>
+  <p onclick="showAlert(rulesInfo['associativity'])">Associativity</p>
+  <p onclick="showAlert(rulesInfo['absorption'])">Absorption</p>
+  <p onclick="showAlert(rulesInfo['distributivity'])">Distributivity</p>
+  <p onclick="showAlert(rulesInfo['negation'])">Negation</p>
+  <p onclick="showAlert(rulesInfo['double negation'])">Double Negation</p>
+  <p onclick="showAlert(rulesInfo['de Morgan'])">de Morgan</p>
+  <p onclick="showAlert(rulesInfo['implication'])">Implication</p>
+  <p onclick="showAlert(rulesInfo['bi-implication'])">Bi-Implication</p>
 </div>`;
 
 function setupProof() {
