@@ -350,8 +350,7 @@ function setupProof() {
   function setupRuleInput(rule, highlighted) {
     if (!(rule === 'idempotence' || rule === 'absorption' || rule === 'negation')) {
       throw `<h5>The rule could not be applied</h5>
-        The section highlighted matched the formula but it did not conform to the requirements of the ${mySelect.value} rule.
-        Have a look at the rules section(toggle in the Settings or look on the Rules page for more details).`;
+        <p>The section highlighted matched the formula but it did not conform to the requirements of the ${mySelect.value} rule.</p>${rulesInfo[mySelect.value]}`;
     }
     showAlert(`<div id="addRuleChange"><label for="ruleChange">You are applying ${rule} to ${highlighted.toString()}, please enter what you'd like to change it to:</label>
     <input type="text" name="ruleChange" placeholder="Your change" id="ruleChange" onblur="selectTextBox(this.id)"></div>
