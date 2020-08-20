@@ -419,7 +419,7 @@ function setupProof() {
       node = buildTreeFromString(highlightedSection.toString());
       return node;
     } catch {
-      throw `<h5>Section highlighted can't be parsed</h5>Make sure you are highlighting part of the formula from the latest step of your workings.`;
+      throw `<h5>Section highlighted is not valid</h5><p>Look out for things such as unclosed brackets.</p>`;
     }
   }
 
@@ -429,9 +429,8 @@ function setupProof() {
     let nodeToSwap = findNodeWithIndex(rootNodeIndex, wholeTree);
     // gives error message if highlighted section doesn't match section of formula in the tree
     if (!nodesEqual(nodeToSwap, highlightedNode)) {
-      throw `<h5>Section highlighted doesn't match formula</h5>If highlighting brackets,
-      make sure you get both opening and closing brackets. Be careful with the rules of precedence,
-      for example, a∧<span style="background-color:yellow;">b∨c</span> won't work, as b is linked with a(i.e. the same as (a∧b)∨c).`;
+      throw `<h5>Section highlighted doesn't match formula</h5><p>Make sure you are highlighting part of the formula from the latest step of your workings.
+      Be careful with the rules of precedence, for example, a∧<span style="background-color:yellow;">b∨c</span> won't work, as b is linked with a(i.e. the same as (a∧b)∨c).</p>`;
     }
     return nodeToSwap;
   }
