@@ -380,7 +380,7 @@ function setupProof() {
       let newNodeClone = Object.assign({}, newNode);
       let ruleAppliedToNewNode = applyRule(newNodeClone, rule);
       if (!ruleAppliedToNewNode || !nodesEqual(originalNode, ruleAppliedToNewNode)) {
-        showAlert(`The rule can't be applied to give what you have entered.`);
+        showAlert(`<p>The ${rule} rule can't be applied to give what you have entered.</p> ${rulesInfo[rule]}`);
         return;
       }
       modal.style.display = "none";
