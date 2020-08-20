@@ -353,7 +353,7 @@ function setupProof() {
         <p>The section highlighted matched the formula but it did not conform to the requirements of the ${mySelect.value} rule.</p>${rulesInfo[mySelect.value]}`;
     }
     showAlert(`<div id="addRuleChange"><label for="ruleChange">You are applying ${rule} to ${highlighted.toString()}, please enter what you'd like to change it to:</label>
-    <input type="text" name="ruleChange" placeholder="Your change" id="ruleChange" onblur="selectTextBox(this.id)"></div>
+    <input type="text" name="ruleChange" placeholder="Your change" id="ruleChange"></div>
     <input type="button" id="enterChange"  data-dismiss="modal" class="btn btn-sm btn-outline-dark" value="Enter Change">`);
   }
 
@@ -364,9 +364,8 @@ function setupProof() {
 
     selectTextBox('ruleChange');
     addRuleChange.appendChild(buttons);
-    ruleChange.onkeypress = function(e) {
-      keyboardSymbols(this, e);
-    }
+    ruleChange.onkeypress = function(e) { keyboardSymbols(this, e) }
+    ruleChange.onblur = function(e) { selectTextBox(this.id, e) }
 
     const enterChange = document.getElementById('enterChange');
     enterChange.addEventListener("click", () => {
