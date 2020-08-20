@@ -7,6 +7,36 @@ test('string should return the same', () => {
   expect(sameFormula).toBe('a∧b⇒c');
 });
 
+test('string should return the same', () => {
+  let formula = toolRules.buildTreeFromString('p∧¬(q∧r)');
+  let sameFormula = toolRules.convertTreeToString(formula);
+  expect(sameFormula).toBe('p∧¬(q∧r)');
+});
+
+test('string should return the same with true', () => {
+  let formula = toolRules.buildTreeFromString('true∧(a∨b)');
+  let sameFormula = toolRules.convertTreeToString(formula);
+  expect(sameFormula).toBe('true∧(a∨b)');
+});
+
+test('string should return the same with false', () => {
+  let formula = toolRules.buildTreeFromString('false∨p');
+  let sameFormula = toolRules.convertTreeToString(formula);
+  expect(sameFormula).toBe('false∨p');
+});
+
+test('string should return the same with implication', () => {
+  let formula = toolRules.buildTreeFromString('(p⇒q)⇒r');
+  let sameFormula = toolRules.convertTreeToString(formula);
+  expect(sameFormula).toBe('(p⇒q)⇒r');
+});
+
+test('string should return the same with bi-implication', () => {
+  let formula = toolRules.buildTreeFromString('¬q⇔¬p');
+  let sameFormula = toolRules.convertTreeToString(formula);
+  expect(sameFormula).toBe('¬q⇔¬p');
+});
+
 // IDEMPOTENCE TESTS
 test('simple idempotence - should return a', () => {
   let formula = toolRules.buildTreeFromString('a∧a');
