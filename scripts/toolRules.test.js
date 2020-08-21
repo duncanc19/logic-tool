@@ -52,6 +52,12 @@ test('idempotence with brackets - should return a∧b', () => {
   expect(asString).toBe('a∧b');
 });
 
+test('idempotence applied wrongly - should return false', () => {
+  let formula = toolRules.buildTreeFromString('p⇒q');
+  let afterIdempotence = toolRules.applyRule(formula, 'idempotence');
+  expect(afterIdempotence).toBe(false);
+});
+
 // COMMUTATIVITY TESTS
 test('simple commutativity - applied to give b∧a', () => {
   let formula = toolRules.buildTreeFromString('a∧b');
@@ -72,6 +78,12 @@ test('complex commutativity with brackets - applied to give (b∨(b∨c))∧(a�
   let afterCommutativity = toolRules.applyRule(formula, 'commutativity');
   let asString = toolRules.convertTreeToString(afterCommutativity);
   expect(asString).toBe('(b∨(b∨c))∧(a∨(a∨b))');
+});
+
+test('commutativity applied wrongly - should return false', () => {
+  let formula = toolRules.buildTreeFromString('p⇒q');
+  let afterRule = toolRules.applyRule(formula, 'idempotence');
+  expect(afterRule).toBe(false);
 });
 
 // DOUBLE NEGATION TESTS
@@ -103,6 +115,13 @@ test('complex double negation - applied to give a∧(a∨b)', () => {
   expect(asString).toBe('a∧(a∨b)');
 });
 
+test('reverse double negation - applied to give ¬¬(a∨b)', () => {
+  let formula = toolRules.buildTreeFromString('a∨b');
+  let afterDoubleNegation = toolRules.applyRule(formula, 'double negation');
+  let asString = toolRules.convertTreeToString(afterDoubleNegation);
+  expect(asString).toBe('¬¬(a∨b)');
+});
+
 // NEGATION TESTS
 test('simple negation - applied to give false', () => {
   let formula = toolRules.buildTreeFromString('a∧(¬a)');
@@ -130,6 +149,12 @@ test('complex negation with brackets - applied to give true', () => {
   let afterNegation = toolRules.applyRule(formula, 'negation');
   let asString = toolRules.convertTreeToString(afterNegation);
   expect(asString).toBe('true');
+});
+
+test('wrongly applied negation - should give false', () => {
+  let formula = toolRules.buildTreeFromString('a∨¬b');
+  let afterNegation = toolRules.applyRule(formula, 'negation');
+  expect(afterNegation).toBe(false);
 });
 
 // IMPLICATION TESTS
